@@ -7,10 +7,12 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component, Prop, Vue} from "vue-property-decorator";
 
     @Component
     export default class Content extends Vue {
+        @Prop() private servicePort?: string;
+        @Prop() private streamId?: string;
     }
 </script>
 

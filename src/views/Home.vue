@@ -1,28 +1,30 @@
 <template>
-	<!--  <div class="home">-->
-	<!--    <img alt="Vue logo" src="../assets/logo.png">-->
-	<!--    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>-->
-	<!--  </div>-->
-	<div class="container-fluid">
-		<div class="row">
-			<Sidebar/>
-			<Content/>
+	<div>
+		<Navbar></Navbar>
+		<div class="container-fluid">
+			<div class="row">
+				<Sidebar :servicePort="servicePort" :streamId="streamId"/>
+				<Content :servicePort="servicePort" :streamId="streamId"/>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import Sidebar from '@/components/Sidebar.vue';
-    import Content from '@/components/Content.vue';
+    import {Component, Prop, Vue} from "vue-property-decorator";
+    import Sidebar from "@/components/Sidebar.vue";
+    import Content from "@/components/Content.vue";
+    import Navbar from "@/components/Navbar.vue";
 
     @Component({
         components: {
-            // HelloWorld,
-			Sidebar,
-			Content,
+            Navbar,
+            Sidebar,
+            Content,
         },
     })
     export default class Home extends Vue {
+        @Prop() private servicePort?: string;
+        @Prop() private streamId?: string;
     }
 </script>

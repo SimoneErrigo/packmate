@@ -7,9 +7,10 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:servicePort?/:streamId?',
       name: 'home',
       component: Home,
+      props: true,
     },
     {
       path: '/about',
