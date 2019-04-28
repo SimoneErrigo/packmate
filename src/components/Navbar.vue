@@ -1,22 +1,14 @@
 <template>
+	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-lg navbar-expand">
+		<router-link to="/" class="navbar-brand col-sm-3 col-md-2 mr-0">Packmate</router-link>
 
-	<!--    <div id="nav">-->
-	<!--      <router-link to="/">Home</router-link> |-->
-	<!--      <router-link to="/about">About</router-link>-->
-	<!--    </div>-->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<router-link to="/" class="navbar-brand">Packmate</router-link>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+<!--		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+<!--				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--			<span class="navbar-toggler-icon"></span>-->
+<!--		</button>-->
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<!--					<li class="nav-item active">-->
-				<!--						<a class="nav-link" href="#">1337 (L33T)</a>-->
-				<!--					</li>-->
-				<!--					-->
 				<CtfService
 						v-for="service in ctfServices"
 						:key="service.port"
@@ -33,7 +25,7 @@
 					</button>
 				</li>
 			</ul>
-			<div class="my-2 my-lg-0">
+			<div class="my-2 my-lg-0" style="margin-right: 10px;">
 				<button type="button" class="btn btn-link">
 					<svg id="i-settings" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16"
 						 fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -69,5 +61,34 @@
 </script>
 
 <style scoped>
+	.navbar-brand {
+		padding-top: .75rem;
+		padding-bottom: .75rem;
+		font-size: 1rem;
+		background-color: rgba(0, 0, 0, .25);
+		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+	}
 
+	.navbar .form-control {
+		padding: .75rem 1rem;
+		border-width: 0;
+		border-radius: 0;
+	}
+
+	.form-control-dark {
+		color: #fff;
+		background-color: rgba(255, 255, 255, .1);
+		border-color: rgba(255, 255, 255, .1);
+	}
+
+	.form-control-dark:focus {
+		border-color: transparent;
+		box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+	}
+	svg {
+		position: absolute;
+		top: 50%;
+		bottom: 50%;
+		transform: translate(-50%, -50%);
+	}
 </style>

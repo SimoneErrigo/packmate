@@ -17,5 +17,7 @@
 </script>
 
 <style scoped>
-
+	main {
+		padding-top: 48px; /* Space for fixed navbar */
+	}
 </style>

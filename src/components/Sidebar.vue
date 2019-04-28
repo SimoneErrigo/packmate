@@ -2,18 +2,6 @@
 	<nav class="col-md-2 d-none d-md-block bg-light sidebar">
 		<div class="sidebar-sticky">
 			<ul class="nav flex-column">
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link active" href="#">-->
-				<!--						#1<br/>-->
-				<!--						13:37:01-->
-				<!--					</a>-->
-				<!--				</li>-->
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link" href="#">-->
-				<!--						#2<br/>-->
-				<!--						12:28:02-->
-				<!--					</a>-->
-				<!--				</li>-->
 				<Stream
 						v-for="stream in streams"
 						:key="stream.id"
@@ -25,28 +13,76 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
-    import Stream from "@/components/Stream.vue";
+	import {Component, Prop, Vue} from "vue-property-decorator";
+	import Stream from "@/components/Stream.vue";
 
-    @Component({
-        components: {Stream},
-        data() {
-            return {
-                streams: [
-                    {
-                        id: 111,
-                        time: 1556411080,
-                    },
-                ]
-            };
-        }
-    })
-    export default class Sidebar extends Vue {
-        @Prop() private servicePort?: string;
-        @Prop() private streamId?: string;
-    }
+	@Component({
+		components: {Stream},
+		data() {
+			return {
+				streams: [
+					{
+						id: 111,
+						time: 1556411080,
+					},
+				]
+			};
+		}
+	})
+	export default class Sidebar extends Vue {
+		@Prop() private servicePort?: string;
+		@Prop() private streamId?: string;
+	}
 </script>
 
 <style scoped>
+	.sidebar {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 100; /* Behind the navbar */
+		padding: 48px 0 0; /* Height of navbar */
+		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+	}
 
+	.sidebar-sticky {
+		position: relative;
+		top: 0;
+		height: calc(100vh - 48px);
+		padding-top: .5rem;
+		overflow-x: hidden;
+		overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+	}
+
+	@supports ((position: -webkit-sticky) or (position: sticky)) {
+		.sidebar-sticky {
+			position: -webkit-sticky;
+			position: sticky;
+		}
+	}
+
+	.sidebar .nav-link {
+		font-weight: 500;
+		color: #333;
+	}
+
+	.sidebar .nav-link .feather {
+		margin-right: 4px;
+		color: #999;
+	}
+
+	.sidebar .nav-link.active {
+		color: #007bff;
+	}
+
+	.sidebar .nav-link:hover .feather,
+	.sidebar .nav-link.active .feather {
+		color: inherit;
+	}
+
+	.sidebar-heading {
+		font-size: .75rem;
+		text-transform: uppercase;
+	}
 </style>
