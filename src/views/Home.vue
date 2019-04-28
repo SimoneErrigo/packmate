@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedTag -->
 <template>
 	<div>
 		<Navbar></Navbar>

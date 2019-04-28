@@ -15,10 +15,10 @@
 				<!--					</a>-->
 				<!--				</li>-->
 				<Stream
-					v-for="stream in streams"
-					:key="stream.id"
-					:id="stream.id"
-					:time="stream.time"></Stream>
+						v-for="stream in streams"
+						:key="stream.id"
+						:id="stream.id"
+						:time="stream.time"></Stream>
 			</ul>
 		</div>
 	</nav>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import Stream from '@/components/Stream.vue';
+    import Stream from "@/components/Stream.vue";
 
     @Component({
         components: {Stream},

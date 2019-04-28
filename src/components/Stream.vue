@@ -1,9 +1,9 @@
 <template>
 	<li class="nav-item">
-<!--		<a class="nav-link active" href="#">-->
-<!--			#1<br/>-->
-<!--			13:37:01-->
-<!--		</a>-->
+		<!--		<a class="nav-link active" href="#">-->
+		<!--			#1<br/>-->
+		<!--			13:37:01-->
+		<!--		</a>-->
 		<router-link class="nav-link" active-class="active" :to="'/' + $route.params.servicePort + '/' + id">
 			#{{id}}<br/>
 			{{time}}
