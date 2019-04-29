@@ -1,14 +1,61 @@
 <template>
+	<div class="modal-mask">
+		<div class="modal-wrapper">
+			<div class="modal-container">
+				Test modal!
+				<button @click="$emit('close')">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
 </template>
 
-<script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-
-    @Component
-    export default class SettingsModal extends Vue {
-    }
+<script>
+export default {
+	name: "SettingsModal",
+	data: function () {
+		return {
+			escapeKeyCallback: (e) => {
+				if (e.key === 'Escape') this.$emit('close');
+			},
+		}
+	},
+	mounted() {
+		document.addEventListener('keyup', this.$data.escapeKeyCallback);
+	},
+	beforeDestroy() {
+		document.removeEventListener('keyup', this.$data.escapeKeyCallback);
+	},
+}
 </script>
 
 <style scoped>
+	.modal-mask {
+		position: fixed;
+		z-index: 9998;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, .5);
+		display: table;
+		transition: opacity .3s ease;
+	}
 
+	.modal-wrapper {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.modal-container {
+		width: 300px;
+		margin: 0 auto;
+		padding: 20px 30px;
+		background-color: #fff;
+		border-radius: 2px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+		transition: all .3s ease;
+		font-family: Helvetica, Arial, sans-serif;
+	}
 </style>

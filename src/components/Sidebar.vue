@@ -12,30 +12,26 @@
 	</nav>
 </template>
 
-<script lang="ts">
-	import {Component, Prop, Vue} from "vue-property-decorator";
-	import Stream from "@/components/Stream.vue";
+<script>
+import Stream from "@/components/Stream.vue";
 
-	@Component({
-		components: {Stream},
-		data() {
-			return {
-				streams: [
-					{
-						id: 111,
-						time: 1556411080,
-					},
-				]
-			};
+export default {
+	name: 'Sidebar',
+	props: ['servicePort', 'streamId',],
+	data: function () {
+		return {
+			streams: [
+				{
+					id: 111,
+					time: 1556411080,
+				},
+			],
 		}
-	})
-	export default class Sidebar extends Vue {
-		@Prop() private servicePort?: string;
-		@Prop() private streamId?: string;
-	}
+	},
+	components: {Stream,},
+}
 </script>
-
-<style scoped>
+<style>
 	.sidebar {
 		position: fixed;
 		top: 0;

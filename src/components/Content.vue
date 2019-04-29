@@ -1,19 +1,38 @@
 <template>
 	<main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1>Content</h1>
-		</div>
+
+			<Packet v-for="packet in packets"
+					:key="packet.id"
+					:id="packet.id"
+					:content="packet.content"
+					:timestamp="packet.timestamp"></Packet>
 	</main>
 </template>
 
-<script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
+<script>
+import Packet from "@/components/Packet.vue";
 
-    @Component
-    export default class Content extends Vue {
-        @Prop() private servicePort?: string;
-        @Prop() private streamId?: string;
-    }
+export default {
+	name: 'Content',
+	props: ['servicePort', 'streamId',],
+	data: function () {
+		return {
+			packets: [
+				{
+					id: 39,
+					timestamp: 1556555231394,
+					content: 'wuAAUEtPbKUAAAAAoAL///jUAAACBAW0BAIIChMcPpEAAAAAAQMDBw==',
+				},
+				{
+					id: 40,
+					timestamp: 1556555231392,
+					content: 'AFDC4CVNkpxLT2ymoBJxIIKHAAACBAW0BAIICoTZHMUTHD6RAQMDBw==',
+				},
+			],
+		}
+	},
+	components: {Packet,},
+}
 </script>
 
 <style scoped>
