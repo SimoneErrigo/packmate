@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Navbar @settingsButtonClicked="showSettingsModal = true"></Navbar>
+		<Navbar @settingsButtonClicked="showSettingsModal = true" @addServiceButtonClicked="showAddServiceModal = true" ref="navbar"></Navbar>
 		<div class="container-fluid">
 			<div class="row">
 				<Sidebar :servicePort="servicePort" :streamId="streamId"></Sidebar>
@@ -11,6 +11,9 @@
 		<transition name="modal">
 			<SettingsModal v-if="showSettingsModal" @close="showSettingsModal = false"></SettingsModal>
 		</transition>
+		<transition name="modal">
+			<AddServiceModal v-if="showAddServiceModal" @serviceAddDone="reloadNavbar(); showAddServiceModal = false" @close="showAddServiceModal = false"></AddServiceModal>
+		</transition>
 	</div>
 </template>
 
@@ -20,16 +23,24 @@ import SettingsModal from "@/components/SettingsModal.vue";
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import Content from "@/components/Content.vue";
+import AddServiceModal from "../components/AddServiceModal";
 
 export default {
 	name: 'Home',
 	data: function () {
 		return {
 			showSettingsModal: false,
+			showAddServiceModal: false,
 		}
 	},
 	props: ['servicePort', 'streamId',],
+	methods: {
+		reloadNavbar() {
+			this.$refs.navbar.getCtfServices();
+		},
+	},
 	components: {
+		AddServiceModal,
 		SettingsModal,
 		Navbar,
 		Sidebar,

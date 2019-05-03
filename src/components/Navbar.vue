@@ -11,7 +11,7 @@
 						:name="service.name"></CtfService>
 
 				<li class="nav-item" style="margin-left: 10px;">
-					<button type="button" class="btn btn-link">
+					<button type="button" class="btn btn-link" @click="$emit('addServiceButtonClicked')">
 						<svg id="i-plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16"
 								fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"
 								stroke-width="2">

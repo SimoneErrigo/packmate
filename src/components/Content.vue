@@ -1,16 +1,18 @@
 <template>
 	<main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-
 			<Packet v-for="packet in packets"
 					:key="packet.id"
 					:id="packet.id"
 					:content="packet.content"
 					:timestamp="packet.timestamp"></Packet>
+		<infinite-loading @infinite="infiniteHandler"></infinite-loading>
 	</main>
 </template>
 
 <script>
 import Packet from "@/components/Packet.vue";
+import InfiniteLoading from "vue-infinite-loading";
+import axios from "axios";
 
 export default {
 	name: 'Content',
@@ -18,25 +20,60 @@ export default {
 	data: function () {
 		return {
 			packets: [
-				{
-					id: 39,
-					timestamp: 1556555231394,
-					content: 'wuAAUEtPbKUAAAAAoAL///jUAAACBAW0BAIIChMcPpEAAAAAAQMDBw==',
-				},
-				{
-					id: 40,
-					timestamp: 1556555231392,
-					content: 'AFDC4CVNkpxLT2ymoBJxIIKHAAACBAW0BAIICoTZHMUTHD6RAQMDBw==',
-				},
-				{
-					id: 41,
-					timestamp: 1556555231396,
-					content: '0KLQtdGB0YLQvtCy0LDRjyDRgdGC0YDQvtC60LAuLi4=',
-				},
+				// {
+				// 	id: 39,
+				// 	timestamp: 1556555231394,
+				// 	content: 'wuAAUEtPbKUAAAAAoAL///jUAAACBAW0BAIIChMcPpEAAAAAAQMDBw==',
+				// },
+				// {
+				// 	id: 40,
+				// 	timestamp: 1556555231392,
+				// 	content: 'AFDC4CVNkpxLT2ymoBJxIIKHAAACBAW0BAIICoTZHMUTHD6RAQMDBw==',
+				// },
+				// {
+				// 	id: 41,
+				// 	timestamp: 1556555231396,
+				// 	content: '0KLQtdGB0YLQvtCy0LDRjyDRgdGC0YDQvtC60LAuLi4=',
+				// },
 			],
 		}
 	},
-	components: {Packet,},
+	methods: {
+		infiniteHandler($state) {
+			if (!this.streamId) return $state.complete();
+			console.debug('getting next portion of packets...');
+			const instance = axios.create({
+				baseURL: this.$store.state.apiUrl,
+				auth: {
+					username: this.$store.state.apiLogin,
+					password: this.$store.state.apiPassword,
+				},
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+			});
+			instance.post(`/packet/${this.streamId}`, {
+				fetchLatest: true,
+				direction: 'ASC',
+				startingFrom: this.packets.length,
+				pageSize: 50,
+			}).then(response => {
+				const data = response.data;
+				if (data.length === 0) return $state.complete();
+				if (data[0] && this.packets[0] && data[0].id === this.packets[0].id) {
+					$state.complete();
+				} else {
+					this.packets.push(...data);
+					$state.loaded();
+				}
+			}).catch(error => {
+				console.error('Failed to load new portion of packets', error);
+				return $state.error();
+			})
+		},
+	},
+	components: {Packet, InfiniteLoading,},
 }
 </script>
 

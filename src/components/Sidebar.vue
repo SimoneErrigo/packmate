@@ -6,6 +6,7 @@
 						v-for="stream in streams"
 						:key="stream.id"
 						:id="stream.id"
+						:servicePort="stream.service.port"
 						:time="stream.startTimestamp"></Stream>
 				<infinite-loading @infinite="infiniteHandler"></infinite-loading>
 			</ul>
@@ -23,7 +24,6 @@ export default {
 	props: ['servicePort', 'streamId',],
 	data: function () {
 		return {
-			key: this.$route.path,
 			streams: [
 				// {
 				// 	id: 111,
@@ -34,7 +34,7 @@ export default {
 	},
 	methods: {
 		infiniteHandler($state) {
-			console.debug('getting next portion of streams...', $state);
+			console.debug('getting next portion of streams...');
 			const instance = axios.create({
 				baseURL: this.$store.state.apiUrl,
 				auth: {
@@ -52,10 +52,12 @@ export default {
 				startingFrom: this.streams.length,
 				pageSize: 50,
 			}).then(response => {
-				if (response.data[0] && this.streams[0] && response.data[0].id === this.streams[0].id) { // FIXME: проверка довольно колхозная
+				const data = response.data;
+				if (data.length === 0) return $state.complete();
+				if (data[0] && this.streams[0] && data[0].id === this.streams[0].id) { // FIXME: проверка довольно колхозная
 					$state.complete();
 				} else {
-					this.streams.push(...response.data);
+					this.streams.push(...data);
 					$state.loaded();
 				}
 			}).catch((error) => {
