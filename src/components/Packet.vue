@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div>#{{id}} at {{new Date(timestamp * 1000)}}</div>
+		<div>#{{id}} at {{new Date(timestamp * 1000).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}</div>
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<pre :id="'hexdump-' + id"></pre>
 		</div>
