@@ -15,7 +15,7 @@ export default {
 	name: 'Packet',
 	props: ['id', 'content', 'timestamp',],
 	mounted() {
-		const instance = new Hexdump(atob(this.$props.content), {
+		new Hexdump(atob(this.$props.content), { // TODO: в настройки
 			container: 'hexdump-' + this.$props.id,
 			base: 'hex',
 			width: 16,
@@ -34,7 +34,6 @@ export default {
 				stringNull: '.',
 			},
 		});
-		console.trace('created hexview', instance);
 	},
 }
 </script>

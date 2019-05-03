@@ -2,10 +2,15 @@
 	<div class="modal-mask">
 		<div class="modal-wrapper">
 			<div class="modal-container">
-				Test modal!
-				<button @click="$emit('close')">
-					Close
-				</button>
+				<form>
+					<div class="form-group">
+						<label for="inputApiUrl">URL бэкенда</label>
+						<input type="url" class="form-control" id="inputApiUrl" placeholder="URL" v-model="apiUrl">
+					</div>
+					<button type="submit" @click.prevent="$emit('close')" class="btn btn-primary">
+						Close
+					</button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -26,6 +31,16 @@ export default {
 	},
 	beforeDestroy() {
 		document.removeEventListener('keyup', this.$data.escapeKeyCallback);
+	},
+	computed: {
+		apiUrl: {
+			get() {
+				return this.$store.state.apiUrl;
+			},
+			set(value) {
+				this.$store.commit('setApiUrl', value);
+			},
+		},
 	},
 }
 </script>
