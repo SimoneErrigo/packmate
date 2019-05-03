@@ -6,7 +6,8 @@
 						v-for="stream in streams"
 						:key="stream.id"
 						:id="stream.id"
-						:time="stream.time"></Stream>
+						:time="stream.startTimestamp"></Stream>
+				<infinite-loading @infinite="infiniteHandler"></infinite-loading>
 			</ul>
 		</div>
 	</nav>
@@ -14,21 +15,56 @@
 
 <script>
 import Stream from "@/components/Stream.vue";
+import InfiniteLoading from "vue-infinite-loading";
+import axios from "axios";
 
 export default {
 	name: 'Sidebar',
 	props: ['servicePort', 'streamId',],
 	data: function () {
 		return {
+			key: this.$route.path,
 			streams: [
-				{
-					id: 111,
-					time: 1556411080,
-				},
+				// {
+				// 	id: 111,
+				// 	time: 1556411080,
+				// },
 			],
 		}
 	},
-	components: {Stream,},
+	methods: {
+		infiniteHandler($state) {
+			console.debug('getting next portion of streams...', $state);
+			const instance = axios.create({
+				baseURL: this.$store.state.apiUrl,
+				auth: {
+					username: this.$store.state.apiLogin,
+					password: this.$store.state.apiPassword,
+				},
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+			});
+			instance.post(`/stream/${this.$props.servicePort || 'all'}`, {
+				fetchLatest: true,
+				direction: 'DESC',
+				startingFrom: this.streams.length,
+				pageSize: 50,
+			}).then(response => {
+				if (response.data[0] && this.streams[0] && response.data[0].id === this.streams[0].id) { // FIXME: проверка довольно колхозная
+					$state.complete();
+				} else {
+					this.streams.push(...response.data);
+					$state.loaded();
+				}
+			}).catch((error) => {
+				console.error('Failed to load new portion of streams', error);
+				return $state.error();
+			});
+		},
+	},
+	components: {Stream, InfiniteLoading,},
 }
 </script>
 <style>

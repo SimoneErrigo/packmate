@@ -28,6 +28,11 @@ export default {
 					timestamp: 1556555231392,
 					content: 'AFDC4CVNkpxLT2ymoBJxIIKHAAACBAW0BAIICoTZHMUTHD6RAQMDBw==',
 				},
+				{
+					id: 41,
+					timestamp: 1556555231396,
+					content: '0KLQtdGB0YLQvtCy0LDRjyDRgdGC0YDQvtC60LAuLi4=',
+				},
 			],
 		}
 	},

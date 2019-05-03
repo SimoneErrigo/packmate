@@ -36,18 +36,40 @@
 
 <script>
 import CtfService from "@/components/CtfService.vue";
+import axios from "axios";
 
 export default {
 	name: "Navbar",
 	data: function () {
 		return {
 			ctfServices: [
-				{
-					port: 1337,
-					name: 'ShittyService',
-				},
+				// {
+				// 	port: 1337,
+				// 	name: 'ShittyService',
+				// },
 			],
 		}
+	},
+	methods: {
+		getCtfServices() {
+			const instance = axios.create({
+				baseURL: this.$store.state.apiUrl,
+				auth: {
+					username: this.$store.state.apiLogin,
+					password: this.$store.state.apiPassword,
+				},
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+			});
+			instance.get('/service/')
+				.then(response => (this.ctfServices = response.data))
+				.catch(error => console.error('Failed to load CTF services!', error))
+		},
+	},
+	mounted() {
+		this.getCtfServices();
 	},
 	components: {CtfService,},
 }

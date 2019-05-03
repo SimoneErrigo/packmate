@@ -15,7 +15,9 @@ export default {
 	name: 'Packet',
 	props: ['id', 'content', 'timestamp',],
 	mounted() {
-		new Hexdump(atob(this.$props.content), { // TODO: в настройки
+		// const dataString = decodeURIComponent(escape(atob(this.$props.content)));
+		const dataString = atob(this.$props.content);
+		this.hex = new Hexdump(dataString, { // TODO: в настройки
 			container: 'hexdump-' + this.$props.id,
 			base: 'hex',
 			width: 16,
@@ -23,6 +25,7 @@ export default {
 			byteGrouping: 1,
 			html: false,
 			lineNumber: true,
+			nonPrintable: '?',
 			style: {
 				lineNumberLeft: '',
 				lineNumberRight: ':',
@@ -31,9 +34,19 @@ export default {
 				hexLeft: '',
 				hexRight: '',
 				hexNull: '.g',
-				stringNull: '.',
+				stringNull: ' ',
 			},
 		});
 	},
+	beforeDestroy() {
+		delete this.hex;
+	},
 }
 </script>
+<style scoped>
+	pre {
+		font-family: "Ubuntu Mono", "Lucida Console", monospace;
+		font-size: 100%;
+		color: black;
+	}
+</style>

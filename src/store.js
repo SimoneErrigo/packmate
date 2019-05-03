@@ -7,12 +7,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		apiUrl: 'http://127.0.0.1/api',
+		apiLogin: 'BinaryBears',
+		apiPassword: '123456',
 	},
 	mutations: {
 		setApiUrl: (state, payload) => state.apiUrl = payload,
+		setApiLogin: (state, payload) => state.apiLogin = payload,
+		setApiPassword: (state, payload) => state.apiPassword = payload,
 	},
-	// actions: {
-	// 	setApiUrl: async (injectee, payload) => injectee.commit('setApiUrl', payload),
-	// },
 	plugins: [createPersistedState(),],
 })

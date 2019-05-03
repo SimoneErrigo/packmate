@@ -7,8 +7,16 @@
 						<label for="inputApiUrl">URL бэкенда</label>
 						<input type="url" class="form-control" id="inputApiUrl" placeholder="URL" v-model="apiUrl">
 					</div>
+					<div class="form-group">
+						<label for="inputApiLogin">Логин</label>
+						<input type="text" class="form-control" id="inputApiLogin" v-model="apiLogin">
+					</div>
+					<div class="form-group">
+						<label for="inputApiPassword">Пароль</label>
+						<input type="password" class="form-control" id="inputApiPassword" v-model="apiPassword">
+					</div>
 					<button type="submit" @click.prevent="$emit('close')" class="btn btn-primary">
-						Close
+						Закрыть
 					</button>
 				</form>
 			</div>
@@ -39,6 +47,22 @@ export default {
 			},
 			set(value) {
 				this.$store.commit('setApiUrl', value);
+			},
+		},
+		apiLogin: {
+			get() {
+				return this.$store.state.apiLogin;
+			},
+			set(value) {
+				this.$store.commit('setApiLogin', value);
+			},
+		},
+		apiPassword: {
+			get() {
+				return this.$store.state.apiPassword;
+			},
+			set(value) {
+				this.$store.commit('setApiPassword', value);
 			},
 		},
 	},
