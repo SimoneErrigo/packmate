@@ -23,7 +23,7 @@ import SettingsModal from "@/components/SettingsModal.vue";
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import Content from "@/components/Content.vue";
-import AddServiceModal from "../components/AddServiceModal";
+import AddServiceModal from "@/components/AddServiceModal.vue";
 
 export default {
 	name: 'Home',

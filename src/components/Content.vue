@@ -5,7 +5,7 @@
 					:id="packet.id"
 					:content="packet.content"
 					:timestamp="packet.timestamp"></Packet>
-		<infinite-loading @infinite="infiniteHandler"></infinite-loading>
+		<infinite-loading @infinite="infiniteHandler" ref="infiniteLoading"></infinite-loading>
 	</main>
 </template>
 
@@ -37,6 +37,13 @@ export default {
 				// },
 			],
 		}
+	},
+	watch: {
+		'streamId': function (streamId) {
+			console.debug('Content.vue: streamId changed! new:', streamId);
+			this.packets = [];
+			this.$refs.infiniteLoading.stateChanger.reset();
+		},
 	},
 	methods: {
 		infiniteHandler($state) {

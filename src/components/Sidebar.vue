@@ -8,7 +8,7 @@
 						:id="stream.id"
 						:servicePort="stream.service.port"
 						:time="stream.startTimestamp"></Stream>
-				<infinite-loading @infinite="infiniteHandler"></infinite-loading>
+				<infinite-loading @infinite="infiniteHandler" ref="infiniteLoading"></infinite-loading>
 			</ul>
 		</div>
 	</nav>
@@ -31,6 +31,13 @@ export default {
 				// },
 			],
 		}
+	},
+	watch: {
+		'servicePort': function (servicePort) {
+			console.debug('Sidebar.vue: port changed! new:', servicePort);
+			this.streams = [];
+			this.$refs.infiniteLoading.stateChanger.reset();
+		},
 	},
 	methods: {
 		infiniteHandler($state) {
