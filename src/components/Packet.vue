@@ -13,13 +13,14 @@ export default {
 	name: 'Packet',
 	props: ['id', 'content', 'timestamp',],
 	methods: {
-		hexdump(buffer, blockSize) {
+		hexdump(buffer, blockSize, lineNumberBase) {
 			blockSize = parseInt(blockSize, 10) || 16;
+			lineNumberBase = parseInt(lineNumberBase, 10) || 10;
 			let lines = [];
 			const hex = "0123456789ABCDEF";
 			for (let b = 0; b < buffer.length; b += blockSize) {
 				let block = buffer.slice(b, Math.min(b + blockSize, buffer.length));
-				let addr = ("0000000000" + b.toString(10)).slice(-10);
+				let addr = ("0000000000" + b.toString(lineNumberBase)).slice(-10);
 				let codes = block.split('').map(ch => {
 					let code = ch.charCodeAt(0);
 					return " " + hex[(0xF0 & code) >> 4] + hex[0x0F & code];
@@ -37,7 +38,7 @@ export default {
 		hexdata() {
 			// const dataString = decodeURIComponent(escape(atob(this.$props.content)));
 			const dataString = atob(this.$props.content);
-			return this.hexdump(dataString, this.$store.state.hexdumpBlockSize);
+			return this.hexdump(dataString, this.$store.state.hexdumpBlockSize, this.$store.state.hexdumpLineNumberBase);
 		},
 	},
 }

@@ -44,11 +44,20 @@ export default {
 					'Content-Type': 'application/json',
 				},
 			});
+
+			const packets = this.packets;
+			let startsFrom;
+			if (packets && packets.length && packets[packets.length - 1]) {
+				startsFrom = packets[packets.length - 1].id;
+			} else {
+				startsFrom = 0;
+			}
+
 			instance.post(`/packet/${this.streamId}`, {
-				fetchLatest: true,
+				fetchLatest: false,
 				direction: 'ASC',
-				startingFrom: this.packets.length,
-				pageSize: 50,
+				startingFrom: startsFrom,
+				pageSize: parseInt(this.$store.state.pageSize),
 			}).then(response => {
 				const data = response.data;
 				if (data.length === 0) return $state.complete();

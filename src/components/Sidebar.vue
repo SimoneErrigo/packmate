@@ -48,11 +48,20 @@ export default {
 					'Content-Type': 'application/json',
 				},
 			});
+
+			const streams = this.streams;
+			let startsFrom;
+			if (streams && streams.length && streams[streams.length - 1]) {
+				startsFrom = streams[streams.length - 1].id;
+			} else {
+				startsFrom = Number.MAX_SAFE_INTEGER; // FIXME -_-
+			}
+
 			instance.post(`/stream/${this.$props.servicePort || 'all'}`, {
-				fetchLatest: true,
+				fetchLatest: false,
 				direction: 'DESC',
-				startingFrom: this.streams.length,
-				pageSize: 50,
+				startingFrom: startsFrom,
+				pageSize: parseInt(this.$store.state.pageSize),
 			}).then(response => {
 				const data = response.data;
 				if (data.length === 0) return $state.complete();

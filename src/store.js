@@ -10,12 +10,16 @@ export default new Vuex.Store({
 		apiLogin: 'BinaryBears',
 		apiPassword: '123456',
 		hexdumpBlockSize: 16,
+		hexdumpLineNumberBase: 10,
+		pageSize: 50,
 	},
 	mutations: {
 		setApiUrl: (state, payload) => state.apiUrl = payload,
 		setApiLogin: (state, payload) => state.apiLogin = payload,
 		setApiPassword: (state, payload) => state.apiPassword = payload,
 		setHexdumpBlockSize: (state, payload) => state.hexdumpBlockSize = payload,
+		setHexdumpLineNumberBase: (state, payload) => state.hexdumpLineNumberBase = payload,
+		setPageSize: (state, payload) => state.pageSize = payload,
 	},
 	plugins: [createPersistedState(),],
 })
