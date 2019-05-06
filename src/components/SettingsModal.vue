@@ -15,6 +15,10 @@
 						<label for="inputApiPassword">Пароль</label>
 						<input type="password" class="form-control" id="inputApiPassword" v-model="apiPassword">
 					</div>
+					<div class="form-group">
+						<label for="inputHexdumpBlockSize">Ширина блока HEX</label>
+						<input type="number" class="form-control" id="inputHexdumpBlockSize" v-model="hexdumpBlockSize">
+					</div>
 					<button type="submit" @click.prevent="$emit('close')" class="btn btn-primary">
 						Закрыть
 					</button>
@@ -63,6 +67,14 @@ export default {
 			},
 			set(value) {
 				this.$store.commit('setApiPassword', value);
+			},
+		},
+		hexdumpBlockSize: {
+			get() {
+				return this.$store.state.hexdumpBlockSize;
+			},
+			set(value) {
+				this.$store.commit('setHexdumpBlockSize', value);
 			},
 		},
 	},
