@@ -4,6 +4,9 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
+				<li class="nav-item" :class="{ 'active': !this.$route.params.servicePort }">
+					<router-link class="nav-link" to="/">Все</router-link>
+				</li>
 				<CtfService
 						v-for="service in ctfServices"
 						:key="service.port"
@@ -71,6 +74,9 @@ export default {
 </script>
 
 <style scoped>
+	li {
+		margin-left: 10px;
+	}
 	.navbar-brand {
 		padding-top: .75rem;
 		padding-bottom: .75rem;
