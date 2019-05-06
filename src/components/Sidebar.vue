@@ -24,12 +24,7 @@ export default {
 	props: ['servicePort', 'streamId',],
 	data: function () {
 		return {
-			streams: [
-				// {
-				// 	id: 111,
-				// 	time: 1556411080,
-				// },
-			],
+			streams: [],
 		}
 	},
 	watch: {

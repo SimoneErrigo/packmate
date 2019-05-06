@@ -42,12 +42,7 @@ export default {
 	name: "Navbar",
 	data: function () {
 		return {
-			ctfServices: [
-				// {
-				// 	port: 1337,
-				// 	name: 'ShittyService',
-				// },
-			],
+			ctfServices: [],
 		}
 	},
 	methods: {

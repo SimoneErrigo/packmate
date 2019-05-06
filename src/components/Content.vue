@@ -19,23 +19,7 @@ export default {
 	props: ['servicePort', 'streamId',],
 	data: function () {
 		return {
-			packets: [
-				// {
-				// 	id: 39,
-				// 	timestamp: 1556555231394,
-				// 	content: 'wuAAUEtPbKUAAAAAoAL///jUAAACBAW0BAIIChMcPpEAAAAAAQMDBw==',
-				// },
-				// {
-				// 	id: 40,
-				// 	timestamp: 1556555231392,
-				// 	content: 'AFDC4CVNkpxLT2ymoBJxIIKHAAACBAW0BAIICoTZHMUTHD6RAQMDBw==',
-				// },
-				// {
-				// 	id: 41,
-				// 	timestamp: 1556555231396,
-				// 	content: '0KLQtdGB0YLQvtCy0LDRjyDRgdGC0YDQvtC60LAuLi4=',
-				// },
-			],
+			packets: [],
 		}
 	},
 	watch: {
