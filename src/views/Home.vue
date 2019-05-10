@@ -33,6 +33,7 @@ export default {
 			showSettingsModal: false,
 			showAddServiceModal: false,
 			socket: null,
+			navbarTimer: null,
 		}
 	},
 	props: ['servicePort', 'streamId',],
@@ -42,6 +43,9 @@ export default {
 		},
 		connectWs() {
 			const wsUrl = this.$store.state.apiUrl + '/ws';
+			// FIXME: нельзя посылать заголовок авторизации (может появиться окно с авторизацией, что не круто),
+			// FIXME: нужно либо убрать его на эндпоинте, либо использовать другой способ
+			// FIXME: (https://groups.google.com/forum/#!topic/sockjs/4gmZy8XZFIY)
 			this.socket = new SockJS(wsUrl);
 			this.socket.onopen = function () {
 				console.debug('WS connected');
@@ -70,9 +74,11 @@ export default {
 	},
 	mounted() {
 		this.connectWs();
+		this.navbarTimer = setInterval(this.reloadNavbar, 4000); // TODO: некрасиво, лучше ловить через WS
 	},
 	beforeDestroy() {
 		this.socket.close();
+		clearInterval(this.navbarTimer);
 	},
 	components: {
 		AddServiceModal,
