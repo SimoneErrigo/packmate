@@ -3,7 +3,7 @@
 		<Navbar @settingsButtonClicked="showSettingsModal = true" @addServiceButtonClicked="showAddServiceModal = true" ref="navbar"></Navbar>
 		<div class="container-fluid">
 			<div class="row">
-				<Sidebar :servicePort="servicePort" :streamId="streamId"></Sidebar>
+				<Sidebar ref="sidebar" :servicePort="servicePort" :streamId="streamId"></Sidebar>
 				<Content :servicePort="servicePort" :streamId="streamId"></Content>
 			</div>
 		</div>
@@ -24,6 +24,7 @@ import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import Content from "@/components/Content.vue";
 import AddServiceModal from "@/components/AddServiceModal.vue";
+import SockJS from "sockjs-client";
 
 export default {
 	name: 'Home',
@@ -31,6 +32,7 @@ export default {
 		return {
 			showSettingsModal: false,
 			showAddServiceModal: false,
+			socket: null,
 		}
 	},
 	props: ['servicePort', 'streamId',],
@@ -38,6 +40,32 @@ export default {
 		reloadNavbar() {
 			this.$refs.navbar.getCtfServices();
 		},
+	},
+	mounted() {
+		const wsUrl = this.$store.state.apiUrl + '/ws';
+		this.socket = new SockJS(wsUrl);
+		this.socket.onopen = function () {
+			console.debug('WS connected');
+		};
+		this.socket.onclose = function (ev) {
+			console.debug('WS disconnected', ev.code, ev.reason);
+		};
+		this.socket.onmessage = ev => {
+			const parsed = JSON.parse(ev.data);
+			console.debug('WS got message', parsed);
+			const currentPort = this.$route.params.servicePort;
+			if (!(currentPort === undefined || currentPort === parsed.service.port)) {
+				console.debug('not related port, skipping...');
+				return;
+			}
+			this.$refs.sidebar.onGotNewStream(parsed);
+		};
+		this.socket.onerror = function (ev) {
+			console.warn('WS err', ev);
+		};
+	},
+	beforeDestroy() {
+		this.socket.close();
 	},
 	components: {
 		AddServiceModal,

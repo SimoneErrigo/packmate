@@ -8,7 +8,7 @@
 						:id="stream.id"
 						:servicePort="stream.service.port"
 						:time="stream.startTimestamp"></Stream>
-				<infinite-loading @infinite="infiniteHandler" ref="infiniteLoading"></infinite-loading>
+				<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>
 			</ul>
 		</div>
 	</nav>
@@ -75,6 +75,10 @@ export default {
 				console.error('Failed to load new portion of streams', error);
 				return $state.error();
 			});
+		},
+		onGotNewStream(stream) {
+			console.debug('got new stream from WS!', stream);
+			this.streams.unshift(stream);
 		},
 	},
 	components: {Stream, InfiniteLoading,},

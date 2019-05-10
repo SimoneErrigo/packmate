@@ -5,7 +5,7 @@
 					:id="packet.id"
 					:content="packet.content"
 					:timestamp="packet.timestamp"></Packet>
-		<infinite-loading @infinite="infiniteHandler" ref="infiniteLoading"></infinite-loading>
+		<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>
 	</main>
 </template>
 
