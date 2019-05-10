@@ -40,29 +40,36 @@ export default {
 		reloadNavbar() {
 			this.$refs.navbar.getCtfServices();
 		},
+		connectWs() {
+			const wsUrl = this.$store.state.apiUrl + '/ws';
+			this.socket = new SockJS(wsUrl);
+			this.socket.onopen = function () {
+				console.debug('WS connected');
+			};
+			this.socket.onclose = function (ev) {
+				console.debug('WS disconnected', ev.code, ev.reason);
+				if (ev.code === 1008) {
+					console.info('Security timeout, reconnecting...');
+					this.connectWs();
+				}
+			};
+			this.socket.onmessage = ev => {
+				const parsed = JSON.parse(ev.data);
+				console.debug('WS got message', parsed);
+				const currentPort = this.$route.params.servicePort;
+				if (!(currentPort === undefined || currentPort === parsed.service.port)) {
+					console.debug('not related port, skipping...');
+					return;
+				}
+				this.$refs.sidebar.onGotNewStream(parsed);
+			};
+			this.socket.onerror = function (ev) {
+				console.warn('WS err', ev);
+			};
+		},
 	},
 	mounted() {
-		const wsUrl = this.$store.state.apiUrl + '/ws';
-		this.socket = new SockJS(wsUrl);
-		this.socket.onopen = function () {
-			console.debug('WS connected');
-		};
-		this.socket.onclose = function (ev) {
-			console.debug('WS disconnected', ev.code, ev.reason);
-		};
-		this.socket.onmessage = ev => {
-			const parsed = JSON.parse(ev.data);
-			console.debug('WS got message', parsed);
-			const currentPort = this.$route.params.servicePort;
-			if (!(currentPort === undefined || currentPort === parsed.service.port)) {
-				console.debug('not related port, skipping...');
-				return;
-			}
-			this.$refs.sidebar.onGotNewStream(parsed);
-		};
-		this.socket.onerror = function (ev) {
-			console.warn('WS err', ev);
-		};
+		this.connectWs();
 	},
 	beforeDestroy() {
 		this.socket.close();
