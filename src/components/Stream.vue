@@ -3,6 +3,12 @@
 		<router-link class="nav-link" active-class="active" :to="{ name: 'home', params: { servicePort: servicePort, streamId: id} }">
 			#{{id}} {{proto}}<br/>
 			{{new Date(time * 1000).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
+			<span v-for="pattern in foundPatterns"
+				:key="pattern.id"
+					:style="'color:' + pattern.color"
+				>
+				*
+			</span>
 		</router-link>
 	</li>
 </template>
@@ -10,7 +16,7 @@
 <script>
 export default {
 	name: "Stream",
-	props: ['id', 'proto', 'time', 'servicePort',],
+	props: ['id', 'proto', 'time', 'servicePort', 'foundPatterns',],
 }
 </script>
 
