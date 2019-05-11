@@ -6,6 +6,7 @@
 						v-for="stream in streams"
 						:key="stream.id"
 						:id="stream.id"
+						:proto="stream.protocol"
 						:servicePort="stream.service.port"
 						:time="stream.startTimestamp"></Stream>
 				<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>

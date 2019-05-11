@@ -17,6 +17,7 @@
 				</div>
 				<FlagPattern v-for="pattern in patterns"
 					:key="pattern.id"
+					:id="pattern.id"
 					:name="pattern.name"
 					:value="pattern.value"
 					:color="pattern.color"></FlagPattern>
