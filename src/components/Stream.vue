@@ -7,7 +7,7 @@
 				:key="pattern.id"
 					:style="'color:' + pattern.color"
 				>
-				*
+				{{pattern.name}}
 			</span>
 		</router-link>
 	</li>
