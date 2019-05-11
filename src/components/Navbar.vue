@@ -1,6 +1,27 @@
 <template>
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-lg navbar-expand">
-		<router-link to="/" class="navbar-brand col-sm-3 col-md-2 mr-0">Packmate</router-link>
+
+<!--		<router-link to="/" class="navbar-brand col-sm-3 col-md-2 mr-0">Packmate</router-link>-->
+		<div class="dropdown">
+			<button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+				Паттерны
+			</button>
+			<div class="dropdown-menu">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Name" v-model="newPattern.name">
+					<input type="text" class="form-control" placeholder="Value" v-model="newPattern.value">
+					<input type="text" class="form-control" placeholder="#Color" v-model="newPattern.color">
+					<div class="input-group-append">
+						<button @click.prevent="createPattern()" class="btn btn-outline-primary" type="button">+</button>
+					</div>
+				</div>
+				<FlagPattern v-for="pattern in patterns"
+					:key="pattern.id"
+					:name="pattern.name"
+					:value="pattern.value"
+					:color="pattern.color"></FlagPattern>
+			</div>
+		</div>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
@@ -40,12 +61,20 @@
 <script>
 import CtfService from "@/components/CtfService.vue";
 import axios from "axios";
+import $ from "jquery";
+import FlagPattern from "@/components/FlagPattern.vue";
 
 export default {
 	name: "Navbar",
 	data: function () {
 		return {
 			ctfServices: [],
+			patterns: [],
+			newPattern: {
+				name: '',
+				value: '',
+				color: '',
+			},
 		}
 	},
 	methods: {
@@ -65,11 +94,59 @@ export default {
 				.then(response => (this.ctfServices = response.data))
 				.catch(error => console.error('Failed to load CTF services!', error))
 		},
+		getPatterns() {
+			const instance = axios.create({
+				baseURL: this.$store.state.apiUrl,
+				auth: {
+					username: this.$store.state.apiLogin,
+					password: this.$store.state.apiPassword,
+				},
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+			});
+			instance.get('/pattern/')
+				.then(response => (this.patterns = response.data))
+				.catch(error => console.error('Failed to load patterns!', error));
+		},
+		createPattern() {
+			const instance = axios.create({
+				baseURL: this.$store.state.apiUrl,
+				auth: {
+					username: this.$store.state.apiLogin,
+					password: this.$store.state.apiPassword,
+				},
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+			});
+			instance.post('/pattern/', this.newPattern)
+				.then(response => {
+					console.debug('got r', response.data);
+					this.getPatterns();
+				})
+				.catch(error => console.error('failed to create pattern', error));
+		},
 	},
 	mounted() {
 		this.getCtfServices();
+		this.getPatterns();
+
+		const dropdown = $('.dropdown');
+		dropdown.on('show.bs.dropdown', function () {
+			$(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+		});
+		dropdown.on('hide.bs.dropdown', function () {
+			$(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+		});
+		$('.dropdown-menu').on("click.bs.dropdown", function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		});
 	},
-	components: {CtfService,},
+	components: {FlagPattern, CtfService,},
 }
 </script>
 
@@ -77,35 +154,21 @@ export default {
 	li {
 		margin-left: 10px;
 	}
-	.navbar-brand {
-		padding-top: .75rem;
-		padding-bottom: .75rem;
-		font-size: 1rem;
-		background-color: rgba(0, 0, 0, .25);
-		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-	}
-
-	.navbar .form-control {
-		padding: .75rem 1rem;
-		border-width: 0;
-		border-radius: 0;
-	}
-
-	.form-control-dark {
-		color: #fff;
-		background-color: rgba(255, 255, 255, .1);
-		border-color: rgba(255, 255, 255, .1);
-	}
-
-	.form-control-dark:focus {
-		border-color: transparent;
-		box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-	}
 
 	svg {
 		position: absolute;
 		top: 50%;
 		bottom: 50%;
 		transform: translate(-50%, -50%);
+	}
+
+	.dropdown-menu {
+		min-width: 300px;
+	}
+
+	.input-group {
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-bottom: 5px;
 	}
 </style>

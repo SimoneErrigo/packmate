@@ -4,6 +4,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<Sidebar ref="sidebar" :servicePort="servicePort" :streamId="streamId"></Sidebar>
+				<!--suppress HtmlDeprecatedTag -->
 				<Content :servicePort="servicePort" :streamId="streamId"></Content>
 			</div>
 		</div>
@@ -40,6 +41,7 @@ export default {
 	methods: {
 		reloadNavbar() {
 			this.$refs.navbar.getCtfServices();
+			this.$refs.navbar.getPatterns();
 		},
 		connectWs() {
 			const wsUrl = this.$store.state.apiUrl + '/ws';
@@ -52,7 +54,7 @@ export default {
 			};
 			this.socket.onclose = function (ev) {
 				console.debug('WS disconnected', ev.code, ev.reason);
-				if (ev.code === 1008) {
+				if (ev.code === 1008) { // FIXME: выключить security timeout (This connection was established under an authenticated HTTP session that has ended.)
 					console.info('Security timeout, reconnecting...');
 					this.connectWs();
 				}
@@ -74,7 +76,7 @@ export default {
 	},
 	mounted() {
 		this.connectWs();
-		this.navbarTimer = setInterval(this.reloadNavbar, 4000); // TODO: некрасиво, лучше ловить через WS
+		this.navbarTimer = setInterval(this.reloadNavbar, 5000); // TODO: некрасиво, лучше ловить через WS
 	},
 	beforeDestroy() {
 		this.socket.close();
