@@ -9,7 +9,8 @@
 						:proto="stream.protocol"
 						:servicePort="stream.service.port"
 						:foundPatterns="stream.foundPatterns"
-						:time="stream.startTimestamp"></Stream>
+						:startTime="stream.startTimestamp"
+						:endTime="stream.endTimestamp"></Stream>
 				<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>
 			</ul>
 		</div>
