@@ -1,5 +1,5 @@
 <template>
-	<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+	<nav class="col-md-2 d-md-block bg-light sidebar">
 		<div class="sidebar-sticky">
 			<ul class="nav flex-column">
 				<Stream
@@ -86,12 +86,15 @@ export default {
 </script>
 <style>
 	.sidebar {
+		display: block !important;
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
 		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		z-index: 100; /* Behind the navbar */
-		padding: 48px 0 0 !important; /* Height of navbar */
+		padding: 40px 0 0 !important; /* Height of navbar */
 		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 	}
 
