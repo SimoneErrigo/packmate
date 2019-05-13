@@ -62,7 +62,7 @@ export default {
 			this.socket.onmessage = ev => {
 				const parsed = JSON.parse(ev.data);
 				console.debug('WS got message', parsed);
-				const currentPort = this.$route.params.servicePort;
+				const currentPort = parseInt(this.$route.params.servicePort, 10);
 				if (!(currentPort === undefined || currentPort === parsed.service.port)) {
 					console.debug('not related port, skipping...');
 					return;

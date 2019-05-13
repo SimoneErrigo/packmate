@@ -1,8 +1,8 @@
 <template>
 	<div class="dropdown-item" :style="'color:' + color">
-		{{name}}: {{value}}
+		{{name}}: {{regex ? `/${value}/` : `'${value}'`}}
 		<div class="float-right">
-			<button @click.prevent="deleteSelf()" class="btn btn-outline-danger btn-block btn-sm" type="button">x</button>
+			<button @click.prevent.stop="deleteSelf()" class="btn btn-outline-danger btn-block btn-sm" type="button">x</button>
 		</div>
 	</div>
 </template>
@@ -12,7 +12,7 @@ import axios from "axios";
 
 export default {
 	name: "FlagPattern",
-	props: ['name', 'value', 'color', 'id',],
+	props: ['name', 'value', 'color', 'id', 'regex',],
 	methods: {
 		deleteSelf() {
 			const instance = axios.create({

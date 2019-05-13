@@ -3,25 +3,35 @@
 
 <!--		<router-link to="/" class="navbar-brand col-sm-3 col-md-2 mr-0">Packmate</router-link>-->
 		<div class="dropdown">
-			<button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
-				Паттерны
-			</button>
-			<div class="dropdown-menu">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Name" v-model="newPattern.name">
-					<input type="text" class="form-control" placeholder="Value" v-model="newPattern.value">
-					<input type="text" class="form-control" placeholder="#Color" v-model="newPattern.color">
-					<div class="input-group-append">
-						<button @click.prevent="createPattern()" class="btn btn-outline-primary" type="button">+</button>
+			<form> <!-- Disable autohide -->
+				<button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+					Паттерны
+				</button>
+				<div class="dropdown-menu">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Name" v-model="newPattern.name">
+						<input type="text" class="form-control" placeholder="Value" v-model="newPattern.value">
+						<input type="text" class="form-control" placeholder="#Color" v-model="newPattern.color">
+						<div class="input-group-append">
+							<button @click.prevent="createPattern()" class="btn btn-outline-primary" type="button">+
+							</button>
+						</div>
 					</div>
+					<div class="custom-control custom-switch" style="margin-left: 10px; margin-bottom: 8px;">
+						<input type="checkbox" class="custom-control-input"
+								id="isRegexCheckbox" v-model="newPattern.regex">
+						<label class="custom-control-label" for="isRegexCheckbox">Regex?</label>
+					</div>
+
+					<FlagPattern v-for="pattern in patterns"
+							:key="pattern.id"
+							:id="pattern.id"
+							:name="pattern.name"
+							:value="pattern.value"
+							:color="pattern.color"
+							:regex="pattern.regex"></FlagPattern>
 				</div>
-				<FlagPattern v-for="pattern in patterns"
-					:key="pattern.id"
-					:id="pattern.id"
-					:name="pattern.name"
-					:value="pattern.value"
-					:color="pattern.color"></FlagPattern>
-			</div>
+			</form>
 		</div>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -75,6 +85,7 @@ export default {
 				name: '',
 				value: '',
 				color: '',
+				regex: false,
 			},
 		}
 	},
@@ -141,10 +152,6 @@ export default {
 		});
 		dropdown.on('hide.bs.dropdown', function () {
 			$(this).find('.dropdown-menu').first().stop(true, true).slideUp();
-		});
-		$('.dropdown-menu').on("click.bs.dropdown", function (e) {
-			e.stopPropagation();
-			e.preventDefault();
 		});
 	},
 	components: {FlagPattern, CtfService,},
