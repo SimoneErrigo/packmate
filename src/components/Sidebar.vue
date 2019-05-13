@@ -91,20 +91,21 @@ export default {
 	.sidebar {
 		display: block !important;
 		flex: 0 0 16.666667%;
-		max-width: 16.666667%;
-		position: fixed;
+		max-width: 20.666667%;
+		position: fixed !important;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		z-index: 100; /* Behind the navbar */
-		padding: 40px 0 0 !important; /* Height of navbar */
+		padding: 40px 0 0 0 !important;
 		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+		height: 100%;
 	}
 
 	.sidebar-sticky {
 		position: relative;
 		top: 0;
-		height: calc(100vh - 48px);
+		height: calc(100vh - 40px);
 		/*padding-top: .5rem;*/
 		overflow-x: hidden;
 		overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */

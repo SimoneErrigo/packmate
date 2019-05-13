@@ -53,7 +53,7 @@ export default {
 	}
 	.packet {
 		background: rgba(224, 246, 255, 0.4);
-		box-shadow: 0 0 5px 5px #e1f5fe;
+		box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);
 	}
 	.packet-incoming {
 		background: rgba(251, 233, 231, 0.4);
