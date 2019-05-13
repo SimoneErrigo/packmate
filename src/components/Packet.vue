@@ -1,7 +1,7 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': isIncoming}">
 		<div>#{{id}} at {{new Date(timestamp).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}</div>
-		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-3 border-bottom">
 			<pre>{{ hexdata }}</pre>
 		</div>
 	</div>
@@ -48,13 +48,15 @@ export default {
 		font-family: "Ubuntu Mono", "Lucida Console", monospace;
 		font-size: 100%;
 		color: black;
+		margin-bottom: 10px;
+		padding-bottom: 5px;
 	}
 	.packet {
-		background: #e1f5fe;
+		background: rgba(224, 246, 255, 0.4);
 		box-shadow: 0 0 5px 5px #e1f5fe;
 	}
 	.packet-incoming {
-		background: #fbe9e7;
-		box-shadow: 0 0 5px 5px #fbe9e7;
+		background: rgba(251, 233, 231, 0.4);
+		box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);
 	}
 </style>

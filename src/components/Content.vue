@@ -1,7 +1,7 @@
 <template>
 	<main class="col-md-9 ml-sm-auto col-lg-10 px-4">
 		<p>
-			<span style="background: #e1f5fe; box-shadow: 0 0 5px 5px #e1f5fe;">Outgoing</span>, <span style="background: #fbe9e7; box-shadow: 0 0 5px 5px #fbe9e7;">incoming</span>.
+			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Outgoing</span>, <span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">incoming</span>.
 		</p>
 			<Packet v-for="packet in packets"
 					:key="packet.id"
