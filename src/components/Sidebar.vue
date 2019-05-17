@@ -125,6 +125,7 @@ export default {
 		},
 		onGotNewStream(stream) {
 			console.debug('got new stream from WS!', stream);
+			this.streams.pop();
 			this.streams.unshift(stream);
 		},
 	},
