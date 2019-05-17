@@ -13,7 +13,9 @@
 			<SettingsModal v-if="showSettingsModal" @close="showSettingsModal = false"></SettingsModal>
 		</transition>
 		<transition name="modal">
-			<AddServiceModal v-if="showAddServiceModal" @serviceAddDone="reloadNavbar(); showAddServiceModal = false" @close="showAddServiceModal = false"></AddServiceModal>
+			<AddServiceModal v-if="showAddServiceModal"
+					@serviceAddDone="$refs.navbar.ctfServices.push($event); showAddServiceModal = false"
+					@close="showAddServiceModal = false"></AddServiceModal>
 		</transition>
 	</div>
 </template>

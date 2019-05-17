@@ -60,7 +60,7 @@ export default {
 				},
 			});
 			instance.post('/service/', this.service)
-				.then(this.$emit('serviceAddDone'))
+				.then(response => this.$emit('serviceAddDone', response.data))
 				.catch(error => console.error('Failed to add service', error));
 		},
 	},
