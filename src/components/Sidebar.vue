@@ -35,24 +35,36 @@ export default {
 					const newStream = this.$data.streams[index - 1];
 					if (!newStream) return;
 					const newId = newStream.id;
-					this.$router.push({name: 'home', params: {servicePort: this.$props.servicePort, streamId: newId}});
+					this.$router.push({
+						name: 'home',
+						params: {servicePort: this.$props.servicePort, streamId: newId,},
+					});
 				} else if (e.key === 'ArrowDown') {
 					e.preventDefault();
 					const index = this.$data.streams.findIndex(e => e.id === this.$props.streamId);
 					const newStream = this.$data.streams[index + 1];
 					if (!newStream) return;
 					const newId = newStream.id;
-					this.$router.push({name: 'home', params: {servicePort: this.$props.servicePort, streamId: newId}});
+					this.$router.push({
+						name: 'home',
+						params: {servicePort: this.$props.servicePort, streamId: newId,},
+					});
 				} else if (e.key === 'Home') {
 					const newStream = this.$data.streams[0];
 					if (!newStream) return;
 					const newId = newStream.id;
-					this.$router.push({name: 'home', params: {servicePort: this.$props.servicePort, streamId: newId}});
+					this.$router.push({
+						name: 'home',
+						params: {servicePort: this.$props.servicePort, streamId: newId,},
+					});
 				} else if (e.key === 'End') {
 					const newStream = this.$data.streams[this.$data.streams.length - 1];
 					if (!newStream) return;
 					const newId = newStream.id;
-					this.$router.push({name: 'home', params: {servicePort: this.$props.servicePort, streamId: newId}});
+					this.$router.push({
+						name: 'home',
+						params: {servicePort: this.$props.servicePort, streamId: newId,},
+					});
 				}
 			},
 		}
@@ -60,6 +72,11 @@ export default {
 	watch: {
 		'servicePort': function (servicePort) {
 			console.debug('Sidebar.vue: port changed! new:', servicePort);
+			this.streams = [];
+			this.$refs.infiniteLoading.stateChanger.reset();
+		},
+		'$route.query': function (query) {
+			console.debug('Sidebar.vue: query changed! new:', query);
 			this.streams = [];
 			this.$refs.infiniteLoading.stateChanger.reset();
 		},
@@ -88,10 +105,10 @@ export default {
 			}
 
 			instance.post(`/stream/${this.$props.servicePort || 'all'}`, {
-				fetchLatest: false,
 				direction: 'DESC',
 				startingFrom: startsFrom,
 				pageSize: parseInt(this.$store.state.pageSize),
+				pattern: this.$route.query.pId ? {id: this.$route.query.pId,} : null,
 			}).then(response => {
 				const data = response.data;
 				if (data.length === 0) return $state.complete();

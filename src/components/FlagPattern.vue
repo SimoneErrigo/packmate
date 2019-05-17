@@ -1,5 +1,6 @@
 <template>
-	<div class="dropdown-item" :style="'color:' + color">
+	<div class="dropdown-item" :style="'color:' + color"
+			@click="openPattern">
 		{{name}}: {{regex ? `/${value}/` : `'${value}'`}}
 		<div class="float-right">
 			<button @click.prevent.stop="deleteSelf()" class="btn btn-outline-danger btn-block btn-sm" type="button">x</button>
@@ -9,11 +10,17 @@
 
 <script>
 import axios from "axios";
+import $ from "jquery";
 
 export default {
 	name: "FlagPattern",
 	props: ['name', 'value', 'color', 'id', 'regex',],
 	methods: {
+		openPattern() {
+			this.$router.push({name: 'home', params: this.$route.params, query: {pId: this.id,},});
+			// $('.dropdown').trigger('hide.bs.dropdown')
+			$('.dropdown-toggle').dropdown('toggle')
+		},
 		deleteSelf() {
 			const instance = axios.create({
 				baseURL: this.$store.state.apiUrl,

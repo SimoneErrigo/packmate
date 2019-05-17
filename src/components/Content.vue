@@ -58,7 +58,6 @@ export default {
 			}
 
 			instance.post(`/packet/${this.streamId}`, {
-				fetchLatest: false,
 				direction: 'ASC',
 				startingFrom: startsFrom,
 				pageSize: parseInt(this.$store.state.pageSize),
