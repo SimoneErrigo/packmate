@@ -52,10 +52,10 @@ export default {
 			// FIXME: (https://groups.google.com/forum/#!topic/sockjs/4gmZy8XZFIY)
 			this.socket = new SockJS(wsUrl);
 			this.socket.onopen = function () {
-				console.debug('WS connected');
+				console.info('WS connected');
 			};
 			this.socket.onclose = function (ev) {
-				console.debug('WS disconnected', ev.code, ev.reason);
+				console.info('WS disconnected', ev.code, ev.reason);
 				if (ev.code === 1008) { // FIXME: выключить security timeout (This connection was established under an authenticated HTTP session that has ended.)
 					console.info('Security timeout, reconnecting...');
 					this.connectWs();
@@ -63,10 +63,8 @@ export default {
 			};
 			this.socket.onmessage = ev => {
 				const parsed = JSON.parse(ev.data);
-				console.debug('WS got message', parsed);
 				const currentPort = parseInt(this.$route.params.servicePort, 10);
 				if (!(currentPort === undefined || currentPort === parsed.service.port)) {
-					console.debug('not related port, skipping...');
 					return;
 				}
 				this.$refs.sidebar.onGotNewStream(parsed);

@@ -70,20 +70,17 @@ export default {
 		}
 	},
 	watch: {
-		'servicePort': function (servicePort) {
-			console.debug('Sidebar.vue: port changed! new:', servicePort);
+		'servicePort': function () {
 			this.streams = [];
 			this.$refs.infiniteLoading.stateChanger.reset();
 		},
-		'$route.query': function (query) {
-			console.debug('Sidebar.vue: query changed! new:', query);
+		'$route.query.pId': function () {
 			this.streams = [];
 			this.$refs.infiniteLoading.stateChanger.reset();
 		},
 	},
 	methods: {
 		infiniteHandler($state) {
-			console.debug('getting next portion of streams...');
 			const instance = axios.create({
 				baseURL: this.$store.state.apiUrl,
 				auth: {
@@ -124,7 +121,6 @@ export default {
 			});
 		},
 		onGotNewStream(stream) {
-			console.debug('got new stream from WS!', stream);
 			this.streams.pop();
 			this.streams.unshift(stream);
 		},

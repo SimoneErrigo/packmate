@@ -135,10 +135,7 @@ export default {
 				},
 			});
 			instance.post('/pattern/', this.newPattern)
-				.then(response => {
-					console.debug('got r', response.data);
-					this.getPatterns();
-				})
+				.then(this.getPatterns())
 				.catch(error => console.error('failed to create pattern', error));
 		},
 	},

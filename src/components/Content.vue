@@ -27,8 +27,7 @@ export default {
 		}
 	},
 	watch: {
-		'streamId': function (streamId) {
-			console.debug('Content.vue: streamId changed! new:', streamId);
+		'streamId': function () {
 			this.packets = [];
 			this.$refs.infiniteLoading.stateChanger.reset();
 		},
@@ -36,7 +35,6 @@ export default {
 	methods: {
 		infiniteHandler($state) {
 			if (!this.streamId) return $state.complete();
-			console.debug('getting next portion of packets...');
 			const instance = axios.create({
 				baseURL: this.$store.state.apiUrl,
 				auth: {

@@ -47,7 +47,6 @@ export default {
 	},
 	methods: {
 		sendNewService() {
-			console.debug(`creating service name: ${this.service.name}, port: ${this.service.port}`);
 			const instance = axios.create({
 				baseURL: this.$store.state.apiUrl,
 				auth: {

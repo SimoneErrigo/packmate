@@ -34,8 +34,7 @@ export default {
 				},
 			});
 			instance.delete(`/pattern/${this.id}`)
-				.then(response => {
-					console.debug('got r', response.data);
+				.then(() => {
 					this.$destroy();
 					this.$el.parentNode.removeChild(this.$el); // FIXME: может сломать Vue, лучше бы это убрать...
 				})
