@@ -84,7 +84,7 @@ export default {
 <style scoped>
 	main {
 		padding-top: 50px; /* Space for fixed navbar */
-		/*margin: 0 !important;*/
-		max-width: 83%;
+		max-width: 80%;
+		margin-left: auto !important;
 	}
 </style>
