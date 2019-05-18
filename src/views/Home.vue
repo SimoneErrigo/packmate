@@ -5,7 +5,7 @@
 			<div class="row">
 				<Sidebar ref="sidebar" :servicePort="servicePort" :streamId="streamId"></Sidebar>
 				<!--suppress HtmlDeprecatedTag -->
-				<Content :servicePort="servicePort" :streamId="streamId"></Content>
+				<Content :servicePort="servicePort" :streamId="streamId" @displayFavChanged="reloadSidebar()"></Content>
 			</div>
 		</div>
 
@@ -41,6 +41,9 @@ export default {
 	},
 	props: ['servicePort', 'streamId',],
 	methods: {
+		reloadSidebar() {
+			this.$refs.sidebar.rerender();
+		},
 		reloadNavbar() {
 			this.$refs.navbar.getCtfServices();
 			this.$refs.navbar.getPatterns();

@@ -10,7 +10,8 @@
 						:servicePort="stream.service.port"
 						:foundPatterns="stream.foundPatterns"
 						:startTime="stream.startTimestamp"
-						:endTime="stream.endTimestamp"></Stream>
+						:endTime="stream.endTimestamp"
+						:favorite="stream.favorite"></Stream>
 				<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>
 			</ul>
 		</div>
@@ -91,12 +92,10 @@ export default {
 	},
 	watch: {
 		'servicePort': function () {
-			this.streams = [];
-			this.$refs.infiniteLoading.stateChanger.reset();
+			this.rerender();
 		},
 		'$route.query.pId': function () {
-			this.streams = [];
-			this.$refs.infiniteLoading.stateChanger.reset();
+			this.rerender();
 		},
 	},
 	methods: {
@@ -126,6 +125,7 @@ export default {
 				startingFrom: startsFrom,
 				pageSize: parseInt(this.$store.state.pageSize),
 				pattern: this.$route.query.pId ? {id: this.$route.query.pId,} : null,
+				favorites: this.$store.state.displayFavOnly,
 			}).then(response => {
 				const data = response.data;
 				if (data.length === 0) return $state.complete();
@@ -141,8 +141,14 @@ export default {
 			});
 		},
 		onGotNewStream(stream) {
-			this.streams.pop();
+			if (this.streams.length > 50) {
+				this.streams.pop();
+			}
 			this.streams.unshift(stream);
+		},
+		rerender() {
+			this.streams = [];
+			this.$refs.infiniteLoading.stateChanger.reset();
 		},
 	},
 	components: {Stream, InfiniteLoading,},

@@ -1,7 +1,11 @@
 <template>
 	<main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<div class="custom-control custom-switch" style="margin-bottom: 10px;">
+			<input type="checkbox" class="custom-control-input" id="favSwitch" v-model="displayFavOnly">
+			<label class="custom-control-label" for="favSwitch">Только избранные</label>
+		</div>
 		<p>
-			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Outgoing</span>, <span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">incoming</span>.
+			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Ответ</span>, <span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">запрос</span>.
 		</p>
 			<Packet v-for="packet in packets"
 					:key="packet.id"
@@ -72,6 +76,17 @@ export default {
 				console.error('Failed to load new portion of packets', error);
 				return $state.error();
 			})
+		},
+	},
+	computed: {
+		displayFavOnly: {
+			get() {
+				return this.$store.state.displayFavOnly;
+			},
+			set(value) {
+				this.$store.commit('setDisplayFavOnly', value);
+				this.$emit('displayFavChanged');
+			},
 		},
 	},
 	components: {Packet, InfiniteLoading,},

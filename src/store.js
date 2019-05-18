@@ -12,6 +12,7 @@ export default new Vuex.Store({
 		hexdumpBlockSize: 16,
 		hexdumpLineNumberBase: 10,
 		pageSize: 50,
+		displayFavOnly: false,
 	},
 	mutations: {
 		setApiUrl: (state, payload) => state.apiUrl = payload,
@@ -20,6 +21,7 @@ export default new Vuex.Store({
 		setHexdumpBlockSize: (state, payload) => state.hexdumpBlockSize = payload,
 		setHexdumpLineNumberBase: (state, payload) => state.hexdumpLineNumberBase = payload,
 		setPageSize: (state, payload) => state.pageSize = payload,
+		setDisplayFavOnly: (state, payload) => state.displayFavOnly = payload,
 	},
 	plugins: [createPersistedState(),],
 })
