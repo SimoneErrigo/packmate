@@ -1,5 +1,5 @@
 <template>
-	<li class="nav-item">
+	<li :id="`stream-${id}`" class="nav-item">
 		<router-link class="nav-link" active-class="active" :to="{ name: 'home', params: { servicePort: servicePort, streamId: id}, query: $route.query }">
 			#{{id}} {{proto}}<br/>
 			{{new Date(startTime).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}

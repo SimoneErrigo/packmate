@@ -39,6 +39,11 @@ export default {
 						name: 'home',
 						params: {servicePort: this.$props.servicePort, streamId: newId,},
 					});
+					document.getElementById(`stream-${newId}`).scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+						inline: 'center',
+					});
 				} else if (e.key === 'ArrowDown') {
 					e.preventDefault();
 					const index = this.$data.streams.findIndex(e => e.id === this.$props.streamId);
@@ -49,6 +54,11 @@ export default {
 						name: 'home',
 						params: {servicePort: this.$props.servicePort, streamId: newId,},
 					});
+					document.getElementById(`stream-${newId}`).scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+						inline: 'center',
+					});
 				} else if (e.key === 'Home') {
 					const newStream = this.$data.streams[0];
 					if (!newStream) return;
@@ -57,6 +67,11 @@ export default {
 						name: 'home',
 						params: {servicePort: this.$props.servicePort, streamId: newId,},
 					});
+					document.getElementById(`stream-${newId}`).scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+						inline: 'center',
+					});
 				} else if (e.key === 'End') {
 					const newStream = this.$data.streams[this.$data.streams.length - 1];
 					if (!newStream) return;
@@ -64,6 +79,11 @@ export default {
 					this.$router.push({
 						name: 'home',
 						params: {servicePort: this.$props.servicePort, streamId: newId,},
+					});
+					document.getElementById(`stream-${newId}`).scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+						inline: 'center',
 					});
 				}
 			},
@@ -127,10 +147,10 @@ export default {
 	},
 	components: {Stream, InfiniteLoading,},
 	mounted() {
-		document.addEventListener('keyup', this.$data.navigationKeysCallback);
+		document.addEventListener('keydown', this.$data.navigationKeysCallback);
 	},
 	beforeDestroy() {
-		document.removeEventListener('keyup', this.$data.navigationKeysCallback);
+		document.removeEventListener('keydown', this.$data.navigationKeysCallback);
 	},
 }
 </script>
