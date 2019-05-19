@@ -141,7 +141,7 @@ export default {
 			});
 		},
 		onGotNewStream(stream) {
-			if (this.streams.length > 50) {
+			if (this.streams.length > this.$store.state.pageSize * 2) {
 				this.streams.pop();
 			}
 			this.streams.unshift(stream);

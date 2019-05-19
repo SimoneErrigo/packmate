@@ -11,7 +11,7 @@ export default new Vuex.Store({
 		apiPassword: '123456',
 		hexdumpBlockSize: 16,
 		hexdumpLineNumberBase: 10,
-		pageSize: 50,
+		pageSize: 25,
 		displayFavOnly: false,
 	},
 	mutations: {
