@@ -1,6 +1,7 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': isIncoming}">
-		<div>#{{id}} at {{new Date(timestamp).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}</div>
+		<div>#{{id}} at {{new Date(timestamp).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
+			<button @click.prevent="copyContent" class="btn btn-link">Copy</button></div>
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-3 border-bottom">
 			<pre>{{ hexdata }}</pre>
 		</div>
@@ -33,6 +34,19 @@ export default {
 			}
 			return lines.join("\n");
 		},
+		copyContent() {
+			navigator.clipboard.writeText(
+				atob(this.$props.content)
+					.split('')
+					.map(function (aChar) {
+						return ('0' + aChar.charCodeAt(0).toString(16)).slice(-2);
+					})
+					.join('')
+					.toUpperCase()
+			)
+				.then()
+				.catch(e => console.error('Failed to copy', e));
+		},
 	},
 	computed: {
 		hexdata() {
@@ -58,5 +72,11 @@ export default {
 	.packet-incoming {
 		background: rgba(251, 233, 231, 0.4);
 		box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);
+	}
+
+	button {
+		padding: 0;
+		top: -0.15em;
+		position: relative;
 	}
 </style>
