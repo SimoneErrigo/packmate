@@ -70,7 +70,9 @@ export default {
 				if (!(currentPort === undefined || currentPort === parsed.service.port)) {
 					return;
 				}
-				this.$refs.sidebar.onGotNewStream(parsed);
+				if (!this.$store.state.displayFavOnly) {
+					this.$refs.sidebar.onGotNewStream(parsed);
+				}
 			};
 			this.socket.onerror = function (ev) {
 				console.warn('WS err', ev);
