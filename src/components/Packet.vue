@@ -2,6 +2,7 @@
 	<div class="packet" :class="{'packet-incoming': isIncoming}">
 		<div>#{{id}} at {{new Date(timestamp).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
 			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
+			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes </button></div>
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-3 border-bottom">
 			<pre>{{ hexdata }}</pre>
@@ -46,6 +47,9 @@ export default {
 		},
 		copyRaw() {
 			this.copyContent(Buffer.from(this.$props.content, 'base64').toString('hex'));
+		},
+		copyText() {
+			this.copyContent(atob(this.$props.content));
 		},
 		copyContent(data) {
 			const tempEl = document.createElement('textarea');
