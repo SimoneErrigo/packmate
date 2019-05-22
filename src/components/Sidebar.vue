@@ -30,6 +30,7 @@ export default {
 		return {
 			streams: [],
 			navigationKeysCallback: (e) => {
+				if (!e.ctrlKey) return;
 				if (e.key === 'ArrowUp') {
 					e.preventDefault();
 					const index = this.$data.streams.findIndex(e => e.id === this.$props.streamId);
