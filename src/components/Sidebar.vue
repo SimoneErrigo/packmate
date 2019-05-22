@@ -141,6 +141,9 @@ export default {
 			});
 		},
 		onGotNewStream(stream) {
+			if (this.$route.query.pId && !stream.foundPatterns.some(e => e.id === this.$route.query.pId)) {
+				return;
+			}
 			if (this.streams.length > this.$store.state.pageSize * 2) {
 				this.streams.pop();
 			}
