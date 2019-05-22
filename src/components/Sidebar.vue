@@ -11,7 +11,8 @@
 						:foundPatterns="stream.foundPatterns"
 						:startTime="stream.startTimestamp"
 						:endTime="stream.endTimestamp"
-						:favorite="stream.favorite"></Stream>
+						:favorite="stream.favorite"
+						:ttl="stream.ttl"></Stream>
 				<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading"></infinite-loading>
 			</ul>
 		</div>

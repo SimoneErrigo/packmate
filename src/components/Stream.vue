@@ -9,7 +9,7 @@
 					<path d="M16 2 L20 12 30 12 22 19 25 30 16 23 7 30 10 19 2 12 12 12 Z" style="transition: all .5s;" :fill="favorite0 ? 'red' : 'white'"></path>
 				</svg>
 			</button>
-			#{{id}} {{proto}}<br/>
+			#{{id}} {{proto}} <span v-if="ttl">TTL {{ttl}}</span><br/>
 			{{new Date(startTime).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
 			- {{new Date(endTime).toLocaleTimeString('ru-RU', {hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
 			<span v-for="pattern in foundPatterns"
@@ -27,7 +27,7 @@ import axios from "axios";
 
 export default {
 	name: "Stream",
-	props: ['id', 'proto', 'startTime', 'endTime', 'servicePort', 'foundPatterns', 'favorite',],
+	props: ['id', 'proto', 'startTime', 'endTime', 'servicePort', 'foundPatterns', 'favorite', 'ttl',],
 	data: function () {
 		return {
 			favorite0: this.favorite,
