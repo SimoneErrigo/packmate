@@ -1,7 +1,8 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': isIncoming}">
 		<div>#{{id}} at {{new Date(timestamp).toLocaleDateString('ru-RU', {month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit', second: '2-digit'})}}
-			<button @click.prevent="copyContent" class="btn btn-link">Copy</button></div>
+			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
+			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes </button></div>
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-3 border-bottom">
 			<pre>{{ hexdata }}</pre>
 		</div>
@@ -34,18 +35,27 @@ export default {
 			}
 			return lines.join("\n");
 		},
-		copyContent() {
-			navigator.clipboard.writeText(
-				atob(this.$props.content)
-					.split('')
-					.map(function (aChar) {
-						return ('0' + aChar.charCodeAt(0).toString(16)).slice(-2);
-					})
-					.join('')
-					.toUpperCase()
-			)
-				.then()
-				.catch(e => console.error('Failed to copy', e));
+		copyPythonBytes() {
+			const data = "b'" + atob(this.$props.content)
+				.split('')
+				.map((aChar) => {
+					return '\\x' + ('0' + aChar.charCodeAt(0).toString(16)).slice(-2);
+				})
+				.join('') + "'";
+			this.copyContent(data);
+		},
+		copyRaw() {
+			this.copyContent(Buffer.from(this.$props.content, 'base64').toString('hex'));
+		},
+		copyContent(data) {
+			const tempEl = document.createElement('textarea');
+			tempEl.value = data; // Chrome
+			tempEl.textContent = data; // Firefox
+			document.body.appendChild(tempEl);
+			tempEl.select();
+			const result = document.execCommand('copy');
+			document.body.removeChild(tempEl);
+			console.debug('Copy result is', result);
 		},
 	},
 	computed: {
@@ -78,5 +88,6 @@ export default {
 		padding: 0;
 		top: -0.15em;
 		position: relative;
+		margin-left: 5px;
 	}
 </style>
