@@ -1,179 +1,106 @@
 <template>
-	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-lg navbar-expand">
-
-<!--		<router-link to="/" class="navbar-brand col-sm-3 col-md-2 mr-0">Packmate</router-link>-->
-		<div class="dropdown">
-			<form> <!-- Disable autohide -->
-				<button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
-					Паттерны
-				</button>
-				<div class="dropdown-menu">
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Name" v-model="newPattern.name">
-						<input type="text" class="form-control" placeholder="Value" v-model="newPattern.value">
-						<input type="text" class="form-control" placeholder="#Color" v-model="newPattern.color">
-						<div class="input-group-append">
-							<button @click.prevent="createPattern()" class="btn btn-outline-primary" type="button">+
-							</button>
-						</div>
-					</div>
-					<div class="custom-control custom-switch" style="margin-left: 10px; margin-bottom: 8px;">
-						<input type="checkbox" class="custom-control-input"
-								id="isRegexCheckbox" v-model="newPattern.regex">
-						<label class="custom-control-label" for="isRegexCheckbox">Regex?</label>
-					</div>
-
-					<FlagPattern v-for="pattern in patterns"
-							:key="pattern.id"
-							:id="pattern.id"
-							:name="pattern.name"
-							:value="pattern.value"
-							:color="pattern.color"
-							:regex="pattern.regex"></FlagPattern>
-				</div>
-			</form>
+	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
+		<div class="navbar-brand col-sm-3 mr-0" style="cursor: pointer;">
+			Паттерны
+			<i class="fas fa-angle-down" style="margin-left: 0.5em"></i>
 		</div>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item" :class="{ 'active': !this.$route.params.servicePort }">
-					<router-link class="nav-link" to="/">Все</router-link>
+		<div class="navbar-collapse collapse">
+			<ul class="navbar-nav px-3 mr-auto">
+				<li class="nav-item text-nowrap">
+					<router-link class="nav-link" to="/" exact>Все</router-link>
 				</li>
-				<CtfService
-						v-for="service in ctfServices"
-						:key="service.port"
-						:port="service.port"
-						:name="service.name"></CtfService>
-
-				<li class="nav-item" style="margin-left: 10px;">
-					<button type="button" class="btn btn-link" @click="$emit('addServiceButtonClicked')">
-						<svg id="i-plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16"
-								fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"
-								stroke-width="2">
-							<path d="M16 2 L16 30 M2 16 L30 16"></path>
-						</svg>
-					</button>
-				</li>
+				<NavbarService v-for="service in services"
+							   :key="service.name"
+							   :name="service.name"
+							   :port="service.port"/>
 			</ul>
-			<div class="my-2 my-lg-0" style="margin-right: 10px;">
-				<button type="button" class="btn btn-link" @click="$emit('settingsButtonClicked')">
-					<svg id="i-settings" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16"
-							fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"
-							stroke-width="2">
-						<path d="M13 2 L13 6 11 7 8 4 4 8 7 11 6 13 2 13 2 19 6 19 7 21 4 24 8 28 11 25 13 26 13 30 19 30 19 26 21 25 24 28 28 24 25 21 26 19 30 19 30 13 26 13 25 11 28 8 24 4 21 7 19 6 19 2 Z"></path>
-						<circle cx="16" cy="16" r="4"></circle>
-					</svg>
-				</button>
+
+			<div class="my-2 my-lg-0 mr-3 navbar-cogs" style="cursor: pointer;"
+				 @click.stop.prevent="showSettings">
+				<i class="fas fa-cogs"></i>
 			</div>
 		</div>
 	</nav>
 </template>
 
 <script>
-import CtfService from "@/components/CtfService.vue";
-import axios from "axios";
-import $ from "jquery";
-import FlagPattern from "@/components/FlagPattern.vue";
+	import NavbarService from './NavbarService';
 
-export default {
-	name: "Navbar",
-	data: function () {
-		return {
-			ctfServices: [],
-			patterns: [],
-			newPattern: {
-				name: '',
-				value: '',
-				color: '',
-				regex: false,
+	export default {
+		name: 'Navbar',
+		data() {
+			return {
+				services: Array(),
+			};
+		},
+		mounted() {
+			this.updateServices();
+		},
+		methods: {
+			showSettings() {
+				this.$bvModal.show('settingsModal');
+				console.debug('Showing settings...');
 			},
-		}
-	},
-	methods: {
-		getCtfServices() {
-			const instance = axios.create({
-				baseURL: this.$store.state.apiUrl,
-				auth: {
-					username: this.$store.state.apiLogin,
-					password: this.$store.state.apiPassword,
-				},
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-			});
-			instance.get('/service/')
-				.then(response => (this.ctfServices = response.data))
-				.catch(error => console.error('Failed to load CTF services!', error))
+			updateServices() {
+				this.$http.get('service/')
+					.then(r => this.services = r.data)
+					.catch(e => {
+						this.$bvToast.toast(`Не удалось загрузить сервисы: ${e}`, {
+							title: 'Сбой',
+							variant: 'danger',
+						});
+						console.error('Failed to load services:', e);
+					});
+			},
 		},
-		getPatterns() {
-			const instance = axios.create({
-				baseURL: this.$store.state.apiUrl,
-				auth: {
-					username: this.$store.state.apiLogin,
-					password: this.$store.state.apiPassword,
-				},
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-			});
-			instance.get('/pattern/')
-				.then(response => (this.patterns = response.data))
-				.catch(error => console.error('Failed to load patterns!', error));
+		components: {
+			NavbarService,
 		},
-		createPattern() {
-			const instance = axios.create({
-				baseURL: this.$store.state.apiUrl,
-				auth: {
-					username: this.$store.state.apiLogin,
-					password: this.$store.state.apiPassword,
-				},
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-			});
-			instance.post('/pattern/', this.newPattern)
-				.then(this.getPatterns())
-				.catch(error => console.error('failed to create pattern', error));
-		},
-	},
-	mounted() {
-		this.getCtfServices();
-		this.getPatterns();
-
-		const dropdown = $('.dropdown');
-		dropdown.on('show.bs.dropdown', function () {
-			$(this).find('.dropdown-menu').first().stop(true, true).slideDown();
-		});
-		dropdown.on('hide.bs.dropdown', function () {
-			$(this).find('.dropdown-menu').first().stop(true, true).slideUp();
-		});
-	},
-	components: {FlagPattern, CtfService,},
-}
+	};
 </script>
 
 <style scoped>
-	li {
-		margin-left: 10px;
+	.nav-link {
+		transition: all .3s;
 	}
 
-	svg {
-		position: absolute;
-		top: 50%;
-		bottom: 50%;
-		transform: translate(-50%, -50%);
+	.navbar-cogs > i {
+		transition: all .3s;
+		color: rgba(255, 255, 255, 0.7);
 	}
 
-	.dropdown-menu {
-		min-width: 300px;
+	.navbar-cogs > i:hover {
+		color: #FFF;
 	}
 
-	.input-group {
-		padding-left: 10px;
-		padding-right: 10px;
-		padding-bottom: 5px;
+	.navbar-brand {
+		padding-top: .5rem;
+		padding-bottom: .5rem;
+
+		font-size: 1rem;
+		background-color: rgba(0, 0, 0, .25);
+		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
 	}
+
+	nav {
+		overflow-x: auto;
+	}
+
+	::-webkit-scrollbar {
+		height: 0.2em
+	}
+
+	::-webkit-scrollbar-button {
+		width: 0;
+	}
+
+	::-webkit-scrollbar-track-piece {
+		background: #F1F1F1
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #C1C1C1
+	}
+
 </style>
