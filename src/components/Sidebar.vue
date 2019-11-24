@@ -80,6 +80,8 @@
 			},
 			toggleFavorites() {
 				this.$store.commit('toggleDisplayFavoritesOnly');
+				this.streams = [];
+				this.$refs.infiniteLoader.stateChanger.reset();
 			},
 			togglePause() {
 				this.$store.commit('togglePause');
@@ -87,7 +89,6 @@
 		},
 		components: {
 			SidebarStream,
-			// InfiniteLoading,
 		},
 	};
 </script>
