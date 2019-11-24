@@ -73,6 +73,10 @@
 					this.streams.push(...data);
 					return $state.loaded();
 				}).catch(e => {
+					this.$bvToast.toast(`Не удалось загрузить стримы: ${e}`, {
+						title: 'Сбой',
+						variant: 'danger',
+					});
 					console.error('Failed to load portion of streams:', e);
 					return $state.error();
 				});

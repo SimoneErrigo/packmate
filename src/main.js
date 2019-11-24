@@ -14,8 +14,8 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(InfiniteLoading, {
 	slots: {
-		'no-results': 'Нет результатов...',
-		'no-more': 'Данных больше нет',
+		noResults: 'Нет результатов...',
+		noMore: 'Данных больше нет',
 		error: 'Произошла ошибка!',
 		errorBtnText: 'Повторить',
 	},

@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<Navbar/>
+		<Navbar ref="navbar"/>
 		<div class="container-fluid">
 			<div class="row">
 				<transition name="fade" mode="out-in">
@@ -15,15 +15,18 @@
 			</div>
 		</div>
 		<Settings/>
+		<AddService @serviceAddComplete="$refs.navbar.updateServices()"/>
 	</div>
 </template>
 
 <script>
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
+	import AddService from './views/AddService';
 
 	export default {
 		components: {
+			AddService,
 			Settings,
 			Navbar,
 		},

@@ -14,6 +14,12 @@
 							   :key="service.name"
 							   :name="service.name"
 							   :port="service.port"/>
+				<li class="nav-item text-nowrap" style="padding-left: 1em;">
+					<div class="my-2 my-lg-0 mr-3 navbar-cogs" style="cursor: pointer;"
+						 @click.stop.prevent="showAddService">
+						<i class="fas fa-plus-circle"/>
+					</div>
+				</li>
 			</ul>
 
 			<div class="my-2 my-lg-0 mr-3 navbar-cogs" style="cursor: pointer;"
@@ -41,6 +47,10 @@
 			showSettings() {
 				this.$bvModal.show('settingsModal');
 				console.debug('Showing settings...');
+			},
+			showAddService() {
+				this.$bvModal.show('addServiceModal');
+				console.debug('Showing addService...');
 			},
 			updateServices() {
 				this.$http.get('service/')
