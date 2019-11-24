@@ -1,20 +1,20 @@
 <template>
 	<div id="app">
-		<Navbar></Navbar>
+		<Navbar/>
 		<div class="container-fluid">
 			<div class="row">
 				<transition name="fade" mode="out-in">
-					<router-view name="sidebar"></router-view>
+					<router-view name="sidebar"/>
 				</transition>
 				<!--				<Sidebar></Sidebar>-->
 				<main role="main" class="col-sm-9 ml-sm-auto px-4">
 					<transition name="fade" mode="out-in">
-						<router-view name="content"></router-view>
+						<router-view name="content"/>
 					</transition>
 				</main>
 			</div>
 		</div>
-		<Settings></Settings>
+		<Settings/>
 	</div>
 </template>
 

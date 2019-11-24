@@ -2,7 +2,7 @@
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
 		<div class="navbar-brand col-sm-3 mr-0" style="cursor: pointer;">
 			Паттерны
-			<i class="fas fa-angle-down" style="margin-left: 0.5em"></i>
+			<i class="fas fa-angle-down" style="margin-left: 0.5em"/>
 		</div>
 
 		<div class="navbar-collapse collapse">
@@ -18,7 +18,7 @@
 
 			<div class="my-2 my-lg-0 mr-3 navbar-cogs" style="cursor: pointer;"
 				 @click.stop.prevent="showSettings">
-				<i class="fas fa-cogs"></i>
+				<i class="fas fa-cogs"/>
 			</div>
 		</div>
 	</nav>

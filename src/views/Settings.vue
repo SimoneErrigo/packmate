@@ -7,7 +7,7 @@
 				description="Логин для подключения к API"
 				label="Логин"
 				label-for="settings-apiLogin">
-			<b-form-input id="settings-apiLogin" v-model="apiLogin"></b-form-input>
+			<b-form-input id="settings-apiLogin" v-model="apiLogin"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
@@ -15,7 +15,7 @@
 				description="Пароль для подключения к API"
 				label="Пароль"
 				label-for="settings-apiPassword">
-			<b-form-input type="password" id="settings-apiPassword" v-model="apiPassword"></b-form-input>
+			<b-form-input type="password" id="settings-apiPassword" v-model="apiPassword"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
@@ -23,7 +23,7 @@
 				description="Количество байт для отображения в бинарном представлении пакета"
 				label="Ширина блока HEX"
 				label-for="settings-hexdumpBlockSize">
-			<b-form-input type="number" id="settings-hexdumpBlockSize" v-model.number="hexdumpBlockSize"></b-form-input>
+			<b-form-input type="number" id="settings-hexdumpBlockSize" v-model.number="hexdumpBlockSize"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
@@ -42,7 +42,7 @@
 				description="Количество стримов для загрузки за раз"
 				label="Размер страницы"
 				label-for="settings-pageSize">
-			<b-form-input type="number" id="settings-pageSize" v-model.number="pageSize"></b-form-input>
+			<b-form-input type="number" id="settings-pageSize" v-model.number="pageSize"/>
 		</b-form-group>
 	</b-modal>
 </template>

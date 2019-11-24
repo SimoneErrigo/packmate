@@ -3,7 +3,7 @@
 		<a class="nav-link">{{name}} #{{port}}</a> <!-- TODO: editing! -->
 
 		<a class="nav-link" style="cursor: pointer"> <!-- TODO -->
-			<i class="fas fa-pencil-alt"></i>
+			<i class="fas fa-pencil-alt"/>
 		</a>
 	</router-link>
 </template>
