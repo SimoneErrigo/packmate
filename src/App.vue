@@ -16,6 +16,7 @@
 		</div>
 		<Settings/>
 		<AddService @serviceAddComplete="$refs.navbar.updateServices()"/>
+		<EditService @serviceEditComplete="$refs.navbar.updateServices()"/>
 	</div>
 </template>
 
@@ -23,10 +24,12 @@
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
 	import AddService from './views/AddService';
+	import EditService from './views/EditService';
 
 	export default {
 		components: {
 			AddService,
+			EditService,
 			Settings,
 			Navbar,
 		},

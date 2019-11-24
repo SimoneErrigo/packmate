@@ -1,5 +1,6 @@
 <template>
-	<b-modal @ok="createService" @cancel="reset" id="addServiceModal" title="Добавить сервис" cancel-title="Отмена"
+	<b-modal @ok="createService" @cancel="reset" id="addServiceModal" title="Добавить сервис"
+			 cancel-title="Отмена"
 			 centered scrollable>
 		<form ref="addServiceForm">
 			<b-form-group
@@ -42,11 +43,11 @@
 				this.svcPort = 0;
 			},
 
-			createService(e) {
+			createService(ev) {
 				const name = this.svcName;
 				const port = this.svcPort;
 				if (!this.checkValidity()) {
-					e.preventDefault();
+					ev.preventDefault();
 					console.debug('Form is invalid');
 					return;
 				}
@@ -68,6 +69,7 @@
 					});
 					console.error('Failed to add service', e);
 				});
+				ev.preventDefault();
 			},
 		},
 	};
