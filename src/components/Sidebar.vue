@@ -1,8 +1,10 @@
 <template>
 	<nav class="col-sm-3 d-none d-sm-block bg-light sidebar">
 		<div class="m-2">
-			<button type="button" class="btn btn-sm btn-outline-success">
-				<i class="fas fa-pause"/> <!-- TODO! -->
+			<button type="button" class="btn btn-sm"
+					:class="this.$store.state.pause ? 'btn-danger' : 'btn-outline-success'"
+					@click.stop.prevent="togglePause">
+				<i class="fas fa-pause"/>
 			</button>
 			<button type="button" class="btn btn-sm ml-1"
 					:class="this.$store.state.displayFavoritesOnly ? 'btn-danger' : 'btn-outline-danger'"
@@ -15,18 +17,6 @@
 		</div>
 		<div class="sidebar-sticky">
 			<ul class="nav flex-column">
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link" href="#">SOME ITEM</a>-->
-				<!--				</li>-->
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link" href="#">SOME ITEM</a>-->
-				<!--				</li>-->
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link" href="#">SOME ITEM</a>-->
-				<!--				</li>-->
-				<!--				<li class="nav-item">-->
-				<!--					<a class="nav-link" href="#">SOME ITEM</a>-->
-				<!--				</li>-->
 				<SidebarStream v-for="stream in streams"
 							   :key="stream.id"
 							   :stream="stream"/>
@@ -47,6 +37,13 @@
 				streams: [],
 			};
 		},
+		watch: {
+			'$route.params.servicePort': function () {
+				console.debug('Port reselected');
+				this.streams = [];
+				this.$refs.infiniteLoader.stateChanger.reset();
+			},
+		},
 		methods: {
 			infiniteLoadingHandler($state) {
 				const ourStreams = this.streams;
@@ -57,7 +54,7 @@
 					startsFrom = Number.MAX_SAFE_INTEGER; // FIXME: rewrite backend?
 				}
 
-				this.$http.post(`/stream/${this.$props.servicePort || 'all'}`, {
+				this.$http.post(`/stream/${this.$route?.params?.servicePort || 'all'}`, {
 					direction: 'DESC',
 					startingFrom: startsFrom,
 					pageSize: this.$store.state.pageSize,
@@ -83,6 +80,9 @@
 			},
 			toggleFavorites() {
 				this.$store.commit('toggleDisplayFavoritesOnly');
+			},
+			togglePause() {
+				this.$store.commit('togglePause');
 			},
 		},
 		components: {

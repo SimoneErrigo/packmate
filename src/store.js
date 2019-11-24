@@ -14,6 +14,7 @@ export default new Vuex.Store({
 		hexdumpLineNumberBase: 10,
 		pageSize: 25,
 		displayFavoritesOnly: false,
+		pause: false,
 
 		serviceModalName: '',
 		serviceModalId: 0,
@@ -26,6 +27,8 @@ export default new Vuex.Store({
 		setPageSize: (s, p) => s.pageSize = p,
 		// eslint-disable-next-line no-unused-vars
 		toggleDisplayFavoritesOnly: (s, p) => s.displayFavoritesOnly = !s.displayFavoritesOnly,
+		// eslint-disable-next-line no-unused-vars
+		togglePause: (s, p) => s.pause = !s.pause,
 
 		setServiceModalName: (s, p) => s.serviceModalName = p,
 		setServiceModalId: (s, p) => s.serviceModalId = p,
@@ -40,7 +43,8 @@ export default new Vuex.Store({
 				const mName = mutation?.type;
 				const process = mName !== 'toggleDisplayFavoritesOnly'
 					&& mName !== 'setServiceModalName'
-					&& mName !== 'setServiceModalId';
+					&& mName !== 'setServiceModalId'
+					&& mName !== 'togglePause';
 				console.debug('Processing?', process);
 				return process;
 			},
