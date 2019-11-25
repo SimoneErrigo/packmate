@@ -5,7 +5,7 @@
 		<!--			<i class="fas fa-angle-down" style="margin-left: 0.5em"/>-->
 		<!--		</div>-->
 
-		<PatternsDropdown/>
+		<PatternsDropdown ref="patternsDropdown"/>
 
 		<div class="navbar-collapse collapse">
 			<ul class="navbar-nav px-3 mr-auto">
@@ -65,6 +65,17 @@
 						});
 						console.error('Failed to load services:', e);
 					});
+			},
+			addServiceFromWs(service) {
+				const foundIndex = this.services.findIndex(el => el.port === service.port);
+				if (foundIndex === -1) {
+					this.services.push(service);
+					return;
+				}
+				this.services.splice(foundIndex, 1, service);
+			},
+			deleteServiceFromWs(port) {
+				this.services = this.services.filter(o => o.port !== port);
 			},
 		},
 		components: {

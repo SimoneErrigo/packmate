@@ -4,7 +4,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<transition name="fade" mode="out-in">
-					<router-view name="sidebar"/>
+					<router-view name="sidebar" ref="sidebar"/>
 				</transition>
 				<!--				<Sidebar></Sidebar>-->
 				<main role="main" class="col-sm-9 ml-sm-auto px-4">
@@ -15,8 +15,8 @@
 			</div>
 		</div>
 		<Settings/>
-		<AddService @serviceAddComplete="$refs.navbar.updateServices()"/>
-		<EditService @serviceEditComplete="$refs.navbar.updateServices()"/>
+		<AddService/>
+		<EditService/>
 		<AddPattern/>
 	</div>
 </template>
@@ -27,8 +27,69 @@
 	import AddService from './views/AddService';
 	import EditService from './views/EditService';
 	import AddPattern from './views/AddPattern';
+	import SockJS from 'sockjs-client';
 
 	export default {
+		data() {
+			return {
+				websocket: null,
+			};
+		},
+		mounted() {
+			this.connectWs();
+		},
+		beforeDestroy() {
+			this.websocket?.close();
+		},
+		methods: {
+			connectWs() {
+				this.websocket = new SockJS(this.$http.defaults.baseURL + '/ws');
+				this.websocket.onopen = () => {
+					console.info('[WS] Connected');
+				};
+				this.websocket.onclose = (ev) => {
+					console.info('[WS] Disconnected', ev.code, ev.reason);
+					if (ev.code === 1008) {
+						console.info('[WS] Security timeout, reconnecting...');
+						this.connectWs();
+					}
+				};
+				this.websocket.onmessage = (ev) => {
+					const parsed = JSON.parse(ev.data);
+					// console.debug('[WS] New message', parsed);
+
+					switch (parsed.type) {
+						case 'NEW_STREAM': {
+							this.$refs.sidebar.addStreamFromWs(parsed.value);
+							break;
+						}
+						case 'SAVE_SERVICE': {
+							this.$refs.navbar.addServiceFromWs(parsed.value);
+							break;
+						}
+						case 'DELETE_SERVICE': {
+							this.$refs.navbar.deleteServiceFromWs(parsed.value);
+							break;
+						}
+						case 'SAVE_PATTERN': {
+							this.$refs.navbar.$refs.patternsDropdown.addPatternFromWs(parsed.value);
+							break;
+						}
+						case 'DELETE_PATTERN': {
+							this.$refs.navbar.$refs.patternsDropdown.deletePatternFromWs(parsed.value);
+							break;
+						}
+						default: {
+							console.error('[WS] Event not implemented!', parsed);
+							break;
+						}
+					}
+				};
+				this.websocket.onerror = (ev) => {
+					console.warn('[WS] Error', ev);
+				};
+			},
+		},
 		components: {
 			AddPattern,
 			AddService,

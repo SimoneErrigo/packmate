@@ -73,6 +73,14 @@
 					console.error('Failed to delete pattern', e);
 				});
 			},
+
+			addPatternFromWs(pattern) {
+				this.patterns.push(pattern);
+			},
+
+			deletePatternFromWs(id) {
+				this.patterns = this.patterns.filter(o => o.id !== id);
+			},
 		},
 	};
 </script>

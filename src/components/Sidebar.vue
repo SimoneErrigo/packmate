@@ -91,6 +91,16 @@
 			togglePause() {
 				this.$store.commit('togglePause');
 			},
+			addStreamFromWs(stream) {
+				const currentPort = parseInt(this.$route?.params?.servicePort, 10);
+				if (currentPort && currentPort !== stream.service) return;
+				if (this.$store.state.displayFavoritesOnly || this.$store.state.pause) return;
+				if (this.$route.query.pattern && !stream.foundPatterns.some(e => e.id === this.$route.query.pattern)) {
+					return;
+				}
+
+				this.streams.unshift(stream);
+			},
 		},
 		components: {
 			SidebarStream,
