@@ -15,6 +15,12 @@
 			<template v-if="pattern.type === 'BOTH'">anywhere</template>
 			<template v-else-if="pattern.type === 'INPUT'">in request</template>
 			<template v-else>in response</template>
+			<div class="float-right" style="margin-left: 2em;">
+				<button type="button" class="btn btn-outline-danger btn-block btn-sm"
+						@click.stop.prevent="deletePattern(pattern.id)">
+					<i class="far fa-trash-alt"/>
+				</button>
+			</div>
 		</b-dropdown-item-button>
 	</b-dropdown>
 </template>
@@ -50,6 +56,21 @@
 					name: 'stream',
 					params: this.$route.params,
 					query: {pattern: patternId,},
+				});
+			},
+			deletePattern(patternId) {
+				console.debug('Deleting pattern w/ id', patternId);
+				this.$http.delete(`pattern/${patternId}`)
+					.then(response => {
+						const data = response.data;
+						console.debug('Done deleting pattern', data);
+						this.$emit('patternAddComplete');
+					}).catch(e => {
+					this.$bvToast.toast(`Не удалось удалить паттерн: ${e}`, {
+						title: 'Сбой',
+						variant: 'danger',
+					});
+					console.error('Failed to delete pattern', e);
 				});
 			},
 		},
