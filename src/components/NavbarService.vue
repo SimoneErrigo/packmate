@@ -1,6 +1,6 @@
 <template>
 	<router-link tag="li" class="nav-item text-nowrap edit-button" :to="{name:'stream', params: {servicePort: port}}">
-		<a class="nav-link">{{name}} #{{port}}</a> <!-- TODO: editing! -->
+		<a class="nav-link">{{name}} #{{port}}</a>
 
 		<a class="nav-link" style="cursor: pointer" @click.stop.prevent="editService">
 			<i class="fas fa-pencil-alt"/>

@@ -11,6 +11,10 @@
 					@click.stop.prevent="toggleFavorites">
 				<i class="fas fa-star"/>
 			</button>
+			<button type="button" class="btn btn-outline-primary btn-sm ml-1"
+					@click.stop.prevent="toggleHexdump">
+				<i :class="this.$store.state.hexdumpMode ? 'far fa-file-code' : 'fas fa-align-left'"/>
+			</button>
 			<button type="button" class="btn btn-sm btn-outline-info" style="float: right;">
 				<i class="fas fa-angle-double-up"/>
 			</button>
@@ -90,6 +94,9 @@
 			},
 			togglePause() {
 				this.$store.commit('togglePause');
+			},
+			toggleHexdump() {
+				this.$store.commit('toggleHexdumpMode');
 			},
 			addStreamFromWs(stream) {
 				const currentPort = parseInt(this.$route?.params?.servicePort, 10);

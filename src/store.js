@@ -16,6 +16,8 @@ export default new Vuex.Store({
 		displayFavoritesOnly: false,
 		pause: false,
 
+		hexdumpMode: false,
+
 		serviceModalName: '',
 		serviceModalId: 0,
 	},
@@ -29,6 +31,8 @@ export default new Vuex.Store({
 		toggleDisplayFavoritesOnly: (s, p) => s.displayFavoritesOnly = !s.displayFavoritesOnly,
 		// eslint-disable-next-line no-unused-vars
 		togglePause: (s, p) => s.pause = !s.pause,
+		// eslint-disable-next-line no-unused-vars
+		toggleHexdumpMode: (s, p) => s.hexdumpMode = !s.hexdumpMode,
 
 		setServiceModalName: (s, p) => s.serviceModalName = p,
 		setServiceModalId: (s, p) => s.serviceModalId = p,
@@ -44,7 +48,8 @@ export default new Vuex.Store({
 				const process = mName !== 'toggleDisplayFavoritesOnly'
 					&& mName !== 'setServiceModalName'
 					&& mName !== 'setServiceModalId'
-					&& mName !== 'togglePause';
+					&& mName !== 'togglePause'
+					&& mName !== 'toggleHexdumpMode';
 				console.debug('Processing?', process);
 				return process;
 			},
