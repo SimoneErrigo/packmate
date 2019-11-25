@@ -44,7 +44,7 @@
 				});
 			},
 			base64ToHtml(in_) {
-				return this.escapeHtml(atob(in_)).split('\n').join('<br/>');
+				return this.escapeHtml(atob(in_)).split('\n').join('<br/>'); // Replace all \n to <br/>
 			},
 		},
 	};

@@ -17,6 +17,7 @@
 		<Settings/>
 		<AddService @serviceAddComplete="$refs.navbar.updateServices()"/>
 		<EditService @serviceEditComplete="$refs.navbar.updateServices()"/>
+		<AddPattern/>
 	</div>
 </template>
 
@@ -25,9 +26,11 @@
 	import Settings from './views/Settings';
 	import AddService from './views/AddService';
 	import EditService from './views/EditService';
+	import AddPattern from './views/AddPattern';
 
 	export default {
 		components: {
+			AddPattern,
 			AddService,
 			EditService,
 			Settings,
@@ -125,6 +128,16 @@
 	/*noinspection CssUnusedSymbol*/
 	.fade-enter, .fade-leave-to {
 		opacity: 0;
+	}
+
+	/* Patterns dropdown fix */
+	/*noinspection CssUnusedSymbol*/
+	.dropdown-menu.show {
+		position: fixed !important;
+		/*transform: translate3d(15px, 38px, 0) !important;*/
+		transform: none !important;
+		left: 15px !important;
+		top: 38px !important;
 	}
 
 	[role="main"] {

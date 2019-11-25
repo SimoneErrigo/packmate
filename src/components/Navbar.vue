@@ -1,9 +1,11 @@
 <template>
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
-		<div class="navbar-brand col-sm-3 mr-0" style="cursor: pointer;">
-			Паттерны
-			<i class="fas fa-angle-down" style="margin-left: 0.5em"/>
-		</div>
+		<!--		<div class="navbar-brand col-sm-3 mr-0" style="cursor: pointer;">-->
+		<!--			Паттерны-->
+		<!--			<i class="fas fa-angle-down" style="margin-left: 0.5em"/>-->
+		<!--		</div>-->
+
+		<PatternsDropdown/>
 
 		<div class="navbar-collapse collapse">
 			<ul class="navbar-nav px-3 mr-auto">
@@ -32,6 +34,7 @@
 
 <script>
 	import NavbarService from './NavbarService';
+	import PatternsDropdown from './PatternsDropdown';
 
 	export default {
 		name: 'Navbar',
@@ -65,6 +68,7 @@
 			},
 		},
 		components: {
+			PatternsDropdown,
 			NavbarService,
 		},
 	};
@@ -82,15 +86,6 @@
 
 	.navbar-cogs > i:hover {
 		color: #FFF;
-	}
-
-	.navbar-brand {
-		padding-top: .5rem;
-		padding-bottom: .5rem;
-
-		font-size: 1rem;
-		background-color: rgba(0, 0, 0, .25);
-		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
 	}
 
 	nav {
@@ -112,5 +107,4 @@
 	::-webkit-scrollbar-thumb {
 		background: #C1C1C1
 	}
-
 </style>
