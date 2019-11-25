@@ -43,6 +43,11 @@
 				this.streams = [];
 				this.$refs.infiniteLoader.stateChanger.reset();
 			},
+			'$route.query.pattern': function () {
+				console.debug('Pattern selected');
+				this.streams = [];
+				this.$refs.infiniteLoader.stateChanger.reset();
+			},
 		},
 		methods: {
 			infiniteLoadingHandler($state) {
@@ -58,7 +63,7 @@
 					direction: 'DESC',
 					startingFrom: startsFrom,
 					pageSize: this.$store.state.pageSize,
-					pattern: null, // TODO
+					pattern: this.$route.query.pattern ? {id: this.$route.query.pattern,} : null,
 					favorites: this.$store.state.displayFavoritesOnly,
 				}).then(r => {
 					const data = r.data;
