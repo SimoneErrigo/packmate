@@ -35,7 +35,7 @@
 					label="Регулярное выражение?"
 					description="Искать регулярное выражение в Java-формате вместо подстроки?"
 					label-for="pattern-regex">
-				<b-form-checkbox id="pattern-regex" required v-model="newPattern.isRegex"/>
+				<b-form-checkbox id="pattern-regex" required v-model="newPattern.regex"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
@@ -62,7 +62,7 @@
 					name: String(),
 					value: String(),
 					color: String(),
-					isRegex: Boolean(),
+					regex: Boolean(),
 					type: String(),
 				},
 			};
