@@ -8,9 +8,12 @@
 			{{ stream.id }} {{ stream.protocol }}
 			<template v-if="stream.ttl">TTL {{ stream.ttl }}</template>
 			<br/>
-			{{ dateToText(stream.startTimestamp) }} - {{ dateToText(stream.endTimestamp) }}
+			{{ dateToText(stream.startTimestamp) }}
+			<template v-if="!dateMatches(stream.startTimestamp, stream.endTimestamp)">
+				- {{ dateToText(stream.endTimestamp) }}
+			</template>
 			<template v-if="stream.userAgentHash"><br/>UA: {{ stream.userAgentHash }}</template>
-
+			<br/>
 			<span v-for="pattern in stream.foundPatterns"
 				  :key="pattern.id"
 				  :style="`color: ${pattern.color};`">
@@ -43,13 +46,36 @@
 		},
 		methods: {
 			dateToText(unixTimestamp) {
-				return new Date(unixTimestamp).toLocaleDateString('ru-RU', {
-					month: '2-digit',
-					day: '2-digit',
+				const date = new Date(unixTimestamp);
+				const options = {
 					hour: '2-digit',
 					minute: '2-digit',
 					second: '2-digit',
-				});
+				};
+				if (!this.isToday(date)) {
+					options.month = '2-digit';
+					options.day = '2-digit';
+					return date.toLocaleDateString('ru-RU', options);
+				}
+				return date.toLocaleTimeString('ru-RU', options);
+			},
+
+			isToday(someDate) {
+				const today = new Date();
+				return someDate.getDate() === today.getDate() &&
+					someDate.getMonth() === today.getMonth() &&
+					someDate.getFullYear() === today.getFullYear();
+			},
+
+			dateMatches(rFirst, rSecond) {
+				const first = new Date(rFirst);
+				const second = new Date(rSecond);
+				return first.getDate() === second.getDate() &&
+					first.getMonth() === second.getMonth() &&
+					first.getFullYear() === second.getFullYear() &&
+					first.getHours() === second.getHours() &&
+					first.getMinutes() === second.getMinutes() &&
+					first.getSeconds() === second.getSeconds();
 			},
 
 			toggleFavorite() {
