@@ -1,6 +1,10 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': packet.incoming}">
-		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ packet.ungzipped ? 'GZIP' : 'Non-GZIP' }}</div>
+		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ packet.ungzipped ? 'GZIP' : 'Non-GZIP' }}
+			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
+			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
+			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
+		</div>
 		<code v-if="!this.$store.state.hexdumpMode"
 			  class="d-flex pt-2 pb-2 mb-3 border-bottom"
 			  v-html="base64ToHtml(packet.content)"/>
@@ -76,6 +80,32 @@
 			base64ToHtml(in_) {
 				return this.escapeHtml(atob(in_)).split('\n').join('<br/>'); // Replace all \n to <br/>
 			},
+
+			copyPythonBytes() {
+				const data = 'b\'' + atob(this.packet.content)
+					.split('')
+					.map((aChar) => {
+						return '\\x' + ('0' + aChar.charCodeAt(0).toString(16)).slice(-2);
+					})
+					.join('') + '\'';
+				this.copyContent(data);
+			},
+			copyRaw() {
+				this.copyContent(Buffer.from(this.packet.content, 'base64').toString('hex'));
+			},
+			copyText() {
+				this.copyContent(atob(this.packet.content));
+			},
+			copyContent(data) {
+				const tempEl = document.createElement('textarea');
+				tempEl.value = data; // Chrome
+				tempEl.textContent = data; // Firefox
+				document.body.appendChild(tempEl);
+				tempEl.select();
+				const result = document.execCommand('copy');
+				document.body.removeChild(tempEl);
+				console.debug('Copy result is', result);
+			},
 		},
 	};
 </script>
@@ -98,5 +128,12 @@
 		color: black;
 		margin-bottom: 10px;
 		padding-bottom: 5px;
+	}
+
+	button {
+		padding: 0;
+		top: -0.1em;
+		position: relative;
+		margin-left: 5px;
 	}
 </style>
