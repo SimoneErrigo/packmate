@@ -1,7 +1,7 @@
 <template>
-	<li class="nav-item" :class="{highlight: favorite0}" style="transition: all .5s;">
+	<li :id="`stream-${stream.id}`" class="nav-item" :class="{highlight: favorite0}" style="transition: all .5s;">
 		<router-link class="nav-link"
-					 :to="{name: 'stream', params: {servicePort: stream.service, streamId: stream.id}}">
+					 :to="{name: 'stream', params: {servicePort: stream.service, streamId: stream.id}, query: this.$route.query}">
 			<a @click.stop.prevent="toggleFavorite">
 				<i class="fa-star" style="color: #DC3545" :class="favorite0 ? 'fas' : 'far'"/>
 			</a>

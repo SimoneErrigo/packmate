@@ -15,7 +15,8 @@
 					@click.stop.prevent="toggleHexdump">
 				<i :class="this.$store.state.hexdumpMode ? 'far fa-file-code' : 'fas fa-align-left'"/>
 			</button>
-			<button type="button" class="btn btn-sm btn-outline-info" style="float: right;">
+			<button type="button" class="btn btn-sm btn-outline-info" style="float: right;"
+					@click.stop.prevent="scrollUp">
 				<i class="fas fa-angle-double-up"/>
 			</button>
 		</div>
@@ -39,6 +40,70 @@
 		data() {
 			return {
 				streams: [],
+				navigationKeysCallback: (e) => {
+					if (!e.ctrlKey) return;
+					if (e.key === 'ArrowUp') {
+						e.preventDefault();
+						const index = this.streams.findIndex(e => e.id === this.$route.params.streamId);
+						const newStream = this.streams[index - 1];
+						if (!newStream) return;
+						const newId = newStream.id;
+						this.$router.push({
+							name: 'stream',
+							params: {servicePort: this.$route.params.servicePort, streamId: newId,},
+							query: this.$route.query,
+						});
+						document.getElementById(`stream-${newId}`).scrollIntoView({
+							behavior: 'smooth',
+							block: 'center',
+							inline: 'center',
+						});
+					} else if (e.key === 'ArrowDown') {
+						e.preventDefault();
+						const index = this.streams.findIndex(e => e.id === this.$route.params.streamId);
+						const newStream = this.streams[index + 1];
+						if (!newStream) return;
+						const newId = newStream.id;
+						this.$router.push({
+							name: 'stream',
+							params: {servicePort: this.$route.params.servicePort, streamId: newId,},
+							query: this.$route.query,
+						});
+						document.getElementById(`stream-${newId}`).scrollIntoView({
+							behavior: 'smooth',
+							block: 'center',
+							inline: 'center',
+						});
+					} else if (e.key === 'Home') {
+						const newStream = this.streams[0];
+						if (!newStream) return;
+						const newId = newStream.id;
+						this.$router.push({
+							name: 'stream',
+							params: {servicePort: this.$route.params.servicePort, streamId: newId,},
+							query: this.$route.query,
+						});
+						document.getElementById(`stream-${newId}`).scrollIntoView({
+							behavior: 'smooth',
+							block: 'center',
+							inline: 'center',
+						});
+					} else if (e.key === 'End') {
+						const newStream = this.streams[this.streams.length - 1];
+						if (!newStream) return;
+						const newId = newStream.id;
+						this.$router.push({
+							name: 'stream',
+							params: {servicePort: this.$route.params.servicePort, streamId: newId,},
+							query: this.$route.query,
+						});
+						document.getElementById(`stream-${newId}`).scrollIntoView({
+							behavior: 'smooth',
+							block: 'center',
+							inline: 'center',
+						});
+					}
+				},
 			};
 		},
 		watch: {
@@ -108,6 +173,27 @@
 
 				this.streams.unshift(stream);
 			},
+			scrollUp() {
+				const newStream = this.streams[0];
+				if (!newStream) return;
+				const newId = newStream.id;
+				this.$router.push({
+					name: 'stream',
+					params: {servicePort: this.$route.params.servicePort, streamId: newId,},
+					query: this.$route.query,
+				});
+				document.getElementById(`stream-${newId}`).scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+					inline: 'center',
+				});
+			},
+		},
+		mounted() {
+			document.addEventListener('keydown', this.navigationKeysCallback);
+		},
+		beforeDestroy() {
+			document.removeEventListener('keydown', this.navigationKeysCallback);
 		},
 		components: {
 			SidebarStream,
