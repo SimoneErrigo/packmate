@@ -37,7 +37,7 @@
 			},
 			stringdata() {
 				const dataString = atob(this.packet.content);
-				const dump = this.base64ToHtml(dataString);
+				const dump = this.highlightPatterns(dataString);
 				return this.escapeHtml(dump)
 					.split('\n')
 					.join('<br>');
@@ -87,11 +87,11 @@
 					return $1 ? $1 : entityMap[$0];
 				});
 			},
-			base64ToHtml(raw) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
+			highlightPatterns(raw) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
 				const patterns = this.$store.state.patterns.reduce((obj, item) => {
 					obj[item.id] = item;
 					return obj;
-				}, {});
+				}, {}); // Array to object
 				let offset = 0;
 				this.packet.matches
 					.sort((a, b) => a.startPosition - b.startPosition)
