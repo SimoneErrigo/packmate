@@ -20,6 +20,8 @@ export default new Vuex.Store({
 
 		serviceModalName: '',
 		serviceModalId: 0,
+
+		patterns: [],
 	},
 	mutations: {
 		setApiLogin: (s, p) => s.apiLogin = p,
@@ -36,6 +38,9 @@ export default new Vuex.Store({
 
 		setServiceModalName: (s, p) => s.serviceModalName = p,
 		setServiceModalId: (s, p) => s.serviceModalId = p,
+
+		setPatterns: (s, p) => s.patterns = p,
+		addPattern: (s, p) => s.patterns.push(p),
 	},
 	actions: {},
 	plugins: [
@@ -49,7 +54,9 @@ export default new Vuex.Store({
 					&& mName !== 'setServiceModalName'
 					&& mName !== 'setServiceModalId'
 					&& mName !== 'togglePause'
-					&& mName !== 'toggleHexdumpMode';
+					&& mName !== 'toggleHexdumpMode'
+					&& mName !== 'setPatterns'
+					&& mName !== 'addPattern';
 				console.debug('Processing?', process);
 				return process;
 			},

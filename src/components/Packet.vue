@@ -5,12 +5,12 @@
 			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
 		</div>
-		<code v-if="!this.$store.state.hexdumpMode"
-			  class="d-flex pt-2 pb-2 mb-3 border-bottom"
-			  v-html="base64ToHtml(packet.content)"/>
-		<code v-else
-			  class="d-flex pt-2 pb-2 mb-3 border-bottom"
-			  v-html="escapeHtml(hexdata).split('\n').join('<br/>')"/>
+		<p v-if="!this.$store.state.hexdumpMode"
+		   class="pt-2 pb-2 mb-3 border-bottom"
+		   v-html="stringdata"/>
+		<p v-else
+		   class="pt-2 pb-2 mb-3 border-bottom"
+		   v-html="hexdata"/>
 	</div>
 </template>
 
@@ -30,7 +30,13 @@
 		computed: {
 			hexdata() {
 				const dataString = atob(this.packet.content);
-				return this.hexdump(dataString, this.$store.state.hexdumpBlockSize, this.$store.state.hexdumpLineNumberBase);
+				const dump = this.hexdump(dataString, this.$store.state.hexdumpBlockSize, this.$store.state.hexdumpLineNumberBase);
+				return this.escapeHtml(dump)
+					.split('\n')
+					.join('<br>');
+			},
+			stringdata() {
+				return this.base64ToHtml(this.packet.content);
 			},
 		},
 		methods: {
@@ -64,7 +70,7 @@
 				});
 			},
 			escapeHtml(in_) {
-				return in_.replace(/[&<>"'/]/g, s => {
+				return in_.replace(/(<span style="background-color: #(?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})">|<\/span>)|[&<>"'/]/g, ($0, $1) => {
 					const entityMap = {
 						'&': '&amp;',
 						'<': '&lt;',
@@ -74,11 +80,36 @@
 						'/': '&#x2F;',
 					};
 
-					return entityMap[s];
+					return $1 ? $1 : entityMap[$0];
 				});
 			},
-			base64ToHtml(in_) {
-				return this.escapeHtml(atob(in_)).split('\n').join('<br/>'); // Replace all \n to <br/>
+			base64ToHtml(in_) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
+				let raw = atob(in_);
+				const patterns = this.$store.state.patterns.reduce((obj, item) => {
+					obj[item.id] = item;
+					return obj;
+				}, {});
+				let offset = 0;
+				this.packet.matches
+					.sort((a, b) => a.startPosition - b.startPosition)
+					.forEach(match => {
+						const pattern = patterns[match.patternId];
+						if (!pattern) {
+							console.info(`Pattern #${match.patternId} does not exist`);
+							return;
+						}
+						const firstTag = `<span style="background-color: ${pattern.color}">`;
+						const secondTag = '</span>';
+
+						const positionStart = match.startPosition + offset;
+						raw = raw.substring(0, positionStart) + firstTag + raw.substring(positionStart);
+						offset += firstTag.length;
+
+						const positionEnd = match.endPosition + offset;
+						raw = raw.substring(0, positionEnd) + secondTag + raw.substring(positionEnd);
+						offset += secondTag.length;
+					});
+				return this.escapeHtml(raw).split('\n').join('<br>'); // Replace all \n to <br>
 			},
 
 			copyPythonBytes() {
@@ -122,7 +153,7 @@
 		box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);
 	}
 
-	code {
+	p {
 		font-family: "Ubuntu Mono", "Lucida Console", monospace;
 		font-size: 100%;
 		color: black;

@@ -7,7 +7,7 @@
 			</button>
 		</li>
 		<b-dropdown-divider/>
-		<b-dropdown-item-button v-for="pattern in patterns"
+		<b-dropdown-item-button v-for="pattern in this.$store.state.patterns"
 								:key="pattern.id" @click.stop.prevent="openPattern(pattern.id)">
 			<strong :style="`color: ${pattern.color};`">{{ pattern.name }}</strong>:
 			<code>{{ pattern.regex ? `/${pattern.value}/` : `'${pattern.value}'` }}</code>;
@@ -29,7 +29,7 @@
 		name: 'PatternsDropdown',
 		data() {
 			return {
-				patterns: Array(),
+				// patterns: Array(),
 			};
 		},
 		mounted() {
@@ -41,7 +41,7 @@
 			},
 			updatePatterns() {
 				this.$http.get('pattern/')
-					.then(r => this.patterns = r.data)
+					.then(r => this.$store.commit('setPatterns', r.data))
 					.catch(e => {
 						this.$bvToast.toast(`Не удалось загрузить паттерны: ${e}`, {
 							title: 'Сбой',
@@ -75,11 +75,11 @@
 			},
 
 			addPatternFromWs(pattern) {
-				this.patterns.push(pattern);
+				this.$store.commit('addPattern', pattern);
 			},
 
 			deletePatternFromWs(id) {
-				this.patterns = this.patterns.filter(o => o.id !== id);
+				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
 			},
 		},
 	};
