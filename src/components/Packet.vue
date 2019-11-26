@@ -33,10 +33,14 @@
 				const dump = this.hexdump(dataString, this.$store.state.hexdumpBlockSize, this.$store.state.hexdumpLineNumberBase);
 				return this.escapeHtml(dump)
 					.split('\n')
-					.join('<br>');
+					.join('<br>'); // Replace all \n to <br>
 			},
 			stringdata() {
-				return this.base64ToHtml(this.packet.content);
+				const dataString = atob(this.packet.content);
+				const dump = this.base64ToHtml(dataString);
+				return this.escapeHtml(dump)
+					.split('\n')
+					.join('<br>');
 			},
 		},
 		methods: {
@@ -46,10 +50,10 @@
 				let lines = [];
 				const hex = '0123456789ABCDEF';
 				for (let b = 0; b < buffer.length; b += blockSize) {
-					let block = buffer.slice(b, Math.min(b + blockSize, buffer.length));
-					let addr = ('0000000000' + b.toString(lineNumberBase)).slice(-10);
+					const block = buffer.slice(b, Math.min(b + blockSize, buffer.length));
+					const addr = ('0000000000' + b.toString(lineNumberBase)).slice(-10);
 					let codes = block.split('').map(ch => {
-						let code = ch.charCodeAt(0);
+						const code = ch.charCodeAt(0);
 						return ' ' + hex[(0xF0 & code) >> 4] + hex[0x0F & code];
 					}).join('');
 					codes += ' ..'.repeat(blockSize - block.length);
@@ -83,8 +87,7 @@
 					return $1 ? $1 : entityMap[$0];
 				});
 			},
-			base64ToHtml(in_) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
-				let raw = atob(in_);
+			base64ToHtml(raw) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
 				const patterns = this.$store.state.patterns.reduce((obj, item) => {
 					obj[item.id] = item;
 					return obj;
@@ -109,7 +112,7 @@
 						raw = raw.substring(0, positionEnd) + secondTag + raw.substring(positionEnd);
 						offset += secondTag.length;
 					});
-				return this.escapeHtml(raw).split('\n').join('<br>'); // Replace all \n to <br>
+				return raw;
 			},
 
 			copyPythonBytes() {
@@ -159,6 +162,7 @@
 		color: black;
 		margin-bottom: 10px;
 		padding-bottom: 5px;
+		word-break: break-word;
 	}
 
 	button {
