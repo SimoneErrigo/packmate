@@ -68,7 +68,7 @@
 		},
 		methods: {
 			submit() {
-				if (!this.$refs.taskForm.reportValidity()) {
+				if (!this.$refs.serviceForm.reportValidity()) {
 					return;
 				}
 				console.debug('Submitting service...', this.service, this.creating);
