@@ -32,10 +32,14 @@
 			<b-form-group
 					label-cols-sm="4"
 					label-cols-lg="3"
-					label="Регулярное выражение?"
-					description="Искать регулярное выражение в Java-формате вместо подстроки?"
-					label-for="pattern-regex">
-				<b-form-checkbox id="pattern-regex" required v-model="newPattern.regex"/>
+					label="Способ поиска"
+					description="Каким способом искать указанное выражение?"
+					label-for="pattern-searchType">
+				<b-form-select id="pattern-searchType" required v-model="newPattern.searchType">
+					<option value="REGEX" selected>Регулярное выражение</option>
+					<option value="SUBSTRING">Подстрока</option>
+					<option value="SUBBYTES">В байтах (WIP)</option>
+				</b-form-select>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
@@ -43,7 +47,7 @@
 					label="Тип поиска"
 					description="В каких пакетах искать паттерн"
 					label-for="pattern-type">
-				<b-form-select id="pattern-type" required v-model="newPattern.type">
+				<b-form-select id="pattern-type" required v-model="newPattern.directionType">
 					<option value="INPUT">Запрос</option>
 					<option value="OUTPUT">Ответ</option>
 					<option value="BOTH" selected>Везде</option>
@@ -62,8 +66,8 @@
 					name: String(),
 					value: String(),
 					color: String(),
-					regex: Boolean(),
-					type: String(),
+					searchType: String(),
+					directionType: String(),
 				},
 			};
 		},

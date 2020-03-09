@@ -10,10 +10,10 @@
 		<b-dropdown-item-button v-for="pattern in this.$store.state.patterns"
 								:key="pattern.id" @click.stop.prevent="openPattern(pattern.id)">
 			<strong :style="`color: ${pattern.color};`">{{ pattern.name }}</strong>:
-			<code>{{ pattern.regex ? `/${pattern.value}/` : `'${pattern.value}'` }}</code>;
+			<code>{{ getSearchTypeValue(pattern.searchType, pattern.value) }}</code>;
 			search
-			<template v-if="pattern.type === 'BOTH'">anywhere</template>
-			<template v-else-if="pattern.type === 'INPUT'">in request</template>
+			<template v-if="pattern.directionType === 'BOTH'">anywhere</template>
+			<template v-else-if="pattern.directionType === 'INPUT'">in request</template>
 			<template v-else>in response</template>
 			<div class="float-right" style="margin-left: 2em;">
 				<button type="button" class="btn btn-outline-danger btn-block btn-sm"
@@ -36,6 +36,11 @@
 			this.updatePatterns();
 		},
 		methods: {
+			getSearchTypeValue(searchType, value) {
+				if (searchType === 'REGEX') return `/${value}/`;
+				else if (searchType === 'SUBSTRING') return `'${value}'`;
+				else return `0x${value}`;
+			},
 			showAddService() {
 				this.$bvModal.show('addPatternModal');
 			},
