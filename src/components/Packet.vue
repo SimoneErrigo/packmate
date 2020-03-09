@@ -108,7 +108,7 @@
 						raw = raw.substring(0, positionStart) + firstTag + raw.substring(positionStart);
 						offset += firstTag.length;
 
-						const positionEnd = match.endPosition + offset;
+						const positionEnd = match.endPosition + offset + 1;
 						raw = raw.substring(0, positionEnd) + secondTag + raw.substring(positionEnd);
 						offset += secondTag.length;
 					});
