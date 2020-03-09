@@ -5,7 +5,6 @@
 		<form ref="addServiceForm">
 			<b-form-group
 					label-cols-sm="4"
-					label-cols-lg="3"
 					label="Название"
 					label-for="addSvc-name">
 				<b-form-input @keydown.native.enter="createService" id="addSvc-name" required
@@ -13,7 +12,6 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label-cols-lg="3"
 					label="Порт"
 					label-for="addSvc-port">
 				<b-form-input @keydown.native.enter="createService" type="number" min="1" max="65535"
@@ -21,7 +19,6 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label-cols-lg="3"
 					label="Разархивировать GZIP?"
 					label-for="addSvc-ungzip">
 				<b-form-checkbox id="addSvc-ungzip" required
@@ -29,7 +26,6 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label-cols-lg="3"
 					label="Применять urldecode?"
 					label-for="addSvc-urldecode">
 				<b-form-checkbox id="addSvc-urldecode" required
@@ -37,7 +33,6 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label-cols-lg="3"
 					label="Совмещать смежные пакеты?"
 					label-for="addSvc-mergeAdjacent">
 				<b-form-checkbox id="addSvc-mergeAdjacent" required
