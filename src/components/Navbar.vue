@@ -9,7 +9,7 @@
 				</li>
 				<template v-for="service in services">
 					<router-link :key="service.name" tag="li" class="nav-item text-nowrap edit-button"
-								 :to="{name:'stream', params: {servicePort: service.port}, query: this.$route.query}">
+								 :to="{name:'stream', params: {servicePort: service.port}, query: $route.query}">
 						<a class="nav-link">{{service.name}} #{{service.port}}</a>
 
 						<a class="nav-link" style="cursor: pointer" @click.stop.prevent="editService(service)">
