@@ -1,39 +1,39 @@
 <template>
-	<b-modal @ok="createService" @cancel="reset" id="addServiceModal" title="Добавить сервис"
-			 cancel-title="Отмена"
+	<b-modal @ok="createService" @cancel="reset" id="addServiceModal" title="Add service"
+			 cancel-title="Cancel"
 			 centered scrollable>
 		<form ref="addServiceForm">
 			<b-form-group
 					label-cols-sm="4"
-					label="Название"
+					label="Name"
 					label-for="addSvc-name">
 				<b-form-input @keydown.native.enter="createService" id="addSvc-name" required
 							  v-model="svcName"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Порт"
+					label="Port"
 					label-for="addSvc-port">
 				<b-form-input @keydown.native.enter="createService" type="number" min="1" max="65535"
 							  id="addSvc-port" required v-model.number="svcPort"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Разархивировать GZIP?"
+					label="Decompress GZIP?"
 					label-for="addSvc-ungzip">
 				<b-form-checkbox id="addSvc-ungzip" required
 								 v-model="ungzipHttp"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Применять urldecode?"
+					label="Apply urldecode?"
 					label-for="addSvc-urldecode">
 				<b-form-checkbox id="addSvc-urldecode" required
 								 v-model="urldecodeHttpRequests"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Совмещать смежные пакеты?"
+					label="Merge adjacent packets?"
 					label-for="addSvc-mergeAdjacent">
 				<b-form-checkbox id="addSvc-mergeAdjacent" required
 								 v-model="mergeAdjacentPackets"/>
@@ -95,8 +95,8 @@
 					this.reset();
 					this.$bvModal.hide('addServiceModal');
 				}).catch(e => {
-					this.$bvToast.toast(`Не удалось добавить сервис: ${e}`, {
-						title: 'Сбой',
+					this.$bvToast.toast(`Failed to add service: ${e}`, {
+						title: 'Error',
 						variant: 'danger',
 					});
 					console.error('Failed to add service', e);

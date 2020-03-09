@@ -82,8 +82,8 @@
 				this.$http.post(`stream/${this.stream.id}/${this.favorite0 ? 'unfavorite' : 'favorite'}`)
 					.then(() => this.favorite0 = !this.favorite0)
 					.catch(e => {
-						this.$bvToast.toast(`Не удалось пометить сервис: ${e}`, {
-							title: 'Сбой',
+						this.$bvToast.toast(`Failed to fav service: ${e}`, {
+							title: 'Error',
 							variant: 'danger',
 						});
 						console.error('Failed to fav service', e);
@@ -106,7 +106,6 @@
 
 	/*noinspection CssUnusedSymbol*/
 	.highlight {
-		/*background: rgb(220, 53, 69)*/
 		background: rgba(220, 53, 69, 0.3);
 		box-shadow: 0 0 1px 1px rgba(255, 119, 182, 0.3);
 	}

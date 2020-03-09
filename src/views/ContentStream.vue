@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<p>
-			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Ответ</span>,
-			<span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">запрос</span>.
+			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Response</span>,
+			<span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">request</span>.
 		</p>
 		<Packet v-for="packet in packets"
 				:key="packet.id"
@@ -19,17 +19,7 @@
 		props: ['servicePort', 'streamId',],
 		data() {
 			return {
-				packets: [
-					/*
-					{
-						"id": 17,
-						"matches": [],
-						"timestamp": 1574630325546,
-						"incoming": false,
-						"ungzipped": false,
-						"content": "shit in b64=="
-					} */
-				],
+				packets: [],
 			};
 		},
 		watch: {
@@ -64,8 +54,8 @@
 						$state.loaded();
 					}
 				}).catch(e => {
-					this.$bvToast.toast(`Не удалось загрузить пакеты: ${e}`, {
-						title: 'Сбой',
+					this.$bvToast.toast(`Failed to load portion of packets: ${e}`, {
+						title: 'Error',
 						variant: 'danger',
 					});
 					console.error('Failed to load portion of packets:', e);

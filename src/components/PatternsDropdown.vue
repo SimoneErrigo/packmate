@@ -1,5 +1,5 @@
 <template>
-	<b-dropdown no-flip text="Паттерны" block variant="dark" class="col-sm-3 mr-0">
+	<b-dropdown no-flip text="Patterns" block variant="dark" class="col-sm-3 mr-0">
 		<li role="presentation" style="padding-left: 0.5em; padding-right: 0.5em;">
 			<button role="menuitem" type="button" class="btn btn-sm btn-primary btn-block"
 					@click.stop.prevent="showAddService">
@@ -48,8 +48,8 @@
 				this.$http.get('pattern/')
 					.then(r => this.$store.commit('setPatterns', r.data))
 					.catch(e => {
-						this.$bvToast.toast(`Не удалось загрузить паттерны: ${e}`, {
-							title: 'Сбой',
+						this.$bvToast.toast(`Failed to load patterns: ${e}`, {
+							title: 'Error',
 							variant: 'danger',
 						});
 						console.error('Failed to load patterns:', e);
@@ -71,8 +71,8 @@
 						console.debug('Done deleting pattern', data);
 						this.$emit('patternAddComplete');
 					}).catch(e => {
-					this.$bvToast.toast(`Не удалось удалить паттерн: ${e}`, {
-						title: 'Сбой',
+					this.$bvToast.toast(`Failed to delete pattern: ${e}`, {
+						title: 'Error',
 						variant: 'danger',
 					});
 					console.error('Failed to delete pattern', e);

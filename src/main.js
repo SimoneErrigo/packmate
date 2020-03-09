@@ -14,10 +14,10 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(InfiniteLoading, {
 	slots: {
-		noResults: 'Нет результатов...',
-		noMore: 'Данных больше нет',
-		error: 'Произошла ошибка!',
-		errorBtnText: 'Повторить',
+		noResults: 'No results...',
+		noMore: 'No more data',
+		error: 'An error has occurred!',
+		errorBtnText: 'Retry',
 	},
 	props: {
 		spinner: 'waveDots',

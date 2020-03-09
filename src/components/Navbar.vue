@@ -1,16 +1,11 @@
 <template>
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
-		<!--		<div class="navbar-brand col-sm-3 mr-0" style="cursor: pointer;">-->
-		<!--			Паттерны-->
-		<!--			<i class="fas fa-angle-down" style="margin-left: 0.5em"/>-->
-		<!--		</div>-->
-
 		<PatternsDropdown ref="patternsDropdown"/>
 
 		<div class="navbar-collapse collapse">
 			<ul class="navbar-nav px-3 mr-auto">
 				<li class="nav-item text-nowrap">
-					<router-link class="nav-link" to="/" exact>Все</router-link>
+					<router-link class="nav-link" to="/" exact>All</router-link>
 				</li>
 				<NavbarService v-for="service in services"
 							   :key="service.name"
@@ -59,8 +54,8 @@
 				this.$http.get('service/')
 					.then(r => this.services = r.data)
 					.catch(e => {
-						this.$bvToast.toast(`Не удалось загрузить сервисы: ${e}`, {
-							title: 'Сбой',
+						this.$bvToast.toast(`Failed to load services: ${e}`, {
+							title: 'Error',
 							variant: 'danger',
 						});
 						console.error('Failed to load services:', e);

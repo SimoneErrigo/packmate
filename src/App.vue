@@ -6,7 +6,6 @@
 				<transition name="fade" mode="out-in">
 					<router-view name="sidebar" ref="sidebar"/>
 				</transition>
-				<!--				<Sidebar></Sidebar>-->
 				<main role="main" class="col-sm-9 ml-sm-auto px-4">
 					<transition name="fade" mode="out-in">
 						<router-view name="content"/>
@@ -80,7 +79,7 @@
 							break;
 						}
 						default: {
-							console.error('[WS] Event not implemented!', parsed);
+							console.error('[WS] Event is not implemented!', parsed);
 							break;
 						}
 					}

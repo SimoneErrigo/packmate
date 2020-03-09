@@ -14,6 +14,7 @@
 	</div>
 </template>
 
+<!--suppress JSUnresolvedVariable -->
 <script>
 	export default {
 		name: 'Packet',

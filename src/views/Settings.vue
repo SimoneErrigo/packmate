@@ -1,46 +1,44 @@
 <!--suppress JSUnresolvedVariable -->
 <template>
-	<b-modal id="settingsModal" title="Настройки" centered scrollable ok-only>
+	<b-modal id="settingsModal" title="Settings" centered scrollable ok-only>
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				description="Логин для подключения к API"
-				label="Логин"
+				label="API login"
 				label-for="settings-apiLogin">
 			<b-form-input id="settings-apiLogin" v-model="apiLogin"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				description="Пароль для подключения к API"
-				label="Пароль"
+				label="API password"
 				label-for="settings-apiPassword">
 			<b-form-input type="password" id="settings-apiPassword" v-model="apiPassword"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				description="Количество байт для отображения в бинарном представлении пакета"
-				label="Ширина блока HEX"
+				description="The number of bytes to display in the binary representation of the packet"
+				label="HEX block width"
 				label-for="settings-hexdumpBlockSize">
 			<b-form-input type="number" id="settings-hexdumpBlockSize" v-model.number="hexdumpBlockSize"/>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				description="Система счисления, используемая в номерах строк бинарного представления пакета"
-				label="Нумерация строк"
+				description="The number system used in line numbers of a binary representation of a packet"
+				label="Line numbering"
 				label-for="settings-hexdumpLineNumberBase">
 			<b-form-select id="settings-hexdumpLineNumberBase" v-model="hexdumpLineNumberBase">
-				<option :value="10" selected>Десятичная</option>
-				<option :value="16">Шестнадцатеричная</option>
+				<option :value="10" selected>Decimal</option>
+				<option :value="16">Hexadecimal</option>
 			</b-form-select>
 		</b-form-group>
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				description="Количество стримов для загрузки за раз"
-				label="Размер страницы"
+				description="The number of streams to download at a time"
+				label="Page size"
 				label-for="settings-pageSize">
 			<b-form-input type="number" id="settings-pageSize" v-model.number="pageSize"/>
 		</b-form-group>
