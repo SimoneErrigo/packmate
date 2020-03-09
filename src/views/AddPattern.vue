@@ -1,6 +1,6 @@
 <template>
 	<b-modal @ok="addPattern" @cancel="reset" id="addPatternModal"
-			 title="Add pattern"
+			 title="Creating pattern"
 			 cancel-title="Cancel"
 			 centered scrollable>
 		<form ref="addPatternForm">

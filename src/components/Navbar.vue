@@ -7,10 +7,16 @@
 				<li class="nav-item text-nowrap">
 					<router-link class="nav-link" to="/" exact>All</router-link>
 				</li>
-				<NavbarService v-for="service in services"
-							   :key="service.name"
-							   :name="service.name"
-							   :port="service.port"/>
+				<template v-for="service in services">
+					<router-link :key="service.name" tag="li" class="nav-item text-nowrap edit-button"
+								 :to="{name:'stream', params: {servicePort: service.port}, query: this.$route.query}">
+						<a class="nav-link">{{service.name}} #{{service.port}}</a>
+
+						<a class="nav-link" style="cursor: pointer" @click.stop.prevent="editService(service)">
+							<i class="fas fa-pencil-alt"/>
+						</a>
+					</router-link>
+				</template>
 				<li class="nav-item text-nowrap" style="padding-left: 1em;">
 					<div class="my-2 mr-3 navbar-cogs" style="cursor: pointer;"
 						 @click.stop.prevent="showAddService">
@@ -24,30 +30,45 @@
 				<i class="fas fa-cogs"/>
 			</div>
 		</div>
+		<ServiceModal :creating="serviceModalIsCreating" :initial-service="serviceModalEditingService"
+					  @service-update-needed="updateServices"/>
 	</nav>
 </template>
 
 <script>
-	import NavbarService from './NavbarService';
 	import PatternsDropdown from './PatternsDropdown';
+	import ServiceModal from '../views/ServiceModal';
 
 	export default {
 		name: 'Navbar',
 		data() {
 			return {
 				services: Array(),
+
+				serviceModalIsCreating: true,
+				serviceModalEditingService: {},
 			};
 		},
 		mounted() {
 			this.updateServices();
 		},
 		methods: {
+			editService(service) {
+				this.serviceModalIsCreating = false;
+				this.serviceModalEditingService = {};
+				this.$nextTick(() => {
+					this.serviceModalEditingService = service;
+					this.$bvModal.show('serviceModal');
+				});
+			},
 			showSettings() {
 				this.$bvModal.show('settingsModal');
 				console.debug('Showing settings...');
 			},
 			showAddService() {
-				this.$bvModal.show('addServiceModal');
+				this.serviceModalIsCreating = true;
+				this.serviceModalEditingService = {};
+				this.$bvModal.show('serviceModal');
 				console.debug('Showing addService...');
 			},
 			updateServices() {
@@ -74,8 +95,8 @@
 			},
 		},
 		components: {
+			ServiceModal,
 			PatternsDropdown,
-			NavbarService,
 		},
 	};
 </script>
@@ -83,6 +104,10 @@
 <style scoped>
 	.nav-link {
 		transition: all .3s;
+	}
+
+	.edit-button {
+		display: inherit;
 	}
 
 	.navbar-cogs > i {
