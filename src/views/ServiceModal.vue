@@ -18,22 +18,28 @@
 							  @keyup.enter.stop.prevent="submit"/>
 			</b-form-group>
 			<b-form-group label-cols-sm="4"
-						  label="Decompress GZIP?"
+						  label="Decompress GZIP"
 						  label-for="service-ungzip">
 				<b-form-checkbox id="service-ungzip" required
 								 v-model="service.ungzipHttp"/>
 			</b-form-group>
 			<b-form-group label-cols-sm="4"
-						  label="Apply urldecode?"
+						  label="Apply urldecode"
 						  label-for="service-urldecode">
 				<b-form-checkbox id="service-urldecode" required
 								 v-model="service.urldecodeHttpRequests"/>
 			</b-form-group>
 			<b-form-group label-cols-sm="4"
-						  label="Merge adjacent packets??"
+						  label="Merge adjacent packets"
 						  label-for="service-mergeAdjacent">
 				<b-form-checkbox id="service-mergeAdjacent" required
 								 v-model="service.mergeAdjacentPackets"/>
+			</b-form-group>
+			<b-form-group label-cols-sm="4"
+						label="Inflate WebSockets"
+						label-for="service-inflateWS">
+				<b-form-checkbox id="service-inflateWS" required
+								 v-model="service.inflateWebSockets"/>
 			</b-form-group>
 		</b-form>
 	</b-modal>

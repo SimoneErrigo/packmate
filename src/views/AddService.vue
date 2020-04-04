@@ -40,9 +40,9 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Deflate WebSockets"
-					label-for="addSvc-deflateWS">
-				<b-form-checkbox id="addSvc-deflateWS" required
+					label="Inflate WebSockets"
+					label-for="addSvc-inflateWS">
+				<b-form-checkbox id="addSvc-inflateWS" required
 								 v-model="inflateWebSockets"/>
 			</b-form-group>
 		</form>
