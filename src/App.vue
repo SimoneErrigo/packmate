@@ -78,6 +78,9 @@
 							this.$refs.navbar.$refs.patternsDropdown.deletePatternFromWs(parsed.value);
 							break;
 						}
+						case 'COUNTERS_UPDATE': {
+							break;  //TODO implement
+						}
 						default: {
 							console.error('[WS] Event is not implemented!', parsed);
 							break;

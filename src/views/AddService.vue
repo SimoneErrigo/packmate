@@ -43,7 +43,7 @@
 					label="Deflate WebSockets"
 					label-for="addSvc-deflateWS">
 				<b-form-checkbox id="addSvc-deflateWS" required
-								 v-model="mergeAdjacentPackets"/>
+								 v-model="inflateWebSockets"/>
 			</b-form-group>
 		</form>
 	</b-modal>
