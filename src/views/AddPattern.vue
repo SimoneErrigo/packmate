@@ -38,7 +38,7 @@
 				<b-form-select id="pattern-searchType" required v-model="newPattern.searchType">
 					<option value="REGEX" selected>Regular expression</option>
 					<option value="SUBSTRING">Substring</option>
-					<option value="SUBBYTES">Bytes (WIP)</option>
+					<option value="SUBBYTES">Bytes</option>
 				</b-form-select>
 			</b-form-group>
 			<b-form-group

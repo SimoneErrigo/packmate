@@ -19,23 +19,30 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Decompress GZIP?"
+					label="Decompress GZIP"
 					label-for="addSvc-ungzip">
 				<b-form-checkbox id="addSvc-ungzip" required
 								 v-model="ungzipHttp"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Apply urldecode?"
+					label="Apply urldecode"
 					label-for="addSvc-urldecode">
 				<b-form-checkbox id="addSvc-urldecode" required
 								 v-model="urldecodeHttpRequests"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
-					label="Merge adjacent packets?"
+					label="Merge adjacent packets"
 					label-for="addSvc-mergeAdjacent">
 				<b-form-checkbox id="addSvc-mergeAdjacent" required
+								 v-model="mergeAdjacentPackets"/>
+			</b-form-group>
+			<b-form-group
+					label-cols-sm="4"
+					label="Deflate WebSockets"
+					label-for="addSvc-deflateWS">
+				<b-form-checkbox id="addSvc-deflateWS" required
 								 v-model="mergeAdjacentPackets"/>
 			</b-form-group>
 		</form>
@@ -52,6 +59,7 @@
 				ungzipHttp: Boolean(),
 				urldecodeHttpRequests: Boolean(),
 				mergeAdjacentPackets: Boolean(),
+				inflateWebSockets: Boolean(),
 			};
 		},
 		methods: {
@@ -67,6 +75,7 @@
 				this.ungzipHttp = false;
 				this.urldecodeHttpRequests = false;
 				this.mergeAdjacentPackets = false;
+				this.inflateWebSockets = false;
 			},
 
 			createService(ev) {
@@ -75,6 +84,7 @@
 				const ungzipHttp = this.ungzipHttp;
 				const urldecodeHttpRequests = this.urldecodeHttpRequests;
 				const mergeAdjacentPackets = this.mergeAdjacentPackets;
+				const inflateWebSockets = this.inflateWebSockets;
 				if (!this.checkValidity()) {
 					ev.preventDefault();
 					console.debug('Form is invalid');
@@ -88,6 +98,7 @@
 					ungzipHttp,
 					urldecodeHttpRequests,
 					mergeAdjacentPackets,
+					inflateWebSockets,
 				}).then(response => {
 					const data = response.data;
 					console.debug('Done adding service', data);

@@ -53,6 +53,7 @@
 				ungzipHttp: Boolean,
 				urldecodeHttpRequests: Boolean,
 				mergeAdjacentPackets: Boolean,
+				inflateWebSockets: Boolean,
 			},
 		},
 		data() {

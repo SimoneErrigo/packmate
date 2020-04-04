@@ -1,6 +1,6 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': packet.incoming}">
-		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ packet.ungzipped ? 'GZIP' : 'Non-GZIP' }}
+		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ packet.ungzipped ? 'GZIP ' : '' }}{{ packet.webSocketDeflated ? 'WS' : '' }}
 			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
 			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
@@ -25,6 +25,7 @@
 				timestamp: Number(),
 				incoming: Boolean(),
 				ungzipped: Boolean(),
+				webSocketDeflated: Boolean(),
 				content: String(),
 			},
 		},
@@ -88,7 +89,7 @@
 					return $1 ? $1 : entityMap[$0];
 				});
 			},
-			highlightPatterns(raw) { // FIXME: Пересекающиеся паттерны приводят к неожиданным результатам
+			highlightPatterns(raw) {
 				const patterns = this.$store.state.patterns.reduce((obj, item) => {
 					obj[item.id] = item;
 					return obj;
