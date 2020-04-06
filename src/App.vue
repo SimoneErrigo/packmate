@@ -121,6 +121,14 @@
 							});
 							break;
 						}
+						case 'ENABLE_PATTERN': {
+							this.$refs.navbar.$refs.patternsDropdown.togglePatternFromWs(parsed.value, true);
+							break;
+						}
+						case 'DISABLE_PATTERN': {
+							this.$refs.navbar.$refs.patternsDropdown.togglePatternFromWs(parsed.value, false);
+							break;
+						}
 						default: {
 							console.error('[WS] Event is not implemented!', parsed);
 							break;
