@@ -42,15 +42,21 @@
 		},
 		methods: {
 			connectWs() {
+				if (this.websocket !== null) return;
 				this.websocket = new SockJS(this.$http.defaults.baseURL + '/ws');
 				this.websocket.onopen = () => {
 					console.info('[WS] Connected');
 				};
 				this.websocket.onclose = (ev) => {
 					console.info('[WS] Disconnected', ev.code, ev.reason);
+					this.websocket = null;
 					if (ev.code === 1008) {
 						console.info('[WS] Security timeout, reconnecting...');
 						this.connectWs();
+					}
+					if (ev.code !== 1000) { // Normal closure
+						setTimeout(this.connectWs, 3000);
+						console.info('[WS] Reconnecting...');
 					}
 				};
 				this.websocket.onmessage = (ev) => {
