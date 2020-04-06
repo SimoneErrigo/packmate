@@ -18,8 +18,9 @@
 					label="Pattern"
 					description="Substring, RegEx or bytes"
 					label-for="pattern-value">
-				<b-form-input @keydown.native.enter="addPattern" id="pattern-value" required
-							  v-model="newPattern.value"/>
+				<b-form-input @keydown.native.enter="addPattern" @keydown="validateKey"
+							  id="pattern-value" required v-model="newPattern.value"
+							  :placeholder="getPlaceholder()"/>
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
@@ -58,6 +59,7 @@
 </template>
 
 <script>
+	const hexRegex = /[0-9A-Fa-f ]/;
 	export default {
 		name: 'AddPattern',
 		data() {
@@ -72,6 +74,19 @@
 			};
 		},
 		methods: {
+			getPlaceholder() {
+				if (this.newPattern.searchType === 'REGEX') return 'CTF{.{42}}';
+				else if (this.newPattern.searchType === 'SUBSTRING') return 'HTTP/2';
+				else return 'DEAD BEEF 1337';
+			},
+			validateKey(e) {
+				console.log('', e);
+				if (this.newPattern.searchType !== 'SUBBYTES') return;
+				if (!hexRegex.test(e?.key)) {
+					e.preventDefault();
+				}
+			},
+
 			checkValidity() {
 				return this.$refs.addPatternForm.reportValidity();
 			},
@@ -93,6 +108,10 @@
 					return;
 				}
 				console.debug('Adding pattern...', this.newPattern);
+
+				if (this.newPattern.searchType === 'SUBBYTES') {
+					this.newPattern.value = this.newPattern.value.replace(/\s+/g, '').toLowerCase();
+				}
 
 				this.$http.post('pattern/', this.newPattern)
 					.then(response => {
