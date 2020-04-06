@@ -9,16 +9,21 @@
 		<b-dropdown-divider/>
 		<b-dropdown-item-button v-for="pattern in this.$store.state.patterns"
 								:key="pattern.id" @click.stop.prevent="openPattern(pattern.id)">
-			<strong :style="`color: ${pattern.color};`">{{ pattern.name }}</strong>:
+			<strong v-if="pattern.enabled" :style="`color: ${pattern.color};`">{{ pattern.name }}</strong>
+			<s v-else :style="`color: ${pattern.color};`">{{ pattern.name }}</s>:
 			<code>{{ getSearchTypeValue(pattern.searchType, pattern.value) }}</code>;
 			search
 			<template v-if="pattern.directionType === 'BOTH'">anywhere</template>
 			<template v-else-if="pattern.directionType === 'INPUT'">in request</template>
 			<template v-else>in response</template>
 			<div class="float-right" style="margin-left: 2em;">
-				<button type="button" class="btn btn-outline-danger btn-block btn-sm"
-						@click.stop.prevent="deletePattern(pattern.id)">
-					<i class="far fa-trash-alt"/>
+				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-block btn-sm"
+						@click.stop.prevent="togglePattern(pattern)">
+					<i class="fas fa-pause"></i>
+				</button>
+				<button v-else type="button" class="btn btn-outline-success btn-block btn-sm"
+						@click.stop.prevent="togglePattern(pattern)">
+					<i class="fas fa-play"></i>
 				</button>
 			</div>
 		</b-dropdown-item-button>
@@ -63,19 +68,24 @@
 					query: {pattern: patternId,},
 				});
 			},
-			deletePattern(patternId) {
-				console.debug('Deleting pattern w/ id', patternId);
-				this.$http.delete(`pattern/${patternId}`)
+			togglePattern(pattern) {
+				const enabled = !pattern.enabled;
+				console.debug('Toggling pattern', pattern);
+				this.$http.post(`pattern/${pattern.id}/`, null, {
+					params: {
+						enabled,
+					},
+				})
 					.then(response => {
 						const data = response.data;
-						console.debug('Done deleting pattern', data);
+						console.debug('Done toggling pattern', data);
 						this.$emit('patternAddComplete');
 					}).catch(e => {
-					this.$bvToast.toast(`Failed to delete pattern: ${e}`, {
+					this.$bvToast.toast(`Failed to toggle pattern: ${e}`, {
 						title: 'Error',
 						variant: 'danger',
 					});
-					console.error('Failed to delete pattern', e);
+					console.error('Failed to toggle pattern', e);
 				});
 			},
 
@@ -85,6 +95,14 @@
 
 			deletePatternFromWs(id) {
 				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
+			},
+
+			togglePatternFromWs(id, enabled) {
+				this.$store.state.patterns.forEach(pattern => {
+					if (pattern.id === id) {
+						pattern.enabled = enabled;
+					}
+				});
 			},
 		},
 	};
