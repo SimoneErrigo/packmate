@@ -63,11 +63,11 @@
 		data() {
 			return {
 				newPattern: {
-					name: String(),
-					value: String(),
-					color: String(),
-					searchType: String(),
-					directionType: String(),
+					name: '',
+					value: '',
+					color: '#FF7474',
+					searchType: 'SUBSTRING',
+					directionType: 'BOTH',
 				},
 			};
 		},
@@ -77,7 +77,13 @@
 			},
 
 			reset() {
-				this.newPattern = {};
+				this.newPattern = {
+					name: '',
+					value: '',
+					color: '#FF7474',
+					searchType: 'SUBSTRING',
+					directionType: 'BOTH',
+				};
 			},
 
 			addPattern(ev) {
