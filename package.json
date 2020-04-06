@@ -12,6 +12,7 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.10.1",
     "core-js": "^3.6.4",
+    "idb": "^5.0.2",
     "sockjs-client": "^1.4.0",
     "vue": "^2.6.11",
     "vue-infinite-loading": "^2.4.5",

@@ -21,21 +21,41 @@
 </template>
 
 <script>
+	export const DB_OBJSTORE_COUNTERS_HISTORY = 'countersHistory';
+
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
 	import AddService from './views/AddService';
 	import EditService from './views/EditService';
 	import AddPattern from './views/AddPattern';
 	import SockJS from 'sockjs-client';
+	import {openDB,} from 'idb';
 
 	export default {
 		data() {
 			return {
 				websocket: null,
+				db: null,
 			};
 		},
 		mounted() {
 			this.connectWs();
+			openDB('packmate', 1, {
+				upgrade(db, oldVersion, newVersion) {
+					console.info('[IDB] Creating new database! Old rev %d, new rev %d',
+						oldVersion, newVersion);
+					db.createObjectStore(DB_OBJSTORE_COUNTERS_HISTORY, {
+						autoIncrement: false,
+						keyPath: null,
+					});
+				},
+			})
+				.then(db => {
+					this.db = db;
+				})
+				.catch(e => {
+					console.error('[IDB] Failed to open DB!', e);
+				});
 		},
 		beforeDestroy() {
 			this.websocket?.close();
@@ -85,7 +105,21 @@
 							break;
 						}
 						case 'COUNTERS_UPDATE': {
-							break;  //TODO implement
+							console.debug('Adding new counters to DB', parsed.value);
+							const tx = this.db.transaction(DB_OBJSTORE_COUNTERS_HISTORY, 'readwrite');
+							const data = parsed.value;
+							// noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
+							tx.store.add({
+								newPacketsCount: data.totalPackets,
+								newStreamsCount: data.totalStreams,
+								servicesPackets: data.servicesPackets,
+								servicesStreams: data.servicesStreams,
+							}, Date.now()).then(() => {
+								console.debug('[IDB] Added entry');
+							}).catch(e => {
+								console.error('[IDB] Failed to add entry!', e);
+							});
+							break;
 						}
 						default: {
 							console.error('[WS] Event is not implemented!', parsed);
