@@ -131,6 +131,11 @@
 						}
 						case 'PCAP_STARTED': {
 							this.$store.commit('startPcap');
+							this.$bvToast.toast(`Pcap file processing started`, {
+								title: 'Notification',
+								variant: 'info',
+								autoHideDelay: 5000,
+							});
 							break;
 						}
 						case 'PCAP_STOPPED': {

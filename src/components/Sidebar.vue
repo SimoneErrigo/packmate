@@ -176,6 +176,11 @@
 				this.$http.post('pcap/start')
 					.then(() => {
 						this.$store.commit('startPcap');
+						this.$bvToast.toast(`Pcap file processing started`, {
+							title: 'Notification',
+							variant: 'info',
+							autoHideDelay: 5000,
+						});
 					}).catch(e => {
 					this.$bvToast.toast(`Failed to start pcap: ${e}`, {
 						title: 'Error',
