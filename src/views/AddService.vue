@@ -43,7 +43,7 @@
 					label="Inflate WebSockets"
 					label-for="addSvc-inflateWS">
 				<b-form-checkbox id="addSvc-inflateWS" required
-								 v-model="inflateWebSockets"/>
+								 v-model="parseWebSockets"/>
 			</b-form-group>
 		</form>
 	</b-modal>
@@ -59,7 +59,7 @@
 				ungzipHttp: Boolean(),
 				urldecodeHttpRequests: Boolean(),
 				mergeAdjacentPackets: Boolean(),
-				inflateWebSockets: Boolean(),
+				parseWebSockets: Boolean(),
 			};
 		},
 		methods: {
@@ -75,7 +75,7 @@
 				this.ungzipHttp = false;
 				this.urldecodeHttpRequests = false;
 				this.mergeAdjacentPackets = false;
-				this.inflateWebSockets = false;
+				this.parseWebSockets = false;
 			},
 
 			createService(ev) {
@@ -84,7 +84,7 @@
 				const ungzipHttp = this.ungzipHttp;
 				const urldecodeHttpRequests = this.urldecodeHttpRequests;
 				const mergeAdjacentPackets = this.mergeAdjacentPackets;
-				const inflateWebSockets = this.inflateWebSockets;
+				const parseWebSockets = this.parseWebSockets;
 				if (!this.checkValidity()) {
 					ev.preventDefault();
 					console.debug('Form is invalid');
@@ -98,7 +98,7 @@
 					ungzipHttp,
 					urldecodeHttpRequests,
 					mergeAdjacentPackets,
-					inflateWebSockets,
+					parseWebSockets,
 				}).then(response => {
 					const data = response.data;
 					console.debug('Done adding service', data);

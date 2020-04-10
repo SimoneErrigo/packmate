@@ -39,7 +39,7 @@
 						label="Inflate WebSockets"
 						label-for="service-inflateWS">
 				<b-form-checkbox id="service-inflateWS" required
-								 v-model="service.inflateWebSockets"/>
+								 v-model="service.parseWebSockets"/>
 			</b-form-group>
 		</b-form>
 	</b-modal>
@@ -59,7 +59,7 @@
 				ungzipHttp: Boolean,
 				urldecodeHttpRequests: Boolean,
 				mergeAdjacentPackets: Boolean,
-				inflateWebSockets: Boolean,
+				parseWebSockets: Boolean,
 			},
 		},
 		data() {
