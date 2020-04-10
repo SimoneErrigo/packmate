@@ -15,6 +15,10 @@
 					@click.stop.prevent="toggleHexdump">
 				<i :class="this.$store.state.hexdumpMode ? 'far fa-file-code' : 'fas fa-align-left'"/>
 			</button>
+			<button type="button" class="btn btn-sm btn-outline-warning" v-if="!this.$store.state.pcapStarted"
+					@click.stop.prevent="startPcap">
+				<i class="fas fa-arrow-circle-down"/>
+			</button>
 			<button type="button" class="btn btn-sm btn-outline-info" style="float: right;"
 					@click.stop.prevent="scrollUp">
 				<i class="fas fa-angle-double-up"/>
@@ -163,6 +167,18 @@
 			toggleHexdump() {
 				this.$store.commit('toggleHexdumpMode');
 			},
+			startPcap() {
+				this.$http.post('pcap/start')
+					.then(() => {
+						this.$store.commit('startPcap');
+					}).catch(e => {
+					this.$bvToast.toast(`Failed to start pcap: ${e}`, {
+						title: 'Error',
+						variant: 'danger',
+					});
+					console.error('Failed to start pcap', e);
+				});
+			},
 			addStreamFromWs(stream) {
 				const currentPort = parseInt(this.$route?.params?.servicePort, 10);
 				if (currentPort && currentPort !== stream.service) return;
@@ -191,6 +207,13 @@
 		},
 		mounted() {
 			document.addEventListener('keydown', this.navigationKeysCallback);
+
+			this.$http.get('pcap/started')
+				.then(r => this.$store.state.pcapStarted = r.data)
+				.catch(e => {
+					console.error('Failed to get pcap status, defaulting to true:', e);
+					this.$store.state.pcapStarted = true;
+				});
 		},
 		beforeDestroy() {
 			document.removeEventListener('keydown', this.navigationKeysCallback);
