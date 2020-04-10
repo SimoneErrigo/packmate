@@ -5,7 +5,7 @@
 					:title="this.$store.state.pause ? 'Continue' : 'Pause new streams'"
 					:class="this.$store.state.pause ? 'btn-danger' : 'btn-outline-success'"
 					@click.stop.prevent="togglePause">
-				<i class="fas fa-pause"/>
+				<i :class="this.$store.state.pause ? 'fas fa-play' : 'fas fa-pause'"/>
 			</button>
 			<button type="button" class="btn btn-sm ml-1"
 					:title="this.$store.state.displayFavoritesOnly ? 'Show all streams' : 'Show only favorite streams'"
@@ -176,11 +176,6 @@
 				this.$http.post('pcap/start')
 					.then(() => {
 						this.$store.commit('startPcap');
-						this.$bvToast.toast(`Pcap file processing started`, {
-							title: 'Notification',
-							variant: 'info',
-							autoHideDelay: 5000,
-						});
 					}).catch(e => {
 					this.$bvToast.toast(`Failed to start pcap: ${e}`, {
 						title: 'Error',
