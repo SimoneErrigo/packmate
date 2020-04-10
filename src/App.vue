@@ -129,6 +129,23 @@
 							this.$refs.navbar.$refs.patternsDropdown.togglePatternFromWs(parsed.value, false);
 							break;
 						}
+						case 'PCAP_STARTED': {
+							this.$store.commit('startPcap');
+							this.$bvToast.toast(`Pcap file processing started`, {
+								title: 'Notification',
+								variant: 'info',
+								autoHideDelay: 5000,
+							});
+							break;
+						}
+						case 'PCAP_STOPPED': {
+							this.$bvToast.toast(`All streams processed`, {
+								title: 'Notification',
+								variant: 'success',
+								autoHideDelay: 5000,
+							});
+							break;
+						}
 						default: {
 							console.error('[WS] Event is not implemented!', parsed);
 							break;

@@ -2,20 +2,29 @@
 	<nav class="col-sm-3 d-none d-sm-block bg-light sidebar">
 		<div class="m-2">
 			<button type="button" class="btn btn-sm"
+					:title="this.$store.state.pause ? 'Continue' : 'Pause new streams'"
 					:class="this.$store.state.pause ? 'btn-danger' : 'btn-outline-success'"
 					@click.stop.prevent="togglePause">
-				<i class="fas fa-pause"/>
+				<i :class="this.$store.state.pause ? 'fas fa-play' : 'fas fa-pause'"/>
 			</button>
 			<button type="button" class="btn btn-sm ml-1"
+					:title="this.$store.state.displayFavoritesOnly ? 'Show all streams' : 'Show only favorite streams'"
 					:class="this.$store.state.displayFavoritesOnly ? 'btn-danger' : 'btn-outline-danger'"
 					@click.stop.prevent="toggleFavorites">
 				<i class="fas fa-star"/>
 			</button>
 			<button type="button" class="btn btn-outline-primary btn-sm ml-1"
+					:title="this.$store.state.hexdumpMode ? 'Switch to text view' : 'Switch to hexdump view'"
 					@click.stop.prevent="toggleHexdump">
 				<i :class="this.$store.state.hexdumpMode ? 'far fa-file-code' : 'fas fa-align-left'"/>
 			</button>
+			<button type="button" class="btn btn-sm btn-outline-warning ml-1" v-if="!this.$store.state.pcapStarted"
+					title="Start pcap file processing"
+					@click.stop.prevent="startPcap">
+				<i class="fas fa-arrow-circle-down"/>
+			</button>
 			<button type="button" class="btn btn-sm btn-outline-info" style="float: right;"
+					title="Scroll to top"
 					@click.stop.prevent="scrollUp">
 				<i class="fas fa-angle-double-up"/>
 			</button>
@@ -163,6 +172,18 @@
 			toggleHexdump() {
 				this.$store.commit('toggleHexdumpMode');
 			},
+			startPcap() {
+				this.$http.post('pcap/start')
+					.then(() => {
+						this.$store.commit('startPcap');
+					}).catch(e => {
+					this.$bvToast.toast(`Failed to start pcap: ${e}`, {
+						title: 'Error',
+						variant: 'danger',
+					});
+					console.error('Failed to start pcap', e);
+				});
+			},
 			addStreamFromWs(stream) {
 				const currentPort = parseInt(this.$route?.params?.servicePort, 10);
 				if (currentPort && currentPort !== stream.service) return;
@@ -191,6 +212,13 @@
 		},
 		mounted() {
 			document.addEventListener('keydown', this.navigationKeysCallback);
+
+			this.$http.get('pcap/started')
+				.then(r => this.$store.state.pcapStarted = r.data)
+				.catch(e => {
+					console.error('Failed to get pcap status, defaulting to true:', e);
+					this.$store.state.pcapStarted = true;
+				});
 		},
 		beforeDestroy() {
 			document.removeEventListener('keydown', this.navigationKeysCallback);

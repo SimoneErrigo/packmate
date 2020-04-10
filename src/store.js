@@ -15,6 +15,7 @@ export default new Vuex.Store({
 		pageSize: 25,
 		displayFavoritesOnly: false,
 		pause: false,
+		pcapStarted: true,
 
 		hexdumpMode: false,
 
@@ -33,6 +34,8 @@ export default new Vuex.Store({
 		toggleDisplayFavoritesOnly: (s, p) => s.displayFavoritesOnly = !s.displayFavoritesOnly,
 		// eslint-disable-next-line no-unused-vars
 		togglePause: (s, p) => s.pause = !s.pause,
+		// eslint-disable-next-line no-unused-vars
+		startPcap: (s, p) => s.pcapStarted = true,
 		// eslint-disable-next-line no-unused-vars
 		toggleHexdumpMode: (s, p) => s.hexdumpMode = !s.hexdumpMode,
 
@@ -54,6 +57,7 @@ export default new Vuex.Store({
 					&& mName !== 'setServiceModalName'
 					&& mName !== 'setServiceModalId'
 					&& mName !== 'togglePause'
+					&& mName !== 'startPcap'
 					&& mName !== 'toggleHexdumpMode'
 					&& mName !== 'setPatterns'
 					&& mName !== 'addPattern';

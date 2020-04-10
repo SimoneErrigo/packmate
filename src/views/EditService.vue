@@ -59,7 +59,7 @@
 					this.reset();
 					this.$bvModal.hide('editServiceModal');
 				}).catch(e => {
-					this.$bvToast.toast(`Не удалось отредактировать сервис: ${e}`, {
+					this.$bvToast.toast(`Failed to edit service: ${e}`, {
 						title: 'Сбой',
 						variant: 'danger',
 					});
@@ -77,7 +77,7 @@
 						this.reset();
 						this.$bvModal.hide('editServiceModal');
 					}).catch(e => {
-					this.$bvToast.toast(`Не удалось удалить сервис: ${e}`, {
+					this.$bvToast.toast(`Failed to remove service: ${e}`, {
 						title: 'Сбой',
 						variant: 'danger',
 					});
