@@ -10,7 +10,7 @@
 			<br/>
 			{{ dateToText(stream.startTimestamp) }}
 			<template v-if="!dateMatches(stream.startTimestamp, stream.endTimestamp)">
-				- {{ dateToText(stream.endTimestamp) }}
+				- {{ dateToText(stream.endTimestamp, dayMatches(stream.startTimestamp, stream.endTimestamp)) }}
 			</template>
 			<template v-if="stream.userAgentHash"><br/>UA: {{ stream.userAgentHash }}</template>
 			<br/>
@@ -45,14 +45,14 @@
 			};
 		},
 		methods: {
-			dateToText(unixTimestamp) {
+			dateToText(unixTimestamp, short = false) {
 				const date = new Date(unixTimestamp);
 				const options = {
 					hour: '2-digit',
 					minute: '2-digit',
 					second: '2-digit',
 				};
-				if (!this.isToday(date)) {
+				if (!short && !this.isToday(date)) {
 					options.month = '2-digit';
 					options.day = '2-digit';
 					return date.toLocaleDateString('ru-RU', options);
@@ -65,6 +65,15 @@
 				return someDate.getDate() === today.getDate() &&
 					someDate.getMonth() === today.getMonth() &&
 					someDate.getFullYear() === today.getFullYear();
+			},
+
+			dayMatches(rFirst, rSecond) {
+				const first = new Date(rFirst);
+				const second = new Date(rSecond);
+
+				return first.getDate() === second.getDate() &&
+					first.getMonth() === second.getMonth() &&
+					first.getFullYear() === second.getFullYear();
 			},
 
 			dateMatches(rFirst, rSecond) {
