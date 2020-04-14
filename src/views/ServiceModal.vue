@@ -18,6 +18,12 @@
 							  @keyup.enter.stop.prevent="submit"/>
 			</b-form-group>
 			<b-form-group label-cols-sm="4"
+						  label="Process chunked transfer encoding"
+						  label-for="service-process-chunked">
+				<b-form-checkbox id="service-process-chunked" required
+								 v-model="service.processChunkedEncoding"/>
+			</b-form-group>
+			<b-form-group label-cols-sm="4"
 						  label="Decompress GZIP"
 						  label-for="service-ungzip">
 				<b-form-checkbox id="service-ungzip" required
@@ -56,6 +62,7 @@
 			initialService: {
 				name: String,
 				port: Number,
+				processChunkedEncoding: Boolean,
 				ungzipHttp: Boolean,
 				urldecodeHttpRequests: Boolean,
 				mergeAdjacentPackets: Boolean,

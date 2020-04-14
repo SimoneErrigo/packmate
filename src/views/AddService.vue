@@ -19,6 +19,13 @@
 			</b-form-group>
 			<b-form-group
 					label-cols-sm="4"
+					label="Process chunked transfer encoding"
+					label-for="addSvc-process-chunked">
+				<b-form-checkbox id="addSvc-process-chunked" required
+								 v-model="processChunkedEncoding"/>
+			</b-form-group>
+			<b-form-group
+					label-cols-sm="4"
 					label="Decompress GZIP"
 					label-for="addSvc-ungzip">
 				<b-form-checkbox id="addSvc-ungzip" required
@@ -56,6 +63,7 @@
 			return {
 				svcName: String(),
 				svcPort: Number(),
+				processChunkedEncoding: Boolean,
 				ungzipHttp: Boolean(),
 				urldecodeHttpRequests: Boolean(),
 				mergeAdjacentPackets: Boolean(),
@@ -72,6 +80,7 @@
 			reset() {
 				this.svcName = '';
 				this.svcPort = 0;
+				this.processChunkedEncoding = false;
 				this.ungzipHttp = false;
 				this.urldecodeHttpRequests = false;
 				this.mergeAdjacentPackets = false;
@@ -81,6 +90,7 @@
 			createService(ev) {
 				const name = this.svcName;
 				const port = this.svcPort;
+				const processChunkedEncoding = this.processChunkedEncoding;
 				const ungzipHttp = this.ungzipHttp;
 				const urldecodeHttpRequests = this.urldecodeHttpRequests;
 				const mergeAdjacentPackets = this.mergeAdjacentPackets;
@@ -95,6 +105,7 @@
 				this.$http.post('service/', {
 					name,
 					port,
+					processChunkedEncoding,
 					ungzipHttp,
 					urldecodeHttpRequests,
 					mergeAdjacentPackets,
