@@ -52,6 +52,13 @@
 				<b-form-checkbox id="addSvc-inflateWS" required
 								 v-model="parseWebSockets"/>
 			</b-form-group>
+			<b-form-group
+					label-cols-sm="4"
+					label="Decrypt TLS (TLS_RSA_WITH_AES only)"
+					label-for="addSvc-decryptTls">
+				<b-form-checkbox id="addSvc-decryptTls" required
+								 v-model="decryptTls"/>
+			</b-form-group>
 		</form>
 	</b-modal>
 </template>
@@ -68,6 +75,7 @@
 				urldecodeHttpRequests: Boolean(),
 				mergeAdjacentPackets: Boolean(),
 				parseWebSockets: Boolean(),
+				decryptTls: Boolean(),
 			};
 		},
 		methods: {
@@ -85,6 +93,7 @@
 				this.urldecodeHttpRequests = false;
 				this.mergeAdjacentPackets = false;
 				this.parseWebSockets = false;
+				this.decryptTls = false;
 			},
 
 			createService(ev) {
@@ -95,6 +104,7 @@
 				const urldecodeHttpRequests = this.urldecodeHttpRequests;
 				const mergeAdjacentPackets = this.mergeAdjacentPackets;
 				const parseWebSockets = this.parseWebSockets;
+				const decryptTls = this.decryptTls;
 				if (!this.checkValidity()) {
 					ev.preventDefault();
 					console.debug('Form is invalid');
@@ -110,6 +120,7 @@
 					urldecodeHttpRequests,
 					mergeAdjacentPackets,
 					parseWebSockets,
+					decryptTls,
 				}).then(response => {
 					const data = response.data;
 					console.debug('Done adding service', data);

@@ -1,6 +1,6 @@
 <template>
 	<div class="packet" :class="{'packet-incoming': packet.incoming}">
-		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ packet.ungzipped ? 'GZIP ' : '' }}{{ packet.webSocketParsed ? 'WS' : '' }}
+		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ printPacketFlags(packet) }}
 			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
 			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
@@ -26,6 +26,7 @@
 				incoming: Boolean(),
 				ungzipped: Boolean(),
 				webSocketParsed: Boolean(),
+				tlsDecrypted: Boolean(),
 				content: String(),
 			},
 		},
@@ -46,6 +47,23 @@
 			},
 		},
 		methods: {
+			printPacketFlags(packet) {
+				let flags = [];
+
+				if (packet.ungzipped) {
+					flags.push('GZIP');
+				}
+
+				if (packet.webSocketParsed) {
+					flags.push('WS');
+				}
+
+				if (packet.tlsDecrypted) {
+					flags.push('TLS');
+				}
+
+				return flags.join(' ');
+			},
 			hexdump(buffer, blockSize, lineNumberBase) {
 				blockSize = parseInt(blockSize, 10) || 16;
 				lineNumberBase = parseInt(lineNumberBase, 10) || 10;
