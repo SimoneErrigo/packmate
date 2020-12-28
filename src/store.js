@@ -8,8 +8,6 @@ Vue.use(Vuex);
 // noinspection JSUnusedLocalSymbols,JSUnusedGlobalSymbols
 export default new Vuex.Store({
 	state: {
-		apiLogin: 'BinaryBears',
-		apiPassword: '123456',
 		hexdumpBlockSize: 16,
 		hexdumpLineNumberBase: 10,
 		pageSize: 25,
@@ -25,8 +23,6 @@ export default new Vuex.Store({
 		patterns: [],
 	},
 	mutations: {
-		setApiLogin: (s, p) => s.apiLogin = p,
-		setApiPassword: (s, p) => s.apiPassword = p,
 		setHexdumpBlockSize: (s, p) => s.hexdumpBlockSize = p,
 		setHexdumpLineNumberBase: (s, p) => s.hexdumpLineNumberBase = p,
 		setPageSize: (s, p) => s.pageSize = p,

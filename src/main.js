@@ -27,10 +27,6 @@ Vue.use(InfiniteLoading, {
 const axiosInstance = Axios.create({
 	baseURL: '/api', // TO!DO: edit for release!
 	// baseURL: 'http://192.168.79.131:65000/api',
-	auth: {
-		username: store.state.apiLogin,
-		password: store.state.apiPassword,
-	},
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',

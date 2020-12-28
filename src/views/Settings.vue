@@ -4,20 +4,6 @@
 		<b-form-group
 				label-cols-sm="4"
 				label-cols-lg="3"
-				label="API login"
-				label-for="settings-apiLogin">
-			<b-form-input id="settings-apiLogin" v-model="apiLogin"/>
-		</b-form-group>
-		<b-form-group
-				label-cols-sm="4"
-				label-cols-lg="3"
-				label="API password"
-				label-for="settings-apiPassword">
-			<b-form-input type="password" id="settings-apiPassword" v-model="apiPassword"/>
-		</b-form-group>
-		<b-form-group
-				label-cols-sm="4"
-				label-cols-lg="3"
 				description="The number of bytes to display in the binary representation of the packet"
 				label="HEX block width"
 				label-for="settings-hexdumpBlockSize">
@@ -49,24 +35,6 @@
 	export default {
 		name: 'Settings',
 		computed: {
-			apiLogin: {
-				get() {
-					return this.$store.state.apiLogin;
-				},
-				set(v) {
-					this.$store.commit('setApiLogin', v);
-					this.$http.defaults.auth.username = v;
-				},
-			},
-			apiPassword: {
-				get() {
-					return this.$store.state.apiPassword;
-				},
-				set(v) {
-					this.$store.commit('setApiPassword', v);
-					this.$http.defaults.auth.password = v;
-				},
-			},
 			hexdumpBlockSize: {
 				get() {
 					return this.$store.state.hexdumpBlockSize;
