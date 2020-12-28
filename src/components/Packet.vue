@@ -32,14 +32,14 @@
 		},
 		computed: {
 			hexdata() {
-				const dataString = atob(this.packet.content);
+				const dataString = this.atou(this.packet.content);
 				const dump = this.hexdump(dataString, this.$store.state.hexdumpBlockSize, this.$store.state.hexdumpLineNumberBase);
 				return this.escapeHtml(dump)
 					.split('\n')
 					.join('<br>'); // Replace all \n to <br>
 			},
 			stringdata() {
-				const dataString = atob(this.packet.content);
+				const dataString = this.atou(this.packet.content);
 				const dump = this.highlightPatterns(dataString);
 				return this.escapeHtml(dump)
 					.split('\n')
@@ -47,6 +47,9 @@
 			},
 		},
 		methods: {
+      atou(b64) {
+        return decodeURIComponent(escape(atob(b64)));
+      },
 			printPacketFlags(packet) {
 				let flags = [];
 
