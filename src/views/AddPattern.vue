@@ -22,7 +22,18 @@
 							  id="pattern-value" required v-model="newPattern.value"
 							  :placeholder="getPlaceholder()"/>
 			</b-form-group>
-			<b-form-group
+      <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          label="Search action"
+          description="What to do with matching streams"
+          label-for="pattern-actionType">
+        <b-form-select id="pattern-actionType" required v-model="newPattern.actionType">
+          <option value="FIND" selected>Highlight found pattern</option>
+          <option value="IGNORE">Ignore matching streams</option>
+        </b-form-select>
+      </b-form-group>
+			<b-form-group v-if="newPattern.actionType === 'FIND'"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Color"
@@ -46,7 +57,7 @@
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Search type"
-					description="in which packets to search for a pattern"
+					description="In which packets to search for a pattern"
 					label-for="pattern-type">
 				<b-form-select id="pattern-type" required v-model="newPattern.directionType">
 					<option value="INPUT">Request</option>
@@ -70,6 +81,7 @@
 					color: '#FF7474',
 					searchType: 'SUBSTRING',
 					directionType: 'BOTH',
+          actionType: 'FIND',
 				},
 			};
 		},
@@ -98,6 +110,7 @@
 					color: '#FF7474',
 					searchType: 'SUBSTRING',
 					directionType: 'BOTH',
+          actionType: 'FIND',
 				};
 			},
 

@@ -7,15 +7,25 @@
 			</button>
 		</li>
 		<b-dropdown-divider/>
+		<b-dropdown-item-button @click.stop.prevent="resetPatternSelection">
+			<strong>All streams</strong>
+		</b-dropdown-item-button>
 		<b-dropdown-item-button v-for="pattern in this.$store.state.patterns"
-								:key="pattern.id" @click.stop.prevent="openPattern(pattern.id)">
-			<strong v-if="pattern.enabled" :style="`color: ${pattern.color};`">{{ pattern.name }}</strong>
+								:key="pattern.id" @click.stop.prevent="openPattern(pattern)"
+								:class="{ 'ignore-pattern' : pattern.actionType === 'IGNORE' }">
+
+			<strong v-if="pattern.enabled" :style="getPatternColor">{{ pattern.name }}</strong>
 			<s v-else :style="`color: ${pattern.color};`">{{ pattern.name }}</s>:
+
 			<code>{{ getSearchTypeValue(pattern.searchType, pattern.value) }}</code>;
-			search
+
+      <template v-if="pattern.actionType === 'FIND'">search </template>
+      <template v-else>ignore </template>
+
 			<template v-if="pattern.directionType === 'BOTH'">anywhere</template>
 			<template v-else-if="pattern.directionType === 'INPUT'">in request</template>
 			<template v-else>in response</template>
+
 			<div class="float-right" style="margin-left: 2em;">
 				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-block btn-sm"
 						@click.stop.prevent="togglePattern(pattern)">
@@ -33,9 +43,7 @@
 	export default {
 		name: 'PatternsDropdown',
 		data() {
-			return {
-				// patterns: Array(),
-			};
+			return {};
 		},
 		mounted() {
 			this.updatePatterns();
@@ -46,6 +54,13 @@
 				else if (searchType === 'SUBSTRING') return `'${value}'`;
 				else return `0x${value}`;
 			},
+    	getPatternColor(pattern) {
+				if (pattern.actionType === 'FIND') {
+					return `color: ${pattern.color};`;
+				} else {
+					return `color: inherit;`;
+				}
+    	},
 			showAddService() {
 				this.$bvModal.show('addPatternModal');
 			},
@@ -60,13 +75,24 @@
 						console.error('Failed to load patterns:', e);
 					});
 			},
-			openPattern(patternId) {
-				console.debug('Opening pattern w/ id', patternId);
+			openPattern(pattern) {
+				if (pattern.actionType === 'IGNORE') {
+					return;
+				}
+
+				console.debug('Opening pattern w/ id', pattern.id);
 				this.$router.push({
 					name: 'stream',
 					params: this.$route.params,
-					query: {pattern: patternId,},
-				});
+					query: {pattern: pattern.id,},
+				}, () => {});
+			},
+			resetPatternSelection() {
+				console.debug('Resetting pattern selection');
+				this.$router.push({
+					name: 'stream',
+					params: this.$route.params,
+				}, () => {});
 			},
 			togglePattern(pattern) {
 				const enabled = !pattern.enabled;
@@ -111,5 +137,10 @@
 	code {
 		font-family: "Ubuntu Mono", "Lucida Console", monospace;
 		font-size: 100%;
+	}
+</style>
+<style>
+	.ignore-pattern button {
+		cursor: default !important;
 	}
 </style>
