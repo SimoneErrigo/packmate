@@ -27,12 +27,20 @@
 			<template v-else>in response</template>
 
 			<div class="float-right" style="margin-left: 2em;">
-				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-block btn-sm"
-						@click.stop.prevent="togglePattern(pattern)">
+				<button v-if="pattern.actionType === 'FIND'" type="button" class="btn btn-outline-warning btn-sm mr-1"
+								@click.stop.prevent="showLookBack(pattern)"
+								title="Apply pattern to older streams">
+					<i class="fas fa-backward"></i>
+				</button>
+
+				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-sm"
+						@click.stop.prevent="togglePattern(pattern)"
+						title="Stop matching streams with this pattern">
 					<i class="fas fa-pause"></i>
 				</button>
-				<button v-else type="button" class="btn btn-outline-success btn-block btn-sm"
-						@click.stop.prevent="togglePattern(pattern)">
+				<button v-else type="button" class="btn btn-outline-success btn-sm"
+						@click.stop.prevent="togglePattern(pattern)"
+						title="Start matching streams with this pattern again">
 					<i class="fas fa-play"></i>
 				</button>
 			</div>
@@ -42,9 +50,6 @@
 <script>
 	export default {
 		name: 'PatternsDropdown',
-		data() {
-			return {};
-		},
 		mounted() {
 			this.updatePatterns();
 		},
@@ -63,6 +68,11 @@
     	},
 			showAddService() {
 				this.$bvModal.show('addPatternModal');
+			},
+			showLookBack(pattern) {
+				// Не знаю, как сделать это без костылей
+				this.$root.$children[0].$refs.lookBack.patternId = pattern.id;
+				this.$bvModal.show('lookBackModal');
 			},
 			updatePatterns() {
 				this.$http.get('pattern/')
@@ -114,15 +124,12 @@
 					console.error('Failed to toggle pattern', e);
 				});
 			},
-
 			addPatternFromWs(pattern) {
 				this.$store.commit('addPattern', pattern);
 			},
-
 			deletePatternFromWs(id) {
 				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
 			},
-
 			togglePatternFromWs(id, enabled) {
 				this.$store.state.patterns.forEach(pattern => {
 					if (pattern.id === id) {

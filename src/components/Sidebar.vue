@@ -134,7 +134,7 @@
 				if (ourStreams?.length && ourStreams[ourStreams.length - 1]) {
 					startsFrom = ourStreams[ourStreams.length - 1].id;
 				} else {
-					startsFrom = Number.MAX_SAFE_INTEGER; // FIXME: rewrite backend?
+					startsFrom = Number.MAX_SAFE_INTEGER;
 				}
 
 				this.$http.post(`/stream/${this.$route?.params?.servicePort || 'all'}`, {
@@ -177,12 +177,12 @@
 					.then(() => {
 						this.$store.commit('startPcap');
 					}).catch(e => {
-					this.$bvToast.toast(`Failed to start pcap: ${e}`, {
-						title: 'Error',
-						variant: 'danger',
+						this.$bvToast.toast(`Failed to start pcap: ${e}`, {
+							title: 'Error',
+							variant: 'danger',
+						});
+						console.error('Failed to start pcap', e);
 					});
-					console.error('Failed to start pcap', e);
-				});
 			},
 			addStreamFromWs(stream) {
 				const currentPort = parseInt(this.$route?.params?.servicePort, 10);

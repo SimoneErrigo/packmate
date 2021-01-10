@@ -17,6 +17,7 @@
 		<AddService/>
 		<EditService/>
 		<AddPattern/>
+		<LookBack ref="lookBack" />
 	</div>
 </template>
 
@@ -28,6 +29,7 @@
 	import AddService from './views/AddService';
 	import EditService from './views/EditService';
 	import AddPattern from './views/AddPattern';
+	import LookBack from './views/LookBack';
 	import SockJS from 'sockjs-client';
 	import {openDB,} from 'idb';
 
@@ -81,7 +83,6 @@
 				};
 				this.websocket.onmessage = (ev) => {
 					const parsed = JSON.parse(ev.data);
-					// console.debug('[WS] New message', parsed);
 
 					switch (parsed.type) {
 						case 'NEW_STREAM': {
@@ -146,6 +147,16 @@
 							});
 							break;
 						}
+						case 'FINISH_LOOKBACK': {
+							this.$bvToast.toast(`Lookback completed`, {
+								title: 'Notification',
+								variant: 'success',
+								autoHideDelay: 5000,
+							});
+							this.$refs.sidebar.streams = [];
+							this.$refs.sidebar.$refs.infiniteLoader.stateChanger.reset();
+							break;
+						}
 						default: {
 							console.error('[WS] Event is not implemented!', parsed);
 							break;
@@ -161,6 +172,7 @@
 			AddPattern,
 			AddService,
 			EditService,
+			LookBack,
 			Settings,
 			Navbar,
 		},

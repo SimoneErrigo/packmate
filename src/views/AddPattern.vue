@@ -87,7 +87,7 @@
 		},
 		methods: {
 			getPlaceholder() {
-				if (this.newPattern.searchType === 'REGEX') return 'CTF{.{42}}';
+				if (this.newPattern.searchType === 'REGEX') return '[A-Z0-9]{31}=';
 				else if (this.newPattern.searchType === 'SUBSTRING') return 'HTTP/2';
 				else return 'DEAD BEEF 1337';
 			},
@@ -144,7 +144,3 @@
 		},
 	};
 </script>
-
-<style scoped>
-
-</style>
