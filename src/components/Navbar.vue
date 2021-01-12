@@ -1,5 +1,13 @@
 <template>
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
+		<span class="navbar-brand mb-0 ml-2">Packmate</span>
+		<span class="navbar-text">
+      {{ this.$store.state.currentStreamsCount }}
+			<u title="Streams per minute">SPM</u>
+			, {{ packetsPerStream }}
+			<u title="Packets per stream (average)">PPS</u>
+    </span>
+
 		<PatternsDropdown ref="patternsDropdown"/>
 
 		<div class="navbar-collapse collapse">
@@ -41,6 +49,19 @@
 
 	export default {
 		name: 'Navbar',
+		computed: {
+			packetsPerStream() {
+				let streams = this.$store.state.currentStreamsCount;
+				let packets = this.$store.state.currentPacketsCount;
+
+				if (streams === 0) {
+					return 0;
+				} else {
+					let pps = packets / streams;
+					return Math.round((pps + Number.EPSILON) * 10) / 10;
+				}
+			},
+		},
 		data() {
 			return {
 				serviceModalIsCreating: true,
@@ -108,6 +129,11 @@
 
 	nav {
 		overflow-x: auto;
+	}
+
+	u {
+		text-underline-position: under;
+		text-decoration-style: dotted;
 	}
 
 	::-webkit-scrollbar {

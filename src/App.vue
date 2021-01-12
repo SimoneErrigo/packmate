@@ -21,6 +21,7 @@
 	</div>
 </template>
 
+<!--suppress JSUnresolvedVariable -->
 <script>
 	export const DB_OBJSTORE_COUNTERS_HISTORY = 'countersHistory';
 
@@ -106,10 +107,12 @@
 							break;
 						}
 						case 'COUNTERS_UPDATE': {
+							const data = parsed.value;
+							this.$store.commit('setCurrentPacketsCount', data.totalPackets);
+							this.$store.commit('setCurrentStreamsCount', data.totalStreams);
+
 							console.debug('Adding new counters to DB', parsed.value);
 							const tx = this.db.transaction(DB_OBJSTORE_COUNTERS_HISTORY, 'readwrite');
-							const data = parsed.value;
-							// noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
 							tx.store.add({
 								newPacketsCount: data.totalPackets,
 								newStreamsCount: data.totalStreams,

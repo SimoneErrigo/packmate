@@ -22,6 +22,9 @@ export default new Vuex.Store({
 
 		patterns: [],
 		services: [],
+
+		currentPacketsCount: 0,
+		currentStreamsCount: 0,
 	},
 	mutations: {
 		setHexdumpBlockSize: (s, p) => s.hexdumpBlockSize = p,
@@ -44,6 +47,9 @@ export default new Vuex.Store({
 
 		setServices: (s, p) => s.services = p,
 		addService: (s, p) => s.services.push(p),
+
+		setCurrentPacketsCount: (s, p) => s.currentPacketsCount = p,
+		setCurrentStreamsCount: (s, p) => s.currentStreamsCount = p,
 	},
 	actions: {},
 	plugins: [
@@ -62,7 +68,9 @@ export default new Vuex.Store({
 					&& mName !== 'setPatterns'
 					&& mName !== 'addPattern'
 					&& mName !== 'setServices'
-					&& mName !== 'addService';
+					&& mName !== 'addService'
+					&& mName !== 'setCurrentPacketsCount'
+					&& mName !== 'setCurrentStreamsCount';
 				console.debug('Processing?', process);
 				return process;
 			},

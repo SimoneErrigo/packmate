@@ -1,5 +1,5 @@
 <template>
-	<b-dropdown no-flip text="Patterns" block variant="dark" class="col-sm-2 mr-0 p-0">
+	<b-dropdown no-flip text="Patterns" block variant="dark" class="col-sm-1 mr-0 p-0">
 		<li role="presentation" style="padding-left: 0.5em; padding-right: 0.5em;">
 			<button role="menuitem" type="button" class="btn btn-sm btn-primary btn-block"
 					@click.stop.prevent="showAddPattern">
