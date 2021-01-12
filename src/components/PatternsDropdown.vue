@@ -22,9 +22,12 @@
       <template v-if="pattern.actionType === 'FIND'">search </template>
       <template v-else>ignore </template>
 
-			<template v-if="pattern.directionType === 'BOTH'">anywhere</template>
-			<template v-else-if="pattern.directionType === 'INPUT'">in request</template>
-			<template v-else>in response</template>
+			<template v-if="pattern.directionType === 'BOTH'">anywhere </template>
+			<template v-else-if="pattern.directionType === 'INPUT'">in request </template>
+			<template v-else>in response </template>
+
+			<template v-if="pattern.serviceId === null">of any service</template>
+			<template v-else>of service {{ getServiceName(pattern.serviceId) }} #{{ pattern.serviceId }}</template>
 
 			<div class="float-right" style="margin-left: 2em;">
 				<button v-if="pattern.actionType === 'FIND'" type="button" class="btn btn-outline-warning btn-sm mr-1"
@@ -66,6 +69,9 @@
 					return `color: inherit;`;
 				}
     	},
+			getServiceName(port) {
+				return this.$store.state.services.find(o => o.port === port)?.name ?? '<Deleted service>'
+			},
 			showAddPattern() {
 				this.$bvModal.show('addPatternModal');
 			},

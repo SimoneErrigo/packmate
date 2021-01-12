@@ -12,6 +12,7 @@
 					label-for="pattern-name">
 				<b-form-input @keydown.native.enter="addPattern" id="pattern-name" required v-model="newPattern.name"/>
 			</b-form-group>
+
 			<b-form-group
 					label-cols-sm="4"
 					label-cols-lg="3"
@@ -22,6 +23,7 @@
 							  id="pattern-value" required v-model="newPattern.value"
 							  :placeholder="getPlaceholder()"/>
 			</b-form-group>
+
       <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -33,6 +35,7 @@
           <option value="IGNORE">Ignore matching streams</option>
         </b-form-select>
       </b-form-group>
+
 			<b-form-group v-if="newPattern.actionType === 'FIND'"
 					label-cols-sm="4"
 					label-cols-lg="3"
@@ -41,6 +44,7 @@
 					label-for="pattern-color">
 				<b-form-input id="pattern-color" required type="color" v-model="newPattern.color"/>
 			</b-form-group>
+
 			<b-form-group
 					label-cols-sm="4"
 					label-cols-lg="3"
@@ -53,6 +57,7 @@
 					<option value="SUBBYTES">Bytes</option>
 				</b-form-select>
 			</b-form-group>
+
 			<b-form-group
 					label-cols-sm="4"
 					label-cols-lg="3"
@@ -64,6 +69,16 @@
 					<option value="OUTPUT">Response</option>
 					<option value="BOTH" selected>Anywhere</option>
 				</b-form-select>
+			</b-form-group>
+
+			<b-form-group
+					label-cols-sm="4"
+					label-cols-lg="3"
+					label="Service"
+					description="Apply this pattern only to the specific service"
+					label-for="pattern-service">
+				<b-form-select id="pattern-service" :options="serviceOptions"
+											 required v-model="newPattern.serviceId"></b-form-select>
 			</b-form-group>
 		</form>
 	</b-modal>
@@ -82,8 +97,25 @@
 					searchType: 'SUBSTRING',
 					directionType: 'BOTH',
           actionType: 'FIND',
+					serviceId: null,
 				},
 			};
+		},
+		computed: {
+			serviceOptions: function () {
+				let services = this.$store.state.services;
+				let options = services.map(service => {
+					return {
+						value: service.port,
+						text: `${service.name} #${service.port}`,
+					}
+				});
+
+				return [
+						{ value: null, text: 'Any service', },
+						...options,
+				];
+			},
 		},
 		methods: {
 			getPlaceholder() {
