@@ -21,6 +21,7 @@ export default new Vuex.Store({
 		serviceModalId: 0,
 
 		patterns: [],
+		services: [],
 	},
 	mutations: {
 		setHexdumpBlockSize: (s, p) => s.hexdumpBlockSize = p,
@@ -40,6 +41,9 @@ export default new Vuex.Store({
 
 		setPatterns: (s, p) => s.patterns = p,
 		addPattern: (s, p) => s.patterns.push(p),
+
+		setServices: (s, p) => s.services = p,
+		addService: (s, p) => s.services.push(p),
 	},
 	actions: {},
 	plugins: [
@@ -56,7 +60,9 @@ export default new Vuex.Store({
 					&& mName !== 'startPcap'
 					&& mName !== 'toggleHexdumpMode'
 					&& mName !== 'setPatterns'
-					&& mName !== 'addPattern';
+					&& mName !== 'addPattern'
+					&& mName !== 'setServices'
+					&& mName !== 'addService';
 				console.debug('Processing?', process);
 				return process;
 			},

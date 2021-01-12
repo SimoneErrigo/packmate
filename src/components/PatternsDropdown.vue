@@ -2,7 +2,7 @@
 	<b-dropdown no-flip text="Patterns" block variant="dark" class="col-sm-2 mr-0 p-0">
 		<li role="presentation" style="padding-left: 0.5em; padding-right: 0.5em;">
 			<button role="menuitem" type="button" class="btn btn-sm btn-primary btn-block"
-					@click.stop.prevent="showAddService">
+					@click.stop.prevent="showAddPattern">
 				<i class="fas fa-plus"/>
 			</button>
 		</li>
@@ -66,7 +66,7 @@
 					return `color: inherit;`;
 				}
     	},
-			showAddService() {
+			showAddPattern() {
 				this.$bvModal.show('addPatternModal');
 			},
 			showLookBack(pattern) {
@@ -122,19 +122,6 @@
 						variant: 'danger',
 					});
 					console.error('Failed to toggle pattern', e);
-				});
-			},
-			addPatternFromWs(pattern) {
-				this.$store.commit('addPattern', pattern);
-			},
-			deletePatternFromWs(id) {
-				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
-			},
-			togglePatternFromWs(id, enabled) {
-				this.$store.state.patterns.forEach(pattern => {
-					if (pattern.id === id) {
-						pattern.enabled = enabled;
-					}
 				});
 			},
 		},

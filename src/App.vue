@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<Navbar ref="navbar"/>
+		<Navbar/>
 		<div class="container-fluid">
 			<div class="row">
 				<transition name="fade" mode="out-in">
@@ -90,19 +90,19 @@
 							break;
 						}
 						case 'SAVE_SERVICE': {
-							this.$refs.navbar.addServiceFromWs(parsed.value);
+							this.addServiceFromWs(parsed.value);
 							break;
 						}
 						case 'DELETE_SERVICE': {
-							this.$refs.navbar.deleteServiceFromWs(parsed.value);
+							this.deleteServiceFromWs(parsed.value);
 							break;
 						}
 						case 'SAVE_PATTERN': {
-							this.$refs.navbar.$refs.patternsDropdown.addPatternFromWs(parsed.value);
+							this.addPatternFromWs(parsed.value);
 							break;
 						}
 						case 'DELETE_PATTERN': {
-							this.$refs.navbar.$refs.patternsDropdown.deletePatternFromWs(parsed.value);
+							this.deletePatternFromWs(parsed.value);
 							break;
 						}
 						case 'COUNTERS_UPDATE': {
@@ -123,11 +123,11 @@
 							break;
 						}
 						case 'ENABLE_PATTERN': {
-							this.$refs.navbar.$refs.patternsDropdown.togglePatternFromWs(parsed.value, true);
+							this.togglePatternFromWs(parsed.value, true);
 							break;
 						}
 						case 'DISABLE_PATTERN': {
-							this.$refs.navbar.$refs.patternsDropdown.togglePatternFromWs(parsed.value, false);
+							this.togglePatternFromWs(parsed.value, false);
 							break;
 						}
 						case 'PCAP_STARTED': {
@@ -167,6 +167,33 @@
 					console.warn('[WS] Error', ev);
 				};
 			},
+			addPatternFromWs(pattern) {
+				this.$store.commit('addPattern', pattern);
+			},
+			deletePatternFromWs(id) {
+				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
+			},
+			togglePatternFromWs(id, enabled) {
+				this.$store.state.patterns.forEach(pattern => {
+					if (pattern.id === id) {
+						pattern.enabled = enabled;
+					}
+				});
+			},
+			addServiceFromWs(service) {
+				const foundIndex = this.$store.state.services.findIndex(el => el.port === service.port);
+				if (foundIndex === -1) {
+          this.$store.commit('addService', service);
+					return;
+				}
+
+				let newServices = this.$store.state.services.slice();
+        newServices.splice(foundIndex, 1, service);
+        this.$store.commit('setServices', newServices);
+			},
+			deleteServiceFromWs(port) {
+        this.$store.commit('setServices', this.$store.state.services.filter(o => o.port !== port));
+      },
 		},
 		components: {
 			AddPattern,

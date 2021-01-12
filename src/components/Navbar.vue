@@ -7,7 +7,7 @@
 				<li class="nav-item text-nowrap">
 					<router-link class="nav-link" to="/" exact>All</router-link>
 				</li>
-				<template v-for="service in services">
+				<template v-for="service in this.$store.state.services">
 					<router-link :key="service.name" tag="li" class="nav-item text-nowrap edit-button"
 								 :to="{name:'stream', params: {servicePort: service.port}, query: $route.query}">
 						<a class="nav-link">{{service.name}} #{{service.port}}</a>
@@ -43,8 +43,6 @@
 		name: 'Navbar',
 		data() {
 			return {
-				services: Array(),
-
 				serviceModalIsCreating: true,
 				serviceModalEditingService: {},
 			};
@@ -73,7 +71,7 @@
 			},
 			updateServices() {
 				this.$http.get('service/')
-					.then(r => this.services = r.data)
+					.then(r => this.$store.commit('setServices', r.data))
 					.catch(e => {
 						this.$bvToast.toast(`Failed to load services: ${e}`, {
 							title: 'Error',
@@ -81,17 +79,6 @@
 						});
 						console.error('Failed to load services:', e);
 					});
-			},
-			addServiceFromWs(service) {
-				const foundIndex = this.services.findIndex(el => el.port === service.port);
-				if (foundIndex === -1) {
-					this.services.push(service);
-					return;
-				}
-				this.services.splice(foundIndex, 1, service);
-			},
-			deleteServiceFromWs(port) {
-				this.services = this.services.filter(o => o.port !== port);
 			},
 		},
 		components: {
