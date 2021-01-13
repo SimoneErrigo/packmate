@@ -108,6 +108,8 @@
 							const data = parsed.value;
 							this.$store.commit('setCurrentPacketsCount', data.totalPackets);
 							this.$store.commit('setCurrentStreamsCount', data.totalStreams);
+							this.$store.commit('setCurrentServicesPacketsCount', data.servicesPackets);
+							this.$store.commit('setCurrentServicesStreamsCount', data.servicesStreams);
 
 							console.debug('Adding new counters to DB', parsed.value);
 							const tx = this.db.transaction(DB_OBJSTORE_COUNTERS_HISTORY, 'readwrite');

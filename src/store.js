@@ -25,6 +25,8 @@ export default new Vuex.Store({
 
 		currentPacketsCount: 0,
 		currentStreamsCount: 0,
+		currentServicesPacketsCount: {},
+		currentServicesStreamsCount: {},
 	},
 	mutations: {
 		setHexdumpBlockSize: (s, p) => s.hexdumpBlockSize = p,
@@ -50,6 +52,8 @@ export default new Vuex.Store({
 
 		setCurrentPacketsCount: (s, p) => s.currentPacketsCount = p,
 		setCurrentStreamsCount: (s, p) => s.currentStreamsCount = p,
+		setCurrentServicesPacketsCount: (s, p) => s.currentServicesPacketsCount = p,
+		setCurrentServicesStreamsCount: (s, p) => s.currentServicesStreamsCount = p,
 	},
 	actions: {},
 	plugins: [
@@ -70,7 +74,9 @@ export default new Vuex.Store({
 					&& mName !== 'setServices'
 					&& mName !== 'addService'
 					&& mName !== 'setCurrentPacketsCount'
-					&& mName !== 'setCurrentStreamsCount';
+					&& mName !== 'setCurrentStreamsCount'
+					&& mName !== 'setCurrentServicesPacketsCount'
+					&& mName !== 'setCurrentServicesStreamsCount';
 				console.debug('Processing?', process);
 				return process;
 			},

@@ -18,7 +18,11 @@
 				<template v-for="service in this.$store.state.services">
 					<router-link :key="service.name" tag="li" class="nav-item text-nowrap edit-button"
 								 :to="{name:'stream', params: {servicePort: service.port}, query: $route.query}">
-						<a class="nav-link">{{service.name}} #{{service.port}}</a>
+						<a class="nav-link">
+							{{service.name}} #{{service.port}}
+							({{ getSpmForService(service.port) }}
+							<u title="Streams per minute">SPM</u>)
+						</a>
 
 						<a class="nav-link pl-0" style="cursor: pointer" @click.stop.prevent="editService(service)">
 							<i class="fas fa-pencil-alt"/>
@@ -72,6 +76,9 @@
 			this.updateServices();
 		},
 		methods: {
+			getSpmForService(port) {
+				return this.$store.state.currentServicesStreamsCount[port] ?? 0;
+			},
 			editService(service) {
 				this.serviceModalIsCreating = false;
 				this.serviceModalEditingService = {};
