@@ -1,7 +1,7 @@
 <template>
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
 		<span class="navbar-brand mb-0 ml-2">Packmate</span>
-		<span class="navbar-text">
+		<span class="navbar-text navbar-stats">
       {{ this.$store.state.currentStreamsCount }}
 			<u title="Streams per minute">SPM</u>
 			, {{ packetsPerStream }}
@@ -11,7 +11,7 @@
 		<PatternsDropdown ref="patternsDropdown"/>
 
 		<div class="navbar-collapse collapse">
-			<ul class="navbar-nav px-3 mr-auto">
+			<ul class="navbar-nav px-1 mr-auto">
 				<li class="nav-item text-nowrap">
 					<router-link class="nav-link" to="/" exact>All</router-link>
 				</li>
@@ -20,7 +20,7 @@
 								 :to="{name:'stream', params: {servicePort: service.port}, query: $route.query}">
 						<a class="nav-link">{{service.name}} #{{service.port}}</a>
 
-						<a class="nav-link" style="cursor: pointer" @click.stop.prevent="editService(service)">
+						<a class="nav-link pl-0" style="cursor: pointer" @click.stop.prevent="editService(service)">
 							<i class="fas fa-pencil-alt"/>
 						</a>
 					</router-link>
@@ -125,6 +125,10 @@
 
 	.navbar-cogs > i:hover {
 		color: #FFF;
+	}
+
+	.navbar-stats {
+		white-space: nowrap;
 	}
 
 	nav {
