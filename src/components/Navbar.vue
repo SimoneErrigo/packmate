@@ -1,7 +1,7 @@
 <template>
 	<nav class="navbar navbar-dark navbar-expand fixed-top bg-dark flex-md-nowrap p-0 shadow">
 		<span class="navbar-brand mb-0 ml-2">Packmate</span>
-		<span class="navbar-text navbar-stats">
+		<span class="navbar-text navbar-nowrap">
       {{ this.$store.state.currentStreamsCount }}
 			<u title="Streams per minute">SPM</u>
 			, {{ packetsPerStream }}
@@ -10,13 +10,17 @@
 
 		<PatternsDropdown ref="patternsDropdown"/>
 
+    <span v-if="this.$route.query.pattern" class="navbar-text navbar-nowrap">
+      {{ selectedPatternText }}
+    </span>
+
 		<div class="navbar-collapse collapse">
 			<ul class="navbar-nav px-1 mr-auto">
 				<li class="nav-item text-nowrap">
-					<router-link class="nav-link" to="/" exact>All</router-link>
+					<router-link class="nav-link" :to="{name:'stream', params: {}, query: $route.query}" exact>All</router-link>
 				</li>
 				<template v-for="service in this.$store.state.services">
-					<router-link :key="service.name" tag="li" class="nav-item text-nowrap edit-button"
+					<router-link :key="service.port" tag="li" class="nav-item text-nowrap edit-button"
 								 :to="{name:'stream', params: {servicePort: service.port}, query: $route.query}">
 						<a class="nav-link">
 							{{service.name}} #{{service.port}}
@@ -54,7 +58,7 @@
 	export default {
 		name: 'Navbar',
 		computed: {
-			packetsPerStream() {
+			packetsPerStream: function() {
 				let streams = this.$store.state.currentStreamsCount;
 				let packets = this.$store.state.currentPacketsCount;
 
@@ -65,6 +69,19 @@
 					return Math.round((pps + Number.EPSILON) * 10) / 10;
 				}
 			},
+      selectedPatternText: function () {
+			  let selected = this.$route.query.pattern;
+			  if (typeof selected === 'string') {
+			    selected = parseInt(selected);
+        }
+
+        let pattern = this.$store.state.patterns.find(o => o.id === selected);
+        if (pattern) {
+          return `[Selected: ${pattern.name}]`;
+        } else {
+          return '[Invalid pattern]';
+        }
+      },
 		},
 		data() {
 			return {
@@ -134,7 +151,7 @@
 		color: #FFF;
 	}
 
-	.navbar-stats {
+	.navbar-nowrap {
 		white-space: nowrap;
 	}
 
