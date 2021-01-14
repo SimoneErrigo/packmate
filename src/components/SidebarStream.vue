@@ -7,6 +7,7 @@
 			</a>
 			{{ stream.id }} {{ stream.protocol }}
 			<template v-if="stream.ttl">TTL {{ stream.ttl }}</template>
+      <template v-if="shouldShowServiceName"><br/>{{ getServiceName(stream.service) }} #{{stream.service}}</template>
 			<br/>
 			{{ dateToText(stream.startTimestamp) }}
 			<template v-if="!dateMatches(stream.startTimestamp, stream.endTimestamp)">
@@ -39,9 +40,17 @@
 				userAgentHash: String(),
 			},
 		},
+    computed: {
+		  shouldShowServiceName: function () {
+        return this.$route?.params?.servicePort === undefined;
+      },
+    },
 		data: function () {
 			return {
 				favorite0: this.stream.favorite,
+        getServiceName: function (port) {
+          return this.$store.state.services.find(o => o.port === port)?.name ?? '<Deleted service>'
+        },
 			};
 		},
 		methods: {
