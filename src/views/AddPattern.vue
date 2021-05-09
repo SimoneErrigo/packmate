@@ -78,7 +78,7 @@
 					description="Apply this pattern only to the specific service"
 					label-for="pattern-service">
 				<b-form-select id="pattern-service" :options="serviceOptions"
-											 required v-model="newPattern.serviceId"></b-form-select>
+											 v-model="newPattern.serviceId"></b-form-select>
 			</b-form-group>
 		</form>
 	</b-modal>
