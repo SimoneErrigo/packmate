@@ -37,11 +37,10 @@
 				if (packets && packets.length && packets[packets.length - 1]) {
 					startsFrom = packets[packets.length - 1].id;
 				} else {
-					startsFrom = 0;
+					startsFrom = null;
 				}
 
 				this.$http.post(`packet/${this.$route.params.streamId}`, {
-					direction: 'ASC',
 					startingFrom: startsFrom,
 					pageSize: this.$store.state.pageSize,
 				}).then(response => {

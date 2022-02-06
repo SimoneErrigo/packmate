@@ -41,9 +41,9 @@
 </template>
 
 <script>
-	import SidebarStream from './SidebarStream';
+import SidebarStream from './SidebarStream';
 
-	export default {
+export default {
 		name: 'Sidebar',
 		props: ['servicePort', 'streamId',],
 		data() {
@@ -134,11 +134,10 @@
 				if (ourStreams?.length && ourStreams[ourStreams.length - 1]) {
 					startsFrom = ourStreams[ourStreams.length - 1].id;
 				} else {
-					startsFrom = Number.MAX_SAFE_INTEGER;
+					startsFrom = null;
 				}
 
 				this.$http.post(`/stream/${this.$route?.params?.servicePort || 'all'}`, {
-					direction: 'DESC',
 					startingFrom: startsFrom,
 					pageSize: this.$store.state.pageSize,
 					pattern: this.$route.query.pattern ? {id: this.$route.query.pattern,} : null,

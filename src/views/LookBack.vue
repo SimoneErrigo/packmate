@@ -39,7 +39,7 @@ export default {
 				console.debug('Form is invalid');
 				return;
 			}
-			console.debug('Looking back with pattern TODO');
+			console.debug(`Looking back with pattern ${this.patternId}`);
 
 			this.$http.post(`pattern/${this.patternId}/lookback`, this.minutes)
 					.then(() => {
