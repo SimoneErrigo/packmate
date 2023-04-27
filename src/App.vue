@@ -100,10 +100,6 @@
 							this.addPatternFromWs(parsed.value);
 							break;
 						}
-						case 'DELETE_PATTERN': {
-							this.deletePatternFromWs(parsed.value);
-							break;
-						}
 						case 'COUNTERS_UPDATE': {
 							const data = parsed.value;
 							this.$store.commit('setCurrentPacketsCount', data.totalPackets);
@@ -171,10 +167,15 @@
 				};
 			},
 			addPatternFromWs(pattern) {
-				this.$store.commit('addPattern', pattern);
-			},
-			deletePatternFromWs(id) {
-				this.$store.commit('setPatterns', this.$store.state.patterns.filter(o => o.id !== id));
+				const foundIndex = this.$store.state.patterns.findIndex(el => el.id === pattern.id);
+				if (foundIndex === -1) {
+					this.$store.commit('addPattern', pattern);
+					return;
+				}
+
+				let newPatterns = this.$store.state.patterns.slice();
+				newPatterns.splice(foundIndex, 1, pattern);
+				this.$store.commit('setPatterns', newPatterns);
 			},
 			togglePatternFromWs(id, enabled) {
 				this.$store.state.patterns.forEach(pattern => {

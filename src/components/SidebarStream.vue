@@ -15,7 +15,7 @@
 			</template>
 			<template v-if="stream.userAgentHash"><br/>UA: {{ stream.userAgentHash }}</template>
 			<br/>
-			<span v-for="pattern in stream.foundPatterns"
+			<span v-for="pattern in notDeletedFoundPatterns"
 				  :key="pattern.id"
 				  :style="`color: ${pattern.color};`">
 				{{ pattern.name }}
@@ -44,6 +44,9 @@
 		  shouldShowServiceName: function () {
         return this.$route?.params?.servicePort === undefined;
       },
+			notDeletedFoundPatterns: function () {
+				return this.stream.foundPatterns.filter(p => !p.deleted);
+			},
     },
 		data: function () {
 			return {

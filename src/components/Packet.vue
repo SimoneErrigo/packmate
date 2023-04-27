@@ -124,6 +124,7 @@
 				}, {}); // Array to object
 				let offset = 0;
 				this.packet.matches
+					.filter(match => !patterns[match.patternId].deleted)
 					.sort((a, b) => a.startPosition - b.startPosition)
 					.forEach(match => {
 						const pattern = patterns[match.patternId];

@@ -10,7 +10,7 @@
 		<b-dropdown-item-button @click.stop.prevent="resetPatternSelection">
 			<strong>All streams</strong>
 		</b-dropdown-item-button>
-		<b-dropdown-item-button v-for="pattern in this.$store.state.patterns"
+		<b-dropdown-item-button v-for="pattern in existingPatterns"
 								:key="pattern.id" @click.stop.prevent="openPattern(pattern)"
 								:class="{ 'ignore-pattern' : pattern.actionType === 'IGNORE' }">
 
@@ -36,15 +36,21 @@
 					<i class="fas fa-backward"></i>
 				</button>
 
-				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-sm"
+				<button v-if="pattern.enabled" type="button" class="btn btn-outline-danger btn-sm mr-1"
 						@click.stop.prevent="togglePattern(pattern)"
 						title="Stop matching streams with this pattern">
 					<i class="fas fa-pause"></i>
 				</button>
-				<button v-else type="button" class="btn btn-outline-success btn-sm"
+				<button v-else type="button" class="btn btn-outline-success btn-sm mr-1"
 						@click.stop.prevent="togglePattern(pattern)"
 						title="Start matching streams with this pattern again">
 					<i class="fas fa-play"></i>
+				</button>
+
+				<button type="button" class="btn btn-outline-danger btn-sm"
+								@click.stop.prevent="deletePattern(pattern)"
+								title="Permanently delete this pattern">
+					<i class="fas fa-trash"></i>
 				</button>
 			</div>
 		</b-dropdown-item-button>
@@ -55,6 +61,11 @@
 		name: 'PatternsDropdown',
 		mounted() {
 			this.updatePatterns();
+		},
+		computed: {
+			existingPatterns: function () {
+				return this.$store.state.patterns.filter(p => !p.deleted)
+			},
 		},
 		methods: {
 			getSearchTypeValue(searchType, value) {
@@ -113,7 +124,7 @@
 			togglePattern(pattern) {
 				const enabled = !pattern.enabled;
 				console.debug('Toggling pattern', pattern);
-				this.$http.post(`pattern/${pattern.id}/`, null, {
+				this.$http.post(`pattern/${pattern.id}/enable`, null, {
 					params: {
 						enabled,
 					},
@@ -129,6 +140,21 @@
 					});
 					console.error('Failed to toggle pattern', e);
 				});
+			},
+			deletePattern(pattern) {
+				console.debug('Deleting pattern', pattern);
+
+				this.$http.delete(`pattern/${pattern.id}`, null)
+						.then(() => {
+							console.debug('Done deleting pattern');
+							this.$emit('patternAddComplete');
+						}).catch(e => {
+							this.$bvToast.toast(`Failed to delete pattern: ${e}`, {
+								title: 'Error',
+								variant: 'danger',
+							});
+							console.error('Failed to delete pattern', e);
+						});
 			},
 		},
 	};
