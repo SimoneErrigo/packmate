@@ -34,7 +34,7 @@
 				service: Number(),
 				startTimestamp: Number(),
 				endTimestamp: Number(),
-				foundPatterns: Array(),
+				foundPatternsIds: Array(),
 				favorite: Boolean(),
 				ttl: Number(),
 				userAgentHash: String(),
@@ -44,8 +44,11 @@
 		  shouldShowServiceName: function () {
         return this.$route?.params?.servicePort === undefined;
       },
+			foundPatterns: function () {
+				return this.$store.state.patterns.filter(p => this.stream.foundPatternsIds.includes(p.id));
+			},
 			notDeletedFoundPatterns: function () {
-				return this.stream.foundPatterns.filter(p => !p.deleted);
+				return this.foundPatterns.filter(p => !p.deleted);
 			},
     },
 		data: function () {
