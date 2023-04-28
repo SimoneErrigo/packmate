@@ -14,7 +14,6 @@
 			</div>
 		</div>
 		<Settings/>
-		<AddService/>
 		<AddPattern/>
 		<LookBack ref="lookBack" />
 	</div>
@@ -26,7 +25,6 @@
 
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
-	import AddService from './views/AddService';
 	import AddPattern from './views/AddPattern';
 	import LookBack from './views/LookBack';
 	import SockJS from 'sockjs-client';
@@ -201,7 +199,6 @@
 		},
 		components: {
 			AddPattern,
-			AddService,
 			LookBack,
 			Settings,
 			Navbar,
