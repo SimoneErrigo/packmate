@@ -1,5 +1,5 @@
 <template>
-	<b-modal @ok="addPattern" @cancel="reset" id="addPatternModal"
+	<b-modal @ok="addPattern" @cancel="reset" id="patternModal"
 			 title="Creating pattern"
 			 cancel-title="Cancel"
 			 centered scrollable>
@@ -164,7 +164,7 @@
 						console.debug('Done adding pattern', data);
 						this.$emit('patternAddComplete');
 						this.reset();
-						this.$bvModal.hide('addPatternModal');
+						this.$bvModal.hide('patternModal');
 					}).catch(e => {
 					this.$bvToast.toast(`Failed to add pattern: ${e}`, {
 						title: 'Error',

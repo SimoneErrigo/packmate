@@ -54,11 +54,17 @@
 				</button>
 			</div>
 		</b-dropdown-item-button>
+
+		<AddPattern/>
 	</b-dropdown>
 </template>
+<!--suppress JSUnresolvedReference -->
 <script>
+	import PatternModal from '@/views/PatternModal.vue';
+
 	export default {
 		name: 'PatternsDropdown',
+		components: {AddPattern: PatternModal, },
 		mounted() {
 			this.updatePatterns();
 		},
@@ -84,7 +90,7 @@
 				return this.$store.state.services.find(o => o.port === port)?.name ?? '<Deleted service>'
 			},
 			showAddPattern() {
-				this.$bvModal.show('addPatternModal');
+				this.$bvModal.show('patternModal');
 			},
 			showLookBack(pattern) {
 				// Не знаю, как сделать это без костылей

@@ -14,7 +14,6 @@
 			</div>
 		</div>
 		<Settings/>
-		<AddPattern/>
 		<LookBack ref="lookBack" />
 	</div>
 </template>
@@ -25,7 +24,6 @@
 
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
-	import AddPattern from './views/AddPattern';
 	import LookBack from './views/LookBack';
 	import SockJS from 'sockjs-client';
 	import {openDB,} from 'idb';
@@ -198,7 +196,6 @@
       },
 		},
 		components: {
-			AddPattern,
 			LookBack,
 			Settings,
 			Navbar,
