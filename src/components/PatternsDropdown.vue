@@ -55,7 +55,7 @@
 			</div>
 		</b-dropdown-item-button>
 
-		<AddPattern/>
+		<AddPattern :creating="patternModalIsCreating" :initial-pattern="patternModalEditingPattern" />
 	</b-dropdown>
 </template>
 <!--suppress JSUnresolvedReference -->
@@ -65,6 +65,12 @@
 	export default {
 		name: 'PatternsDropdown',
 		components: {AddPattern: PatternModal, },
+		data() {
+			return {
+				patternModalIsCreating: true,
+				patternModalEditingPattern: {},
+			};
+		},
 		mounted() {
 			this.updatePatterns();
 		},
@@ -90,7 +96,10 @@
 				return this.$store.state.services.find(o => o.port === port)?.name ?? '<Deleted service>'
 			},
 			showAddPattern() {
+				this.patternModalIsCreating = true;
+				this.patternModalEditingPattern = {};
 				this.$bvModal.show('patternModal');
+				console.debug('Showing patternModal...');
 			},
 			showLookBack(pattern) {
 				// Не знаю, как сделать это без костылей

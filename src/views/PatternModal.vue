@@ -85,21 +85,43 @@
 </template>
 
 <script>
-	const hexRegex = /[0-9A-Fa-f ]/;
+
+const hexRegex = /[0-9A-Fa-f ]/;
+const defaultPattern = {
+	name: '',
+	value: '',
+	color: '#FF7474',
+	searchType: 'SUBSTRING',
+	directionType: 'BOTH',
+	actionType: 'FIND',
+	serviceId: null,
+};
+
 	export default {
 		name: 'AddPattern',
+		props: {
+			creating: Boolean,
+
+			initialPattern: {
+				name: String,
+				value: String,
+				color: String,
+				searchType: String,
+				directionType: String,
+				actionType: String,
+				serviceId: Number,
+			},
+		},
 		data() {
 			return {
-				newPattern: {
-					name: '',
-					value: '',
-					color: '#FF7474',
-					searchType: 'SUBSTRING',
-					directionType: 'BOTH',
-          actionType: 'FIND',
-					serviceId: null,
-				},
+				newPattern: {},
 			};
+		},
+		watch: {
+			initialPattern() {
+				console.debug('initialService changed, reassigning...', this.initialPattern);
+				this.newPattern = {...defaultPattern, ...this.initialPattern,};
+			},
 		},
 		computed: {
 			serviceOptions: function () {
