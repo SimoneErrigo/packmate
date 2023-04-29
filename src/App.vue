@@ -14,7 +14,6 @@
 			</div>
 		</div>
 		<Settings/>
-		<LookBack ref="lookBack" />
 	</div>
 </template>
 
@@ -24,7 +23,6 @@
 
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
-	import LookBack from './views/LookBack';
 	import SockJS from 'sockjs-client';
 	import {openDB,} from 'idb';
 
@@ -197,7 +195,6 @@
       },
 		},
 		components: {
-			LookBack,
 			Settings,
 			Navbar,
 		},

@@ -62,19 +62,22 @@
 		</b-dropdown-item-button>
 
 		<PatternModal :creating="patternModalIsCreating" :initial-pattern="patternModalEditingPattern" />
+		<LookBack :pattern-id="patternIdForLookback" />
 	</b-dropdown>
 </template>
 <!--suppress JSUnresolvedReference -->
 <script>
 	import PatternModal from '@/views/PatternModal.vue';
+	import LookBack from '@/views/LookBack.vue';
 
 	export default {
 		name: 'PatternsDropdown',
-		components: {PatternModal: PatternModal, },
+		components: {LookBack, PatternModal, },
 		data() {
 			return {
 				patternModalIsCreating: true,
 				patternModalEditingPattern: {},
+				patternIdForLookback: 0,
 			};
 		},
 		mounted() {
@@ -117,8 +120,7 @@
 				});
 			},
 			showLookBack(pattern) {
-				// Не знаю, как сделать это без костылей
-				this.$root.$children[0].$refs.lookBack.patternId = pattern.id;
+				this.patternIdForLookback = pattern.id;
 				this.$bvModal.show('lookBackModal');
 			},
 			updatePatterns() {
