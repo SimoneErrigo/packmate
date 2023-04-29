@@ -102,7 +102,16 @@
 					return;
 				}
 				console.debug('Submitting service...', this.service, this.creating);
-				this.$http.post('service/', this.service)
+
+				let url;
+
+				if (this.creating) {
+					url = 'service/';
+				} else {
+					url = 'service/' + this.initialService.port
+				}
+
+				this.$http.post(url, this.service)
 					.then(response => {
 						console.info('Done editing/creating service', response.data);
 						this.$emit('service-update-needed');
@@ -133,7 +142,3 @@
 		},
 	};
 </script>
-
-<style scoped>
-
-</style>

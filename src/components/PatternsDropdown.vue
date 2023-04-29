@@ -30,6 +30,12 @@
 			<template v-else>of service {{ getServiceName(pattern.serviceId) }} #{{ pattern.serviceId }}</template>
 
 			<div class="float-right" style="margin-left: 2em;">
+				<button type="button" class="btn btn-outline-info btn-sm mr-1"
+								@click.stop.prevent="showEditPattern(pattern)"
+								title="Edit pattern">
+					<i class="fas fa-edit"></i>
+				</button>
+
 				<button v-if="pattern.actionType === 'FIND'" type="button" class="btn btn-outline-warning btn-sm mr-1"
 								@click.stop.prevent="showLookBack(pattern)"
 								title="Apply pattern to older streams">
@@ -54,11 +60,26 @@
 				</button>
 			</div>
 		</b-dropdown-item-button>
+
+		<PatternModal :creating="patternModalIsCreating" :initial-pattern="patternModalEditingPattern" />
+		<LookBack :pattern-id="patternIdForLookback" />
 	</b-dropdown>
 </template>
+<!--suppress JSUnresolvedReference -->
 <script>
+	import PatternModal from '@/views/PatternModal.vue';
+	import LookBack from '@/views/LookBack.vue';
+
 	export default {
 		name: 'PatternsDropdown',
+		components: {LookBack, PatternModal, },
+		data() {
+			return {
+				patternModalIsCreating: true,
+				patternModalEditingPattern: {},
+				patternIdForLookback: 0,
+			};
+		},
 		mounted() {
 			this.updatePatterns();
 		},
@@ -84,11 +105,22 @@
 				return this.$store.state.services.find(o => o.port === port)?.name ?? '<Deleted service>'
 			},
 			showAddPattern() {
-				this.$bvModal.show('addPatternModal');
+				this.patternModalIsCreating = true;
+				this.patternModalEditingPattern = {};
+				this.$bvModal.show('patternModal');
+				console.debug('Showing patternModal (create)');
+			},
+			showEditPattern(pattern) {
+				this.patternModalIsCreating = false;
+				this.patternModalEditingPattern = {};
+				this.$nextTick(() => {
+					this.patternModalEditingPattern = pattern;
+					this.$bvModal.show('patternModal');
+					console.debug('Showing patternModal (edit)');
+				});
 			},
 			showLookBack(pattern) {
-				// Не знаю, как сделать это без костылей
-				this.$root.$children[0].$refs.lookBack.patternId = pattern.id;
+				this.patternIdForLookback = pattern.id;
 				this.$bvModal.show('lookBackModal');
 			},
 			updatePatterns() {

@@ -20,11 +20,10 @@
 export default {
 	name: 'LookBack',
 	props: {
-		id: Number,
+		patternId: Number,
 	},
 	data() {
 		return {
-			patternId: null,
 			minutes: 5,
 		};
 	},

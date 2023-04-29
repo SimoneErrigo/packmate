@@ -1,5 +1,5 @@
 <template>
-	<b-modal @ok="addPattern" @cancel="reset" id="addPatternModal"
+	<b-modal @ok="addPattern" @cancel="reset" id="patternModal"
 			 title="Creating pattern"
 			 cancel-title="Cancel"
 			 centered scrollable>
@@ -14,6 +14,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Pattern"
@@ -25,6 +26,7 @@
 			</b-form-group>
 
       <b-form-group
+					v-if="creating"
           label-cols-sm="4"
           label-cols-lg="3"
           label="Search action"
@@ -46,6 +48,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Search method"
@@ -59,6 +62,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Search type"
@@ -72,6 +76,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Service"
@@ -85,21 +90,43 @@
 </template>
 
 <script>
-	const hexRegex = /[0-9A-Fa-f ]/;
+
+const hexRegex = /[0-9A-Fa-f ]/;
+const defaultPattern = {
+	name: '',
+	value: '',
+	color: '#FF7474',
+	searchType: 'SUBSTRING',
+	directionType: 'BOTH',
+	actionType: 'FIND',
+	serviceId: null,
+};
+
 	export default {
-		name: 'AddPattern',
+		name: 'PatternModal',
+		props: {
+			creating: Boolean,
+
+			initialPattern: {
+				name: String,
+				value: String,
+				color: String,
+				searchType: String,
+				directionType: String,
+				actionType: String,
+				serviceId: Number,
+			},
+		},
 		data() {
 			return {
-				newPattern: {
-					name: '',
-					value: '',
-					color: '#FF7474',
-					searchType: 'SUBSTRING',
-					directionType: 'BOTH',
-          actionType: 'FIND',
-					serviceId: null,
-				},
+				newPattern: {},
 			};
+		},
+		watch: {
+			initialPattern() {
+				console.debug('initialService changed, reassigning...', this.initialPattern);
+				this.newPattern = {...defaultPattern, ...this.initialPattern,};
+			},
 		},
 		computed: {
 			serviceOptions: function () {
@@ -136,14 +163,7 @@
 			},
 
 			reset() {
-				this.newPattern = {
-					name: '',
-					value: '',
-					color: '#FF7474',
-					searchType: 'SUBSTRING',
-					directionType: 'BOTH',
-          actionType: 'FIND',
-				};
+				this.newPattern = {...defaultPattern,};
 			},
 
 			addPattern(ev) {
@@ -152,19 +172,26 @@
 					console.debug('Form is invalid');
 					return;
 				}
-				console.debug('Adding pattern...', this.newPattern);
+				console.debug('Adding/editing pattern...', this.newPattern);
 
 				if (this.newPattern.searchType === 'SUBBYTES') {
 					this.newPattern.value = this.newPattern.value.replace(/\s+/g, '').toLowerCase();
 				}
 
-				this.$http.post('pattern/', this.newPattern)
+				let url;
+				if (this.creating) {
+					url = 'pattern/'
+				} else {
+					url = 'pattern/' + this.newPattern.id
+				}
+
+				this.$http.post(url, this.newPattern)
 					.then(response => {
 						const data = response.data;
-						console.debug('Done adding pattern', data);
+						console.debug('Done adding/editing pattern', data);
 						this.$emit('patternAddComplete');
 						this.reset();
-						this.$bvModal.hide('addPatternModal');
+						this.$bvModal.hide('patternModal');
 					}).catch(e => {
 					this.$bvToast.toast(`Failed to add pattern: ${e}`, {
 						title: 'Error',

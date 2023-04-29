@@ -14,9 +14,6 @@
 			</div>
 		</div>
 		<Settings/>
-		<AddService/>
-		<AddPattern/>
-		<LookBack ref="lookBack" />
 	</div>
 </template>
 
@@ -26,9 +23,6 @@
 
 	import Navbar from './components/Navbar';
 	import Settings from './views/Settings';
-	import AddService from './views/AddService';
-	import AddPattern from './views/AddPattern';
-	import LookBack from './views/LookBack';
 	import SockJS from 'sockjs-client';
 	import {openDB,} from 'idb';
 
@@ -147,6 +141,7 @@
 							break;
 						}
 						case 'FINISH_LOOKBACK': {
+							console.debug('Lookback completed');
 							this.$bvToast.toast(`Lookback completed`, {
 								title: 'Notification',
 								variant: 'success',
@@ -200,9 +195,6 @@
       },
 		},
 		components: {
-			AddPattern,
-			AddService,
-			LookBack,
 			Settings,
 			Navbar,
 		},
