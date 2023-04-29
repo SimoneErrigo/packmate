@@ -14,6 +14,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Pattern"
@@ -25,6 +26,7 @@
 			</b-form-group>
 
       <b-form-group
+					v-if="creating"
           label-cols-sm="4"
           label-cols-lg="3"
           label="Search action"
@@ -46,6 +48,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Search method"
@@ -59,6 +62,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Search type"
@@ -72,6 +76,7 @@
 			</b-form-group>
 
 			<b-form-group
+					v-if="creating"
 					label-cols-sm="4"
 					label-cols-lg="3"
 					label="Service"
@@ -98,7 +103,7 @@ const defaultPattern = {
 };
 
 	export default {
-		name: 'AddPattern',
+		name: 'PatternModal',
 		props: {
 			creating: Boolean,
 
@@ -158,14 +163,7 @@ const defaultPattern = {
 			},
 
 			reset() {
-				this.newPattern = {
-					name: '',
-					value: '',
-					color: '#FF7474',
-					searchType: 'SUBSTRING',
-					directionType: 'BOTH',
-          actionType: 'FIND',
-				};
+				this.newPattern = {...defaultPattern,};
 			},
 
 			addPattern(ev) {
@@ -174,16 +172,23 @@ const defaultPattern = {
 					console.debug('Form is invalid');
 					return;
 				}
-				console.debug('Adding pattern...', this.newPattern);
+				console.debug('Adding/editing pattern...', this.newPattern);
 
 				if (this.newPattern.searchType === 'SUBBYTES') {
 					this.newPattern.value = this.newPattern.value.replace(/\s+/g, '').toLowerCase();
 				}
 
-				this.$http.post('pattern/', this.newPattern)
+				let url;
+				if (this.creating) {
+					url = 'pattern/'
+				} else {
+					url = 'pattern/' + this.newPattern.id
+				}
+
+				this.$http.post(url, this.newPattern)
 					.then(response => {
 						const data = response.data;
-						console.debug('Done adding pattern', data);
+						console.debug('Done adding/editing pattern', data);
 						this.$emit('patternAddComplete');
 						this.reset();
 						this.$bvModal.hide('patternModal');

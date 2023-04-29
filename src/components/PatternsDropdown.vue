@@ -30,6 +30,12 @@
 			<template v-else>of service {{ getServiceName(pattern.serviceId) }} #{{ pattern.serviceId }}</template>
 
 			<div class="float-right" style="margin-left: 2em;">
+				<button type="button" class="btn btn-outline-info btn-sm mr-1"
+								@click.stop.prevent="showEditPattern(pattern)"
+								title="Edit pattern">
+					<i class="fas fa-edit"></i>
+				</button>
+
 				<button v-if="pattern.actionType === 'FIND'" type="button" class="btn btn-outline-warning btn-sm mr-1"
 								@click.stop.prevent="showLookBack(pattern)"
 								title="Apply pattern to older streams">
@@ -55,7 +61,7 @@
 			</div>
 		</b-dropdown-item-button>
 
-		<AddPattern :creating="patternModalIsCreating" :initial-pattern="patternModalEditingPattern" />
+		<PatternModal :creating="patternModalIsCreating" :initial-pattern="patternModalEditingPattern" />
 	</b-dropdown>
 </template>
 <!--suppress JSUnresolvedReference -->
@@ -64,7 +70,7 @@
 
 	export default {
 		name: 'PatternsDropdown',
-		components: {AddPattern: PatternModal, },
+		components: {PatternModal: PatternModal, },
 		data() {
 			return {
 				patternModalIsCreating: true,
@@ -99,7 +105,16 @@
 				this.patternModalIsCreating = true;
 				this.patternModalEditingPattern = {};
 				this.$bvModal.show('patternModal');
-				console.debug('Showing patternModal...');
+				console.debug('Showing patternModal (create)');
+			},
+			showEditPattern(pattern) {
+				this.patternModalIsCreating = false;
+				this.patternModalEditingPattern = {};
+				this.$nextTick(() => {
+					this.patternModalEditingPattern = pattern;
+					this.$bvModal.show('patternModal');
+					console.debug('Showing patternModal (edit)');
+				});
 			},
 			showLookBack(pattern) {
 				// Не знаю, как сделать это без костылей

@@ -143,6 +143,7 @@
 							break;
 						}
 						case 'FINISH_LOOKBACK': {
+							console.debug('Lookback completed');
 							this.$bvToast.toast(`Lookback completed`, {
 								title: 'Notification',
 								variant: 'success',
