@@ -33,6 +33,7 @@
 				if (!this.$route.params.streamId) return $state.complete();
 
 				const packets = this.packets;
+				const pageSize = this.$store.state.pageSize;
 				let startsFrom;
 				if (packets && packets.length && packets[packets.length - 1]) {
 					startsFrom = packets[packets.length - 1].id;
@@ -42,14 +43,27 @@
 
 				this.$http.post(`packet/${this.$route.params.streamId}`, {
 					startingFrom: startsFrom,
-					pageSize: this.$store.state.pageSize,
+					pageSize: pageSize,
 				}).then(response => {
 					const data = response.data;
-					if (data.length === 0) return $state.complete();
+					if (data.length === 0) {
+						console.log('Finished loading packets (empty page)');
+						return $state.complete();
+					}
+
 					if (data[0] && this.packets[0] && data[0].id === this.packets[0].id) {
+						console.log('Finished loading packets (overlap detected)');
+						return $state.complete();
+					}
+
+					this.packets.push(...data);
+
+					if (data.length < pageSize) {
+						// this was the last page
+						console.log('Finished loading packets (last page was not full)');
 						$state.complete();
 					} else {
-						this.packets.push(...data);
+						console.log('Loaded another page of packets');
 						$state.loaded();
 					}
 				}).catch(e => {

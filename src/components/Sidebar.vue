@@ -130,6 +130,8 @@ export default {
 		methods: {
 			infiniteLoadingHandler($state) {
 				const ourStreams = this.streams;
+				const pageSize = this.$store.state.pageSize;
+
 				let startsFrom;
 				if (ourStreams?.length && ourStreams[ourStreams.length - 1]) {
 					startsFrom = ourStreams[ourStreams.length - 1].id;
@@ -139,18 +141,31 @@ export default {
 
 				this.$http.post(`/stream/${this.$route?.params?.servicePort || 'all'}`, {
 					startingFrom: startsFrom,
-					pageSize: this.$store.state.pageSize,
+					pageSize: pageSize,
 					pattern: this.$route.query.pattern ? {id: this.$route.query.pattern,} : null,
 					favorites: this.$store.state.displayFavoritesOnly,
 				}).then(r => {
 					const data = r.data;
-					if (data?.length === 0) return $state.complete();
+					if (data?.length === 0) {
+						console.log('Finished loading streams (empty page)');
+						return $state.complete();
+					}
+
 					if (data[0]?.id === this.streams[0]?.id) {
+						console.log('Finished loading streams (overlap detected)');
 						return $state.complete();
 					}
 
 					this.streams.push(...data);
-					return $state.loaded();
+
+					if (data.length < pageSize) {
+						// this was the last page
+						console.log('Finished loading streams (last page was not full)');
+						$state.complete();
+					} else {
+						console.log('Loaded another page of streams');
+						$state.loaded()
+					}
 				}).catch(e => {
 					this.$bvToast.toast(`Failed to load portion of streams: ${e}`, {
 						title: 'Error',
