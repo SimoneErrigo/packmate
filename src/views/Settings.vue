@@ -1,4 +1,3 @@
-<!--suppress JSUnresolvedVariable -->
 <template>
 	<b-modal id="settingsModal" title="Settings" centered scrollable ok-only>
 		<b-form-group

@@ -1,7 +1,7 @@
 <template>
-	<li :id="`stream-${stream.id}`" class="nav-item" :class="{highlight: favorite0}" style="transition: all .5s;">
+	<li :id="`stream-${stream.id}`" class="nav-item stream-item" :class="{highlight: favorite0}">
 		<router-link class="nav-link"
-					 :to="{name: 'stream', params: {servicePort: stream.service, streamId: stream.id}, query: this.$route.query}">
+					 :to="{name: 'stream', params: {servicePort: this.stream.service, streamId: this.stream.id}, query: this.$route.query}">
 			<a @click.stop.prevent="toggleFavorite">
 				<i class="fa-star" style="color: #DC3545" :class="favorite0 ? 'fas' : 'far'"/>
 			</a>
@@ -14,6 +14,8 @@
 				- {{ dateToText(stream.endTimestamp, dayMatches(stream.startTimestamp, stream.endTimestamp)) }}
 			</template>
 			<template v-if="stream.userAgentHash"><br/>UA: {{ stream.userAgentHash }}</template>
+			<br/>
+			{{ stream.sizeBytes }} bytes in {{ stream.packetsCount }} packets
 			<br/>
 			<span v-for="pattern in notDeletedFoundPatterns"
 				  :key="pattern.id"
@@ -38,6 +40,8 @@
 				favorite: Boolean(),
 				ttl: Number(),
 				userAgentHash: String(),
+				sizeBytes: Number(),
+				packetsCount: Number(),
 			},
 		},
     computed: {
@@ -132,5 +136,11 @@
 	.highlight {
 		background: rgba(220, 53, 69, 0.3);
 		box-shadow: 0 0 1px 1px rgba(255, 119, 182, 0.3);
+	}
+
+	.stream-item {
+		transition: all .5s;
+		border: 0;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
 </style>
