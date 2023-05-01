@@ -8,6 +8,8 @@ Vue.use(Vuex);
 // noinspection JSUnusedLocalSymbols,JSUnusedGlobalSymbols
 export default new Vuex.Store({
 	state: {
+		theme: null,
+
 		hexdumpBlockSize: 16,
 		hexdumpLineNumberBase: 10,
 		pageSize: 25,
@@ -29,6 +31,7 @@ export default new Vuex.Store({
 		currentServicesStreamsCount: {},
 	},
 	mutations: {
+		setTheme: (s, p) => s.theme = p,
 		setHexdumpBlockSize: (s, p) => s.hexdumpBlockSize = p,
 		setHexdumpLineNumberBase: (s, p) => s.hexdumpLineNumberBase = p,
 		setPageSize: (s, p) => s.pageSize = p,
@@ -64,6 +67,7 @@ export default new Vuex.Store({
 				console.debug('Got mutation:', mutation);
 				const mName = mutation?.type;
 				const process = mName !== 'toggleDisplayFavoritesOnly'
+					&& mName !== 'setTheme'
 					&& mName !== 'setServiceModalName'
 					&& mName !== 'setServiceModalId'
 					&& mName !== 'togglePause'

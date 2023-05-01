@@ -127,12 +127,15 @@
 		color: #333;
 	}
 
+	[data-theme=dark] .nav-link {
+		color: #f8f9fa;
+	}
+
 	/*noinspection CssUnusedSymbol*/
 	.nav-link.active {
 		color: #007BFF;
 	}
 
-	/*noinspection CssUnusedSymbol*/
 	.highlight {
 		background: rgba(220, 53, 69, 0.3);
 		box-shadow: 0 0 1px 1px rgba(255, 119, 182, 0.3);
@@ -140,7 +143,10 @@
 
 	.stream-item {
 		transition: all .5s;
-		border: 0;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		box-shadow: 0 24px 3px -25px #4b4e51;
+	}
+
+	[data-theme=dark] .stream-item {
+		box-shadow: 0 24px 3px -25px #84898E;
 	}
 </style>

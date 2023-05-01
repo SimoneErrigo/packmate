@@ -1,20 +1,20 @@
 <template>
-	<div class="packet" :class="{'packet-incoming': packet.incoming}">
+	<div :class="{'packet-incoming': packet.incoming, 'packet-outgoing': !packet.incoming}">
 		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ printPacketFlags(packet) }}
 			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
 			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
 		</div>
 		<p v-if="!this.$store.state.hexdumpMode"
-		   class="pt-2 pb-2 mb-3 border-bottom"
+		   class="pt-2 pb-2 mb-3"
 		   v-html="stringdata"/>
 		<p v-else
-		   class="pt-2 pb-2 mb-3 border-bottom"
+		   class="pt-2 pb-2 mb-3"
 		   v-html="hexdata"/>
 	</div>
 </template>
 
-<!--suppress JSUnresolvedVariable -->
+<!--suppress JSUnresolvedVariable, JSDeprecatedSymbols -->
 <script>
 	export default {
 		name: 'Packet',
@@ -176,21 +176,19 @@
 </script>
 
 <style scoped>
-	.packet {
-		background: rgba(224, 246, 255, 0.4);
-		box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);
+	.packet-outgoing {
+		background: var(--response-packet-color);
+		box-shadow: 0 0 5px 5px var(--response-packet-color);
 	}
 
-	/*noinspection CssUnusedSymbol*/
 	.packet-incoming {
-		background: rgba(251, 233, 231, 0.4);
-		box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);
+		background: var(--request-packet-color);
+		box-shadow: 0 0 5px 5px var(--request-packet-color);
 	}
 
 	p {
 		font-family: "Ubuntu Mono", "Lucida Console", monospace;
 		font-size: 100%;
-		color: black;
 		margin-bottom: 10px;
 		padding-bottom: 5px;
 		word-break: break-word;

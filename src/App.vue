@@ -307,3 +307,7 @@
 		padding-top: 55px; /* Space for fixed navbar */
 	}
 </style>
+
+<style lang="scss">
+	@import "~bootstrap-darkmode/scss/darktheme";
+</style>
