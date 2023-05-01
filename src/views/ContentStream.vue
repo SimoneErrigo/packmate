@@ -1,18 +1,22 @@
 <template>
 	<div>
 		<p>
-			<span style="background: rgba(224, 246, 255, 0.4); box-shadow: 0 0 5px 5px rgba(224, 246, 255, 0.4);">Response</span>,
-			<span style="background: rgba(251, 233, 231, 0.4); box-shadow: 0 0 5px 5px rgba(251, 233, 231, 0.4);">request</span>.
+			<span style="background: var(--request-packet-color); box-shadow: 0 0 3px 3px var(--request-packet-color);">Request</span>,
+			<span style="background: var(--response-packet-color); box-shadow: 0 0 3px 3px var(--response-packet-color);">response</span>.
+			<ThemeButton class="d-inline float-right" style="margin-top: -0.25rem" />
 		</p>
 		<Packet v-for="packet in packets"
 				:key="packet.id"
 				:packet="packet"/>
-		<infinite-loading @infinite="infiniteLoadingHandler" ref="infiniteLoader"/>
+		<infinite-loading @infinite="infiniteLoadingHandler" ref="infiniteLoader">
+			<span slot="no-results"></span>
+		</infinite-loading>
 	</div>
 </template>
 
 <script>
 	import Packet from '../components/Packet';
+	import ThemeButton from '@/components/ThemeButton.vue';
 
 	export default {
 		name: 'ContentStream',
@@ -77,7 +81,21 @@
 			},
 		},
 		components: {
+			ThemeButton,
 			Packet,
 		},
 	};
 </script>
+
+<style>
+	:root {
+		--response-packet-color: rgb(231, 248, 253);
+		--request-packet-color: rgb(254, 234, 231);
+	}
+
+	:root [data-theme=dark] {
+		color-scheme: dark;
+		--response-packet-color: rgb(43, 83, 120);
+		--request-packet-color: rgb(52, 58, 64);
+	}
+</style>

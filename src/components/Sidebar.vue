@@ -1,5 +1,6 @@
 <template>
-	<nav class="col-sm-3 d-none d-sm-block bg-light sidebar">
+	<nav class="col-sm-3 d-none d-sm-block sidebar"
+			 :class="this.$store.state.theme === 'light' ? 'bg-light' : 'bg-dark'">
 		<div class="m-2">
 			<button type="button" class="btn btn-sm"
 					:title="this.$store.state.pause ? 'Continue' : 'Pause new streams'"
