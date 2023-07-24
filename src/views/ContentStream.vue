@@ -5,9 +5,10 @@
 			<span style="background: var(--response-packet-color); box-shadow: 0 0 3px 3px var(--response-packet-color);">response</span>.
 			<ThemeButton class="d-inline float-right" style="margin-top: -0.25rem" />
 		</p>
-		<Packet v-for="packet in packets"
-				:key="packet.id"
-				:packet="packet"/>
+		<Packet v-for="packetWithOffset in packetsWithOffsets"
+				:key="packetWithOffset.packet.id"
+				:packet="packetWithOffset.packet"
+				:offset="packetWithOffset.offset" />
 		<infinite-loading @infinite="infiniteLoadingHandler" ref="infiniteLoader">
 			<span slot="no-results"></span>
 		</infinite-loading>
@@ -25,6 +26,19 @@
 			return {
 				packets: [],
 			};
+		},
+		computed: {
+			packetsWithOffsets: function() {
+				return this.packets.map((el, i) => {
+					let offset = null;
+
+					if (i !== 0) {
+						offset = el.timestamp - this.packets[i - 1].timestamp;
+					}
+
+					return {packet: el, offset: offset,}
+				})
+			},
 		},
 		watch: {
 			'$route.params.streamId': function () {

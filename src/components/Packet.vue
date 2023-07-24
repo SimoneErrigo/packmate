@@ -1,16 +1,18 @@
 <template>
 	<div :class="{'packet-incoming': packet.incoming, 'packet-outgoing': !packet.incoming}">
-		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}, {{ printPacketFlags(packet) }}
+		<div>#{{ packet.id }} at {{ dateToText(packet.timestamp) }}
+			<template v-if="offset !== null"> (+{{ offset }} ms)</template>
+			{{ printPacketFlags(packet) }}
 			<button @click.prevent="copyRaw" class="btn btn-link">Copy HEX</button>
 			<button @click.prevent="copyText" class="btn btn-link">Copy text</button>
 			<button @click.prevent="copyPythonBytes" class="btn btn-link">Copy as Python bytes</button>
 		</div>
 		<p v-if="!this.$store.state.hexdumpMode"
-		   class="pt-2 pb-2 mb-3"
-		   v-html="stringdata"/>
+			 class="pt-2 pb-2 mb-3"
+			 v-html="stringdata"/>
 		<p v-else
-		   class="pt-2 pb-2 mb-3"
-		   v-html="hexdata"/>
+			 class="pt-2 pb-2 mb-3"
+			 v-html="hexdata"/>
 	</div>
 </template>
 
@@ -29,6 +31,7 @@
 				tlsDecrypted: Boolean(),
 				content: String(),
 			},
+			offset: Number(),
 		},
 		computed: {
 			hexdata() {
