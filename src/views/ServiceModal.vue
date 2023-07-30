@@ -20,17 +20,10 @@
 			</b-form-group>
 
 			<b-form-group label-cols-sm="4"
-						  label="Process chunked transfer encoding"
-						  label-for="service-process-chunked">
-				<b-form-checkbox id="service-process-chunked" required
-								 v-model="service.processChunkedEncoding"/>
-			</b-form-group>
-
-			<b-form-group label-cols-sm="4"
-						  label="Decompress GZIP"
-						  label-for="service-ungzip">
-				<b-form-checkbox id="service-ungzip" required
-								 v-model="service.ungzipHttp"/>
+						  label="Is an HTTP service"
+						  label-for="service-is-http">
+				<b-form-checkbox id="service-is-http" required
+                  v-model="service.http" />
 			</b-form-group>
 
 			<b-form-group label-cols-sm="4"
@@ -77,8 +70,7 @@
 			initialService: {
 				name: String,
 				port: Number,
-				processChunkedEncoding: Boolean,
-				ungzipHttp: Boolean,
+				http: Boolean,
 				urldecodeHttpRequests: Boolean,
 				mergeAdjacentPackets: Boolean,
 				parseWebSockets: Boolean,
