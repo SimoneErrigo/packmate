@@ -28,7 +28,6 @@
 				incoming: Boolean(),
 				ungzipped: Boolean(),
 				webSocketParsed: Boolean(),
-				tlsDecrypted: Boolean(),
 				content: String(),
 			},
 			offset: Number(),
@@ -69,10 +68,6 @@
 
 				if (packet.webSocketParsed) {
 					flags.push('WS');
-				}
-
-				if (packet.tlsDecrypted) {
-					flags.push('TLS');
 				}
 
 				return flags.join(' ');

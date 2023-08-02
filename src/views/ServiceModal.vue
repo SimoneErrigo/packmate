@@ -47,13 +47,6 @@
 								 v-model="service.parseWebSockets"/>
 			</b-form-group>
 
-			<b-form-group label-cols-sm="4"
-						  label="Decrypt TLS (TLS_RSA_WITH_AES only)"
-						  label-for="service-decryptTls">
-				<b-form-checkbox id="service-decryptTls" required
-								 v-model="service.decryptTls"/>
-			</b-form-group>
-
 			<b-button v-if="!creating" variant="danger" @click="deleteService">Delete</b-button>
 		</b-form>
 	</b-modal>
@@ -74,7 +67,6 @@
 				urldecodeHttpRequests: Boolean,
 				mergeAdjacentPackets: Boolean,
 				parseWebSockets: Boolean,
-				decryptTls: Boolean,
 			},
 		},
 		data() {
