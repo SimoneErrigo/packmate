@@ -29,4 +29,4 @@ jobs:
           context: .
           file: ./docker/Dockerfile_app
           push: true
-          tags: ghcr.io/<tuo-username>/packmate:latest
+          tags: ghcr.io/simoneerrigo/packmate:latest
