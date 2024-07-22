@@ -1,0 +1,78 @@
+{
+  "name": "packmate-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bootstrap": "^4.6.2",
+    "bootstrap-darkmode": "^0.9.1",
+    "bootstrap-vue": "^2.23.1",
+    "core-js": "^3.26.1",
+    "idb": "^5.0.8",
+    "sockjs-client": "^1.6.1",
+    "vue": "^2.6.14",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^3.2.1",
+    "vuex-shared-mutations": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.18.9",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@vue/cli-plugin-babel": "^4.5.19",
+    "@vue/cli-plugin-eslint": "^4.5.19",
+    "@vue/cli-service": "^4.3.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^8.0.0",
+    "sass-loader": "^10.4.1",
+    "vue-template-compiler": "^2.7.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "indent": [
+        "off"
+      ],
+      "no-mixed-spaces-and-tabs": "off",
+      "comma-dangle": [
+        "warn",
+        {
+          "arrays": "always",
+          "objects": "always",
+          "imports": "always",
+          "exports": "always",
+          "functions": "never"
+        }
+      ],
+      "no-console": "off"
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
