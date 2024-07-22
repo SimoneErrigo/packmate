@@ -3,7 +3,7 @@
 # Packmate
 </div>
 
-### [EN | [RU](README.md)]
+### [EN]
 Advanced network traffic flow analyzer for A/D CTFs.
 
 #### Features:
@@ -26,26 +26,8 @@ Advanced network traffic flow analyzer for A/D CTFs.
 
 ![Main window](screenshots/Screenshot.png)
 
-## Quick Start
-To quickly start using Packmate, use [this starter](https://gitlab.com/packmate/starter/-/blob/master/README_EN.md).
-
 ## Full Build
 Below are the instructions for those who want to build Packmate on their own.
-
-### Cloning
-As this repository contains frontend part as a git submodule, it has to be cloned like this:
-```bash
-git clone --recurse-submodules https://gitlab.com/packmate/Packmate.git
-
-# Or if you have older git
-git clone --recursive https://gitlab.com/packmate/Packmate.git
-```
-
-If the repository was already cloned without submodule, just run:
-```bash
-git pull
-git submodule update --init --recursive
-```
 
 ### Setup
 [Instructions](docs/SETUP_EN.md)
@@ -61,8 +43,3 @@ Database with listen on port 65001, but will only accept connections from localh
 
 ## Usage
 [Instructions](docs/USAGE_EN.md)
-
-<div align="right">
-
-*desu~*
-</div>
